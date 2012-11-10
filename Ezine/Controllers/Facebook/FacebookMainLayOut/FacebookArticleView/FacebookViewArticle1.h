@@ -6,6 +6,7 @@
 //
 //
 
+#import <MediaPlayer/MediaPlayer.h>
 #import "UIViewExtention.h"
 #import "MKNetworkKit.h"
 #import "OHAttributedLabel.h"
@@ -26,6 +27,8 @@
     UILabel*         numbercomment;
     UILabel*         numberLike;
     NSString*        urlImage;
+    BOOL            moviePlayer;
+    UIWebView* videoView;
 }
 
 @property (nonatomic, strong)   MKNetworkOperation* imageLoadingOperation;

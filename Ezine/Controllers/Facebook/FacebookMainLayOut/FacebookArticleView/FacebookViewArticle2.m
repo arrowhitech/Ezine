@@ -55,6 +55,29 @@
     
 }
 
+#pragma mark--- play youtube video
+- (void)embedYouTube:(NSString*)url frame:(CGRect)frame {
+    NSString *embedHTML = @"\
+    <html><head>\
+	<style type=\"text/css\">\
+	body {\
+	background-color: transparent;\
+	color: white;\
+	}\
+	</style>\
+	</head><body style=\"margin:0\">\
+    <embed id=\"yt\" src=\"%@\" type=\"application/x-shockwave-flash\" \
+	width=\"%0.0f\" height=\"%0.0f\"></embed>\
+    </body></html>";
+    NSString* html = [NSString stringWithFormat:embedHTML, url, frame.size.width, frame.size.height];
+    
+    videoView = [[UIWebView alloc] initWithFrame:frame];
+    [contentView addSubview:videoView];
+    
+    [videoView loadHTMLString:html baseURL:nil];
+}
+
+
 #pragma mark--- create view
 -(void)getdetailActorId{
     NSString *graphPath=[NSString stringWithFormat:@"%@?fields=name",self.idActorPost];
@@ -172,33 +195,79 @@
 	text_content.font = [UIFont fontWithName:@"TimesNewRomanPSMT" size:17+XAppDelegate.appFontSize];
 	text_content.textColor =  RGBCOLOR(33,33,33);
     NSArray *media=[self.itemModel.attachment objectForKey:@"media"];
-    if (media&&media.count>=1) {
+    if (self._type==80||self._type==128) {
         NSDictionary *dataImage=[media objectAtIndex:0];
-        NSString *src=[dataImage objectForKey:@"src"];
-        urlImage=[src stringByReplacingOccurrencesOfString:@"_s" withString:@"_n"];
-        
-        NSLog(@"url image===%@",urlImage);
-        self.imageLoadingOperation = [XAppDelegate.serviceEngine imageAtURL:[NSURL URLWithString:urlImage]
-                                                               onCompletion:^(UIImage *fetchedImage, NSURL *url, BOOL isInCache) {
-                                                                   
-                                                                   
-                                                                   if (isInCache) {
-                                                                       imageView.image = fetchedImage;
-                                                                       //     [self hideActivityIndicator];
+        NSString    *type=[dataImage objectForKey:@"type"];
+        if ([type isEqualToString:@"video"]) {
+            NSDictionary *video=[dataImage objectForKey:@"video"];
+            NSString *source_url=[video objectForKey:@"source_url"];
+            NSLog(@"video url====%@",source_url);
+            
+            moviePlayer=YES;
+            if (self.Viewoder==2) {
+                [self embedYouTube:source_url frame:CGRectMake(20,20,250,150)];
+                
+            }else{
+                [self embedYouTube:source_url frame:CGRectMake(20,20,180,150)];
+            }
+            [imageView removeFromSuperview];
+        }else{
+            NSString *src=[dataImage objectForKey:@"src"];
+            
+            urlImage=[src stringByReplacingOccurrencesOfString:@"_s" withString:@"_n"];
+            
+            self.imageLoadingOperation = [XAppDelegate.serviceEngine imageAtURL:[NSURL URLWithString:urlImage]
+                                                                   onCompletion:^(UIImage *fetchedImage, NSURL *url, BOOL isInCache) {
                                                                        
-                                                                   } else {
-                                                                       UIImageView *loadedImageView = [[UIImageView alloc] initWithImage:fetchedImage];
-                                                                       loadedImageView.frame = imageView.frame;
-                                                                       loadedImageView.alpha = 0;
-                                                                       [loadedImageView removeFromSuperview];
                                                                        
-                                                                       imageView.image = fetchedImage;
-                                                                       imageView.alpha = 1;
-                                                                       // [self hideActivityIndicator];
+                                                                       if (isInCache) {
+                                                                           imageView.image = fetchedImage;
+                                                                           //     [self hideActivityIndicator];
+                                                                           
+                                                                       } else {
+                                                                           UIImageView *loadedImageView = [[UIImageView alloc] initWithImage:fetchedImage];
+                                                                           loadedImageView.frame = imageView.frame;
+                                                                           loadedImageView.alpha = 0;
+                                                                           [loadedImageView removeFromSuperview];
+                                                                           
+                                                                           imageView.image = fetchedImage;
+                                                                           imageView.alpha = 1;
+                                                                           // [self hideActivityIndicator];
+                                                                           
+                                                                       }
                                                                        
-                                                                   }
-                                                                   
-                                                               }];
+                                                                   }];
+            
+        }
+    }else{
+        if (media&&media.count>=1) {
+            NSDictionary *dataImage=[media objectAtIndex:0];
+            NSString *src=[dataImage objectForKey:@"src"];
+            urlImage=[src stringByReplacingOccurrencesOfString:@"_s" withString:@"_n"];
+            
+            self.imageLoadingOperation = [XAppDelegate.serviceEngine imageAtURL:[NSURL URLWithString:urlImage]
+                                                                   onCompletion:^(UIImage *fetchedImage, NSURL *url, BOOL isInCache) {
+                                                                       
+                                                                       
+                                                                       if (isInCache) {
+                                                                           imageView.image = fetchedImage;
+                                                                           //     [self hideActivityIndicator];
+                                                                           
+                                                                       } else {
+                                                                           UIImageView *loadedImageView = [[UIImageView alloc] initWithImage:fetchedImage];
+                                                                           loadedImageView.frame = imageView.frame;
+                                                                           loadedImageView.alpha = 0;
+                                                                           [loadedImageView removeFromSuperview];
+                                                                           
+                                                                           imageView.image = fetchedImage;
+                                                                           imageView.alpha = 1;
+                                                                           // [self hideActivityIndicator];
+                                                                           
+                                                                       }
+                                                                       
+                                                                   }];
+            
+        }
         
     }
     
@@ -222,9 +291,6 @@
         
         switch (self._type) {
             case 247:
-            case 80:
-            case 127:
-                NSLog(@"attact ment===%@",itemModel.attachment);
                 [title setText:[itemModel.attachment objectForKey:@"name"] ];
                 [title setFrame:CGRectMake(20,20, contentViewArea.width-20, 40)];
                 title.numberOfLines=0;
@@ -237,10 +303,67 @@
                 [nameActor sizeToFit];
                 [time_ago setFrame:CGRectMake(nameActor.frame.origin.x,nameActor.frame.origin.y+nameActor.frame.size.height+2,contentViewArea.width , 20)];
                 [imageView setFrame:CGRectMake(20,time_ago.frame.size.height+time_ago.frame.origin.y,contentViewArea.width-20,150)];
-
+                
                 [text_content setFrame:CGRectMake(imageView.frame.origin.x, imageView.frame.size.height+imageView.frame.origin.y+10, contentViewArea.width-20, contentViewArea.height-imageView.frame.size.height-imageView.frame.origin.y-20)];
                 [text_content setText:text_content.text];
                 text_content= [self resetAlighLabel:text_content];
+                break;
+            case 80:
+                if (moviePlayer) {
+                    [title setText:[itemModel.attachment objectForKey:@"name"] ];
+                    [title setFrame:CGRectMake(20,20, contentViewArea.width-20, 40)];
+                    title.numberOfLines=0;
+                    [title sizeToFit];
+                    
+                    [imageIconView setFrame:CGRectMake(title.frame.origin.x,title.frame.origin.y+title.frame.size.height+10 , 30, 30)];
+                    
+                    [nameActor setFrame:CGRectMake(imageIconView.frame.origin.x+imageIconView.frame.size.width+5, imageIconView.frame.origin.y-5, contentView.frame.size.width-imageIconView.frame.size.width-25, 20)];
+                    nameActor.numberOfLines=0;
+                    [nameActor sizeToFit];
+                    [time_ago setFrame:CGRectMake(nameActor.frame.origin.x,nameActor.frame.origin.y+nameActor.frame.size.height+2,contentViewArea.width , 20)];
+                    [videoView setFrame:CGRectMake(20,time_ago.frame.size.height+time_ago.frame.origin.y,contentViewArea.width-20,150)];
+                    
+                    [text_content setFrame:CGRectMake(videoView.frame.origin.x, videoView.frame.size.height+videoView.frame.origin.y+10, contentViewArea.width-20, contentViewArea.height-videoView.frame.size.height-videoView.frame.origin.y-20)];
+                    [text_content setText:text_content.text];
+                    text_content= [self resetAlighLabel:text_content];
+                }else{
+                    [title setText:[itemModel.attachment objectForKey:@"name"] ];
+                    [title setFrame:CGRectMake(20,20, contentViewArea.width-20, 40)];
+                    title.numberOfLines=0;
+                    [title sizeToFit];
+                    
+                    [imageIconView setFrame:CGRectMake(title.frame.origin.x,title.frame.origin.y+title.frame.size.height+10 , 30, 30)];
+                    
+                    [nameActor setFrame:CGRectMake(imageIconView.frame.origin.x+imageIconView.frame.size.width+5, imageIconView.frame.origin.y-5, contentView.frame.size.width-imageIconView.frame.size.width-25, 20)];
+                    nameActor.numberOfLines=0;
+                    [nameActor sizeToFit];
+                    [time_ago setFrame:CGRectMake(nameActor.frame.origin.x,nameActor.frame.origin.y+nameActor.frame.size.height+2,contentViewArea.width , 20)];
+                    [imageView setFrame:CGRectMake(20,time_ago.frame.size.height+time_ago.frame.origin.y,contentViewArea.width-20,150)];
+                    
+                    [text_content setFrame:CGRectMake(imageView.frame.origin.x, imageView.frame.size.height+imageView.frame.origin.y+10, contentViewArea.width-20, contentViewArea.height-imageView.frame.size.height-imageView.frame.origin.y-20)];
+                    [text_content setText:text_content.text];
+                    text_content= [self resetAlighLabel:text_content];
+                }
+                break;
+            case 128:
+                NSLog(@"attact ment===%@",itemModel.attachment);
+                [title setText:[itemModel.attachment objectForKey:@"name"] ];
+                [title setFrame:CGRectMake(20,20, contentViewArea.width-20, 40)];
+                title.numberOfLines=0;
+                [title sizeToFit];
+                
+                [imageIconView setFrame:CGRectMake(title.frame.origin.x,title.frame.origin.y+title.frame.size.height+10 , 30, 30)];
+                
+                [nameActor setFrame:CGRectMake(imageIconView.frame.origin.x+imageIconView.frame.size.width+5, imageIconView.frame.origin.y-5, contentView.frame.size.width-imageIconView.frame.size.width-25, 20)];
+                nameActor.numberOfLines=0;
+                [nameActor sizeToFit];
+                [time_ago setFrame:CGRectMake(nameActor.frame.origin.x,nameActor.frame.origin.y+nameActor.frame.size.height+2,contentViewArea.width , 20)];
+                [videoView setFrame:CGRectMake(20,time_ago.frame.size.height+time_ago.frame.origin.y,contentViewArea.width-20,150)];
+                
+                [text_content setFrame:CGRectMake(videoView.frame.origin.x, videoView.frame.size.height+videoView.frame.origin.y+10, contentViewArea.width-20, contentViewArea.height-videoView.frame.size.height-videoView.frame.origin.y-20)];
+                [text_content setText:text_content.text];
+                text_content= [self resetAlighLabel:text_content];
+                
                 
                 break;
                 

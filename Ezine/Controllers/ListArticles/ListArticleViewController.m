@@ -65,9 +65,6 @@
         arrayData = [[NSMutableArray alloc] init];
         cachedDataAllArticle=[[NSMutableArray alloc] init];
 		_isUpdateArticle=NO;
-        
-        
-        
     }
     return self;
 }
@@ -78,9 +75,7 @@
     [arrayPage release];
 	[gestureRecognizer release];
     [popovercontroller release];
-    [wallTitle release];
-    
-   // [flipViewController release];
+	[wallTitle release];
     [super dealloc];
 }
 
@@ -89,7 +84,7 @@
     _isgotoDetailArticle=NO;
     chanelId=0;
     // add activityIndicator
-       activityIndicator = [[UIActivityIndicatorView alloc] init];
+    activityIndicator = [[UIActivityIndicatorView alloc] init];
     activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
     [self.view addSubview:activityIndicator];
     /*
@@ -105,61 +100,47 @@
     self.flipViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.flipViewController.view.frame = pageViewRect;
     
-    imgFakeGifAnimation=[[UIImageView alloc] initWithFrame:self.view.frame];
-    imgFakeGifAnimation.animationDuration = 1;
-    imgFakeGifAnimation.animationRepeatCount = 0;
-    
     if (self.interfaceOrientation == UIInterfaceOrientationPortrait || self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
         self.flipViewController.view.frame=CGRectMake(0, 0, 768,1004);
         [activityIndicator setFrame:CGRectMake(768/2.0-40, 748/3, 100, 100)];
         
-        imgFakeGifAnimation.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-H1.png"],[UIImage imageNamed:@"Ezine-loading-H2.png"],[UIImage imageNamed:@"Ezine-loading-H3.png"],[UIImage imageNamed:@"Ezine-loading-H4.png"],[UIImage imageNamed:@"Ezine-loading-H5.png"],[UIImage imageNamed:@"Ezine-loading-H1.png"],nil];
-        [imgFakeGifAnimation setFrame:CGRectMake(0, 0, 768, 1004)];
-        [imgFakeGifAnimation startAnimating];
-
-
     }else if (self.interfaceOrientation==UIInterfaceOrientationLandscapeLeft||self.interfaceOrientation==UIInterfaceOrientationLandscapeRight){
         self.flipViewController.view.frame =CGRectMake(0,0, 1024,748);
         [activityIndicator setFrame:CGRectMake(1024/2.0-40, 1004/3, 100, 100)];
         
-        imgFakeGifAnimation.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-V1.png"],[UIImage imageNamed:@"Ezine-loading-V2.png"],[UIImage imageNamed:@"Ezine-loading-V3.png"],[UIImage imageNamed:@"Ezine-loading-V4.png"],[UIImage imageNamed:@"Ezine-loading-V5.png"],[UIImage imageNamed:@"Ezine-loading-V6.png"],nil];
-        [imgFakeGifAnimation setFrame:CGRectMake(0, 0, 1024, 748)];
-        [imgFakeGifAnimation startAnimating];
-
-
     }
     activeIndex=0;
     //addImageView
     
-
+    
     [self addChildViewController:self.flipViewController];
     [self.view addSubview:self.flipViewController.view];
     [self.flipViewController didMoveToParentViewController:self];
     self.view.gestureRecognizers = self.flipViewController.gestureRecognizers;
     
-   
+    imgFakeGifAnimation=[[UIImageView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:imgFakeGifAnimation];
+    imgFakeGifAnimation.animationDuration = 1;
+    imgFakeGifAnimation.animationRepeatCount = 0;
     
-    
-//    if ([[UIDevice currentDevice] orientation]==UIInterfaceOrientationLandscapeLeft||[[UIDevice currentDevice] orientation]==UIInterfaceOrientationLandscapeRight) {
-//        
-//        imgFakeGifAnimation.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-V1.png"],[UIImage imageNamed:@"Ezine-loading-V2.png"],[UIImage imageNamed:@"Ezine-loading-V3.png"],[UIImage imageNamed:@"Ezine-loading-V4.png"],[UIImage imageNamed:@"Ezine-loading-V5.png"],[UIImage imageNamed:@"Ezine-loading-V6.png"],nil];
-//        [imgFakeGifAnimation setFrame:CGRectMake(0, 0, 1024, 748)];
-//        [imgFakeGifAnimation startAnimating];
-//         
-//    }else if ([[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortrait||[[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortraitUpsideDown){
-//        
-//        imgFakeGifAnimation.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-H1.png"],[UIImage imageNamed:@"Ezine-loading-H2.png"],[UIImage imageNamed:@"Ezine-loading-H3.png"],[UIImage imageNamed:@"Ezine-loading-H4.png"],[UIImage imageNamed:@"Ezine-loading-H5.png"],[UIImage imageNamed:@"Ezine-loading-H1.png"],nil];
-//        [imgFakeGifAnimation setFrame:CGRectMake(0, 0, 768, 1004)];
-//        [imgFakeGifAnimation startAnimating];
-//
-//        
-//    }
+    if ([[UIDevice currentDevice] orientation]==UIInterfaceOrientationLandscapeLeft||[[UIDevice currentDevice] orientation]==UIInterfaceOrientationLandscapeRight) {
+        imgFakeGifAnimation.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-V1.png"],[UIImage imageNamed:@"Ezine-loading-V2.png"],[UIImage imageNamed:@"Ezine-loading-V3.png"],[UIImage imageNamed:@"Ezine-loading-V4.png"],[UIImage imageNamed:@"Ezine-loading-V5.png"],[UIImage imageNamed:@"Ezine-loading-V6.png"],nil];
+        [imgFakeGifAnimation setFrame:CGRectMake(0, 0, 1024, 748)];
+        [imgFakeGifAnimation startAnimating];
+        
+    }else if ([[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortrait||[[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortraitUpsideDown){
+        
+        imgFakeGifAnimation.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-H1.png"],[UIImage imageNamed:@"Ezine-loading-H2.png"],[UIImage imageNamed:@"Ezine-loading-H3.png"],[UIImage imageNamed:@"Ezine-loading-H4.png"],[UIImage imageNamed:@"Ezine-loading-H5.png"],[UIImage imageNamed:@"Ezine-loading-H1.png"],nil];
+        [imgFakeGifAnimation setFrame:CGRectMake(0, 0, 768, 1004)];
+        [imgFakeGifAnimation startAnimating];
+        
+        
+    }
 }
 
 -(void)loaddataFromSite{
     [self showActivityIndicator];
-        
+    
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
     NSDate *now = [[NSDate alloc] init];
@@ -181,7 +162,7 @@
                 timeArticle=[data objectForKey:@"FromTime"];
                 _numberPage+=[dataUpdate count];
                 [self fetchedData:dataUpdate];
-
+                
                 
             }else{
                 UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"danh sach bai viet" message:@"khong co du lieu" delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
@@ -290,14 +271,14 @@
             //               [alert show];
             //                [alert release];
             //                [self ToPreviousController];
-            //        
+            //
             //            }];
             
         }
-
+        
     }
     
-            
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -338,7 +319,7 @@
         [imgFakeGifAnimation startAnimating];
         
         [UIView commitAnimations];
-
+        
     }
     
 }
@@ -354,7 +335,7 @@
 #pragma mark-----
 -(void)fetchedData:(NSMutableArray *)data{
     NSLog(@"cached Article");
-
+    
     if ([data isEqualToArray:cachedDataAllArticle]) {
         NSLog(@"cached Article");
         return;
@@ -417,7 +398,7 @@
     if (arrayPage) {
         [self.flipViewController.left setEnabled:NO];
         [self.flipViewController.right setEnabled:NO];
-       // [arrayPage removeAllObjects];
+        // [arrayPage removeAllObjects];
     }
     for (NSDictionary * page in messageArray) {
         LayoutViewExtention* layoutToReturn = nil;
@@ -470,14 +451,14 @@
     [self.flipViewController.right setEnabled:YES];
     if (imgFakeGifAnimation) {
         [imgFakeGifAnimation removeFromSuperview];
-
+        
     }
     
     NSLog(@"page=== %d",[arrayPage count]);
 }
 
 -(void)showViewInFullScreen:(UIView*)viewToShow withModel:(ArticleModel*)model{
-    NSLog(@" showViewInFullScreen");
+    NSLog(@" showViewInFullScreen  in page === %d",activeIndex);
     if (model._idLayout==-10) {
         [self.popovercontroller dismissPopoverAnimated:YES];
     }
@@ -574,7 +555,7 @@
 }
 
 -(void)themButtonClicked:(id)sender{
-   
+    
 }
 
 -(void)listButtonClicked:(UIButton *)sender{
@@ -713,12 +694,12 @@
             NSMutableArray *dataUpdate=[data objectForKey:@"ListPage"];
             if (dataUpdate&&[dataUpdate count]>0) {
                 NSLog(@" data search==== %d",dataUpdate.count);
-
+                
                 timeArticle=[data objectForKey:@"FromTime"];
                 _numberPage+=[dataUpdate count];
                 [self buildPages:dataUpdate];
                 _isUpdateArticle=NO;
-
+                
             }
             
         } onError:^(NSError* error) {
@@ -726,7 +707,7 @@
         
     }else if (_isSearchInSite){
         NSString *keyword=[[NSUserDefaults standardUserDefaults] objectForKey:@"KEYWORDSEARCHALLSITE"];
-
+        
         [XAppDelegate.serviceEngine getListArticleSearchInSite:siteId  inchanelID:chanelId KeyWold:keyword FromTime:_LastArticleTime numberOffPage:20 onCompletion:^(NSDictionary* data) {
             
             NSMutableArray *dataUpdate=[data objectForKey:@"ListPage"];
@@ -736,12 +717,12 @@
                 _numberPage+=[dataUpdate count];
                 [self buildPages:dataUpdate];
                 _isUpdateArticle=NO;
-
+                
             }
             
         } onError:^(NSError* error) {
         }];
-
+        
     }else if (self.siteId==-2){
         [XAppDelegate.serviceEngine getListBookmarkFromtime:_LastArticleTime numberPage:20  onCompletion:^(NSDictionary* data) {
             NSMutableArray *dataUpdate=[data objectForKey:@"ListPage"];
@@ -751,12 +732,12 @@
                 _numberPage+=[dataUpdate count];
                 [self buildPages:dataUpdate];
                 _isUpdateArticle=NO;
-
+                
             }
             
         } onError:^(NSError* error) {
         }];
-
+        
     } else{
         [XAppDelegate.serviceEngine getListArticleUpdateInSitePagingID:siteId inchanelID:chanelId FromTime:_LastArticleTime numberOffPage:20 onCompletion:^(NSDictionary* data) {
             NSMutableArray *dataUpdate=[data objectForKey:@"ListPage"];
@@ -773,10 +754,10 @@
             
         }];
         
-
+        
     }
     
-        
+    
 }
 
 -(void)shareEmail{
@@ -906,7 +887,7 @@
             [headerView changeStyleHeader:self.siteId];
 			[headerView rotate:self.interfaceOrientation animation:NO];
             [self.view addSubview:headerView];
-
+            
         }
         
     } onError:^(NSError* error) {
@@ -921,9 +902,9 @@
         [headerView changeStyleHeader:self.siteId];
         [headerView rotate:self.interfaceOrientation animation:NO];
         [self.view addSubview:headerView];
-
+        
         [self hideActivityIndicator];
-
+        
     }];
 }
 #pragma mark----load data search keyword current site
@@ -943,7 +924,7 @@
     LayoutViewExtention *layout=[arrayPage objectAtIndex:activeIndex];
     layout._interaceOrientation=layout1._interaceOrientation;
     [layout rotate:layout._interaceOrientation animation:YES];
-
+    
     if (forward) {
         [self.flipViewController setViewController:layout direction:MPFlipViewControllerDirectionForward animated:YES completion:nil];
     }else{
@@ -954,7 +935,7 @@
         NSLog(@"activeIndex==%d  page==%d  time=== %@",activeIndex,[arrayPage count],_LastArticleTime);
         [self updateListArticle];
     }
-        
+    
 }
 
 -(void)searchKeywork:(id)sender{
@@ -996,7 +977,7 @@
         if (dataUpdate&&[dataUpdate count]>0) {
             numberArticle=[data objectForKey:@"TotalArticle"];
             NSLog(@" total article search==== %@",numberArticle);
-
+            
             [self fetchedData:dataUpdate];
         }else{
             UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"tim kiem keyword" message:@"khong co du lieu" delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
@@ -1027,20 +1008,20 @@
         [self.view addSubview:headerView];
         
         [self hideActivityIndicator];
-
+        
     }];
-
+    
 }
 -(void)searchKeywordClick:(NSString *)keyword{
     [self.popovercontroller dismissPopoverAnimated:YES];
-
+    
     NSLog(@"keyworld==== %d  %@",siteId,keyword);
     if (cachedDataAllArticle) {
         [cachedDataAllArticle removeAllObjects];
         cachedDataAllArticle=nil;
-
+        
     }
-       //======
+    //======
     ListArticleViewController *vc=[[ListArticleViewController alloc] initWithNibName:@"ListArticleViewController" bundle:nil];
     [vc setSiteId:siteId];
     [vc setChanelId:self.chanelId];
@@ -1058,7 +1039,7 @@
     if (self.chanelId==curSelection.sourceId) {
         return;
     }
-
+    
     if (cachedDataAllArticle) {
         [cachedDataAllArticle removeAllObjects];
         cachedDataAllArticle=nil;
@@ -1070,14 +1051,14 @@
     [vc loadDataFromChanel:curSelection.sourceId];
     EzineAppDelegate *appDelegate=(EzineAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate.navigationController pushViewController:vc animated:YES];
-
+    
 }
 
 #pragma mark----- load Article in a chanel
 - (void) loadDataFromChanel:(int)chanel{
     _isGetArticleInchanel=YES;
     [self showActivityIndicator];
-        self.chanelId=chanel;
+    self.chanelId=chanel;
     
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
@@ -1095,46 +1076,46 @@
             [self fetchedData:dataUpdate];
             
         }else{
-//            UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"danh sach bai viet" message:@"khong co du lieu" delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
-//            [alert show];
-//            [alert release];
-//            HeaderView* headerView = [[HeaderView alloc] initWithFrame:CGRectMake(0, 0, self.flipViewController.view.frame.size.width,56)];
-//            headerView._idSite=self.siteId;
-//            headerView.delegate=self;
-//            headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//            [headerView setWallTitleText:@"0"];
-//            [headerView changeStyleHeader:self.siteId];
-//            [headerView rotate:self.interfaceOrientation animation:NO];
-//            [self.view addSubview:headerView];
+            //            UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"danh sach bai viet" message:@"khong co du lieu" delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
+            //            [alert show];
+            //            [alert release];
+            //            HeaderView* headerView = [[HeaderView alloc] initWithFrame:CGRectMake(0, 0, self.flipViewController.view.frame.size.width,56)];
+            //            headerView._idSite=self.siteId;
+            //            headerView.delegate=self;
+            //            headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+            //            [headerView setWallTitleText:@"0"];
+            //            [headerView changeStyleHeader:self.siteId];
+            //            [headerView rotate:self.interfaceOrientation animation:NO];
+            //            [self.view addSubview:headerView];
             [self hideActivityIndicator];
             
         }
         
     } onError:^(NSError* error) {
-//        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"danh sach bai viet" message:@"khong co du lieu" delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
-//        [alert show];
-//        [alert release];
-//        HeaderView* headerView = [[HeaderView alloc] initWithFrame:CGRectMake(0, 0, self.flipViewController.view.frame.size.width,56)];
-//        headerView._idSite=self.siteId;
-//        headerView.delegate=self;
-//        headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//        [headerView setWallTitleText:@"0"];
-//        [headerView changeStyleHeader:self.siteId];
-//        [headerView rotate:self.interfaceOrientation animation:NO];
-//        [self.view addSubview:headerView];
+        //        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"danh sach bai viet" message:@"khong co du lieu" delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
+        //        [alert show];
+        //        [alert release];
+        //        HeaderView* headerView = [[HeaderView alloc] initWithFrame:CGRectMake(0, 0, self.flipViewController.view.frame.size.width,56)];
+        //        headerView._idSite=self.siteId;
+        //        headerView.delegate=self;
+        //        headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        //        [headerView setWallTitleText:@"0"];
+        //        [headerView changeStyleHeader:self.siteId];
+        //        [headerView rotate:self.interfaceOrientation animation:NO];
+        //        [self.view addSubview:headerView];
         
     }];
-
+    
 }
 
 #pragma mark CHeck Internet Avalable=============
 -(BOOL)connected{
-   
+    
     Reachability *reachability = [Reachability reachabilityForInternetConnection];
     NetworkStatus networkStatus = [reachability currentReachabilityStatus];
     
     return !(networkStatus == NotReachable);
-     NSLog(@"Status==%d",!(networkStatus == NotReachable));
+    NSLog(@"Status==%d",!(networkStatus == NotReachable));
 }
 
 

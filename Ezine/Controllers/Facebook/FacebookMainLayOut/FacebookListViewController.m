@@ -37,7 +37,7 @@
     arrayDataNewFeedStatus=[[NSMutableArray alloc] init];
     arrayPage=[[NSMutableArray alloc] init];
     
-      // Do any additional setup after loading the view from its nib.
+    // Do any additional setup after loading the view from its nib.
     // get current tiem to get post
     lastTimePostupdate=[[NSDate date] timeIntervalSince1970];
     lastTimeStatusUpdate=lastTimePostupdate;
@@ -77,7 +77,7 @@
     [self.view addSubview:self.flipViewController.view];
     [self.flipViewController didMoveToParentViewController:self];
     self.view.gestureRecognizers = self.flipViewController.gestureRecognizers;
-
+    
 }
 
 
@@ -99,17 +99,17 @@
                                                                     andDelegate:self];
             break;
         }
-        
+            
         case kAPIUserImageWall:{
             NSLog(@"kAPIUserImageWall");
-//            FBFeedPost *post = [[FBFeedPost alloc] initWithGetUserFeed:self withApi:ApiGet];
-//            [post publishPostWithDelegate:self];
+            //            FBFeedPost *post = [[FBFeedPost alloc] initWithGetUserFeed:self withApi:ApiGet];
+            //            [post publishPostWithDelegate:self];
             break;
         }
         case kAPIUserImage:{
             
-//            FBFeedPost *post = [[FBFeedPost alloc] initWithGetUserFeed:self withApi:ApiGet];
-//            [post publishPostWithDelegate:self];
+            //            FBFeedPost *post = [[FBFeedPost alloc] initWithGetUserFeed:self withApi:ApiGet];
+            //            [post publishPostWithDelegate:self];
             break;
         }
         case KAPINewImage:{
@@ -148,8 +148,8 @@
         }
         case kAPIUserFriendsList:{
             
-//            FBFeedPost *post = [[FBFeedPost alloc] initWithGetUserFeed:self withApi:ApiGet];
-//            [post publishPostWithDelegate:self];
+            //            FBFeedPost *post = [[FBFeedPost alloc] initWithGetUserFeed:self withApi:ApiGet];
+            //            [post publishPostWithDelegate:self];
             break;
         }
         case kAPIUserFriends:{
@@ -163,17 +163,18 @@
 #pragma mark-------- FBFeedPostDelegate
 
 - (void) failedToPublishPost:(FBFeedPost*) _post{
-
+    
 }
 - (void) finishedPublishingPost:(FBFeedPost*) _post{
-
+    
 }
 -(void)cancelFacebook{
-
+    
 }
 
 #pragma mark---- FBRequestDelegate
 - (void)request:(FBRequest *)request didFailWithError:(NSError *)error{
+    NSLog(@"ResponseFailed: %@", error);
     
 }
 
@@ -193,7 +194,7 @@
         post.lastTimeStatus=lastTimeStatusUpdate;
         [post publishPostWithDelegate:self];
     }
-
+    
     if (currentAPI==kAPIGraphUserPermissions) {
         if (!result) {
             return;
@@ -212,9 +213,9 @@
         post.postType=currentAPI;
         post.lastTimePost=lastTimePostupdate;
         [post publishPostWithDelegate:self];
-
+        
     }
-   
+    
 }
 
 
@@ -225,7 +226,7 @@
     switch (currentAPI) {
         case kAPIUSerNewFeed:
             if (result&&[result count]>=1) {
-               // NSMutableArray *arrayTemdFeed=[[[NSMutableArray alloc] init] autorelease];
+                // NSMutableArray *arrayTemdFeed=[[[NSMutableArray alloc] init] autorelease];
                 for (int i=0; i<[result count]; i++) {
                     NSDictionary *dataFeed=[result objectAtIndex:i];
                     FBObjectModel *fbObjectModel=[[FBObjectModel alloc] init];
@@ -243,17 +244,17 @@
                     if (i>13) {
                         break;
                     }
-
+                    
                 }
                 //arrayDataNewFeed=[NSMutableArray arrayWithArray:arrayTemdFeed];
                 NSLog(@"data new feed ==== %d",arrayDataNewFeed.count);
-
+                
             }
-          
+            
             break;
         case kAPIUSerNewFeedStatus:
             if (result&&[result count]>=1) {
-               // NSMutableArray *arrayTemdFeed=[[[NSMutableArray alloc] init] autorelease];
+                // NSMutableArray *arrayTemdFeed=[[[NSMutableArray alloc] init] autorelease];
                 for (int i=0; i<[result count]; i++) {
                     NSDictionary *dataFeed=[result objectAtIndex:i];
                     FBObjectModel *fbObjectModel=[[FBObjectModel alloc] init];
@@ -271,19 +272,19 @@
                     if (i>23) {
                         break;
                     }
-
+                    
                 }
                 //arrayDataNewFeedStatus=[NSMutableArray arrayWithArray:arrayTemdFeed];
                 NSLog(@"data new feed status==== %d",arrayDataNewFeedStatus.count);
-
-            
+                
+                
             }
             [self builtPage];
             break;
         default:
             break;
     }
-   }
+}
 
 
 #pragma mark---- built page
@@ -307,9 +308,9 @@
 			
 			FbHeaderView* headerView = [[FbHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,56)];
             headerView.delegate=self;
-	//		headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+            //		headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 			[headerView setWallTitleText:@"11"];
-//            [headerView changeStyleHeader:idLayOut];
+            //            [headerView changeStyleHeader:idLayOut];
 			[headerView rotate:self.interfaceOrientation animation:NO];
 			[layoutToReturn setFbheaderView:headerView];
 			[headerView release];
@@ -340,14 +341,14 @@
         [flipViewController.right setEnabled:YES];
         [flipViewController.left setEnabled:YES];
         [self.flipViewController setViewController:[arrayPage objectAtIndex:activeIndex] direction:MPFlipViewControllerDirectionForward animated:YES completion:nil];
-
+        
     }
     if (_isUpdateArticle) {
         _isUpdateArticle=NO;
     }
-        
     
-
+    
+    
 }
 
 - (void) builtPage{
@@ -358,7 +359,7 @@
     for (int i=0; i<pages; i++) {
         NSMutableArray *arrayTembAllFeed2=[[[NSMutableArray alloc] init] autorelease];
         //NSLog(@"count=== %d ",i);
-
+        
         for (int j=i*3; j<3+i*3; j++) {
             if (j<[arrayDataNewFeed count]) {
                 FBObjectModel*fbObject=[arrayDataNewFeed objectAtIndex:j];
@@ -375,11 +376,11 @@
             if (k<[arrayDataNewFeedStatus count]) {
                 FBObjectModel*fbObject=[arrayDataNewFeedStatus objectAtIndex:k];
                 [arrayTembAllFeed2 addObject:fbObject];
-
+                
             }else{
                 FBObjectModel*fbObject=[[FBObjectModel alloc] init];
                 [arrayTembAllFeed2 addObject:fbObject];
-
+                
             }
         }
         [arrayTembAllFeed addObject:arrayTembAllFeed2];
@@ -475,7 +476,7 @@
 }
 
 -(void)showCategoryOfSource:(UIButton *)sender inRect:(CGRect)frame{
-   
+    
     
 }
 
@@ -508,7 +509,7 @@
     
 }
 -(void) searchKeywork:(id)sender{
-
+    
 }
 
 @end

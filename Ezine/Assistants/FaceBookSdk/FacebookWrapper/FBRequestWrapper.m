@@ -49,18 +49,18 @@ static FBRequestWrapper *defaultWrapper = nil;
 			isLoggedIn = YES;
 			facebook.accessToken = token;
             facebook.expirationDate = [NSDate distantFuture];
-		} 
+		}
 		
 		
 		[facebook retain];
 	}
 	
 	NSArray * permissions = [NSArray arrayWithObjects:
-							 @"publish_stream",
+							 @"publish_stream",@"read_stream",
 							 nil];
 	
 	//if no session is available login
-	[facebook authorize:FB_APP_ID permissions:permissions delegate:_delegate];	
+	[facebook authorize:FB_APP_ID permissions:permissions delegate:_delegate];
 }
 
 - (void) FBLogout {
