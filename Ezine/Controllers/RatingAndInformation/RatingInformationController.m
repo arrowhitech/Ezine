@@ -1,0 +1,406 @@
+//
+//  RatingInformationController.m
+//  Ezine
+//
+//  Created by Admin on 7/10/12.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import "RatingInformationController.h"
+#import "RatingItemCell.h"
+#import "UIViewController+MJPopupViewController.h"
+#import "RatingModel.h"
+#import "RateCommentController.h"
+@implementation GetRatingSite
+
+-(void) listRaringSite:(int )SiteID onCompletion:(RatingSite) categoryBlock onError:(MKNKErrorBlock) errorBlock{
+    
+    NSString *apiget=[[NSString alloc] initWithFormat:@"site/GetFullSiteDetails/%d",SiteID];
+    MKNetworkOperation *op = [self operationWithPath:apiget];
+    
+    [op onCompletion:^(MKNetworkOperation *completedOperation) {
+        // NSDictionary *response = [completedOperation responseJSON];
+        categoryBlock([completedOperation responseJSON]);
+        
+    } onError:^(NSError *error) {
+        
+        errorBlock(error);
+    }];
+    
+    [self enqueueOperation:op];
+}
+
+-(NSString*) cacheDirectoryName {
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *cacheDirectoryName;
+    cacheDirectoryName= [documentsDirectory stringByAppendingPathComponent:@"RatingSite"];
+    
+    return cacheDirectoryName;
+}
+@end
+
+
+@interface RatingInformationController (private)
+-(void)loadData;
+@end
+
+@implementation RatingInformationController(private)
+-(void)loadData{
+    NSLog(@"data: %@",_dataRatingSite);
+    if (arrayRating) {
+        [arrayRating removeAllObjects];
+        [arrayRating release];
+        arrayRating=nil;
+    }
+    arrayRating=[[NSMutableArray alloc] init];
+    NSString *urlLogoSite=[_dataRatingSite objectForKey:@"LogoUrl"];
+    if ((NSNull *)urlLogoSite==[NSNull null]) {
+        urlLogoSite =@"";
+    }
+    self.imageLoadingOperation = [XAppDelegate.serviceEngine imageAtURL:[NSURL URLWithString:urlLogoSite]
+                                                           onCompletion:^(UIImage *fetchedImage, NSURL *url, BOOL isInCache) {
+                                                               if([urlLogoSite isEqualToString:[url absoluteString]]) {
+                                                                   
+                                                                   if (isInCache) {
+                                                                       self.logoSite.image = fetchedImage;
+                                                                       //     [self hideActivityIndicator];
+                                                                       
+                                                                   } else {
+                                                                       
+                                                                       
+                                                                       
+                                                                       self.logoSite.image = fetchedImage;
+                                                                       self.logoSite.alpha = 1;
+                                                                       // [self hideActivityIndicator];
+                                                                       
+                                                                   }
+                                                               }
+                                                           }];
+    
+    NSArray *arraydata=[_dataRatingSite objectForKey:@"CommentList"];
+    
+    NSString    *namesite=[_dataRatingSite objectForKey:@"Name"];
+    int    ratecount=[[_dataRatingSite objectForKey:@"RateCount"] intValue];
+    int     rateSum=[[_dataRatingSite objectForKey:@"RateSum"] intValue];
+    ratingView.rate=rateSum/ratecount;
+    ratingView.alignment = RateViewAlignmentLeft;
+    [tableview reloadData];
+    
+    [self._nameSite setText:namesite];
+    [self._numberRating setText:[NSString stringWithFormat:@"%d Lựa chọn",ratecount]];
+    [self._numberComment setText:[NSString stringWithFormat:@"%d Bình luận",[arraydata count]]];
+    
+    for (int i=0; i<[arraydata count]; i++) {
+        NSDictionary *dataUserRating=[arraydata objectAtIndex:i];
+        NSString    *content=[dataUserRating objectForKey:@"Content"];
+        int         ratingstar=[[dataUserRating objectForKey:@"RateMark"] intValue];
+        NSString    *userName=[dataUserRating objectForKey:@"UserName"];
+        NSString    *CreatedTime=[dataUserRating objectForKey:@"CreatedTime"];
+        // convert time
+        int time=[[NSDate date] timeIntervalSince1970];
+        NSDateFormatter *df = [[[NSDateFormatter alloc] init] autorelease];
+        [df setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+        NSDate *date = [df dateFromString:CreatedTime];
+        int timecreateIs=time-[date timeIntervalSince1970];
+        NSLog(@"time:%d   %@     %@",timecreateIs,CreatedTime,[NSDate date] );
+        NSString *datecreate=[self convertTime:timecreateIs];
+        
+        [arrayRating addObject:[[RatingModel alloc] initWithTitle:@"" andUsername:userName andTimeAgo:datecreate andContent:content andNumofStarRating:ratingstar andNumofComent:[arraydata count] andNumofChoise:ratecount andURL:@"" andURLWebIcon:@""]];
+    }
+    
+    [self.tableview reloadData];
+}
+
+@end
+
+@implementation RatingInformationController
+@synthesize _laucherItemSelect;
+@synthesize _nameSite;
+@synthesize _numberRating;
+@synthesize _numberComment;
+@synthesize tableview;
+@synthesize ratingView;
+@synthesize arrayRating;
+@synthesize igmwebIcon;
+@synthesize _comment;
+@synthesize imageLoadingOperation;
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+        
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    NSLog(@"myitem data: %@ id: %d",self._laucherItemSelect.title,self._laucherItemSelect.siteID);
+    _comment.layer.borderWidth = 2.0f;
+    _comment.layer.cornerRadius = 8;
+    _comment.layer.borderColor = [[UIColor colorWithRed:213.0f/255.0f green:216.0f/255.0f blue:222.0f/255.0f alpha:1.0] CGColor];
+    [self._comment setHidden:YES];
+    [self.btnSent setHidden:YES];
+    [self.tableview setFrame:CGRectMake(0, 130, 550, 422)];
+    [self.logoSite setContentMode:UIViewContentModeScaleToFill];
+    _getRatingSite=[[GetRatingSite alloc] initWithHostName:@"api.ezine.vn" customHeaderFields:nil];
+    [_getRatingSite useCache];
+    [_getRatingSite listRaringSite:self._laucherItemSelect.siteID onCompletion:^(NSDictionary* images) {
+        _dataRatingSite=images;
+        [self loadData];
+        
+    } onError:^(NSError* error) {
+        
+    }];
+    
+}
+
+- (void)viewDidUnload
+{
+    [self set_nameSite:nil];
+    [self set_numberRating:nil];
+    [self set_numberComment:nil];
+    [self set_comment:nil];
+    [self setBtnSent:nil];
+    [self setLogoSite:nil];
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+}
+
+-(void)dealloc{
+    [_nameSite release];
+    [_numberRating release];
+    [_numberComment release];
+    [_btnSent release];
+    [_logoSite release];
+    [super dealloc];
+    [arrayRating release];
+    arrayRating=nil;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark-- convert time
+-(NSString*)convertTime:(int)timecreate{
+    int minutes=timecreate/60;
+    if (minutes>=60) {
+        int hour=timecreate/3600;
+        if (hour>=24) {
+            int day=timecreate/(3600*24);
+            return [NSString stringWithFormat:@"%d ngày trước",day];
+            
+        }else {
+            return [NSString stringWithFormat:@"%d giờ trước",hour];
+            
+        }
+    }else {
+        if (minutes>0) {
+            return [NSString stringWithFormat:@"%d phút trước",minutes];
+
+        }else{
+            return [NSString stringWithFormat:@"%d giây trước",timecreate];
+
+        }
+    }
+}
+
+#pragma mark ====TableViewdelegate=========OK======
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+//-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+//
+//    return @"Bình luận khác";
+//}
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    
+    UIView *headerView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 25)];
+    [headerView setBackgroundColor:[UIColor whiteColor]];
+    UILabel *headerLable=[[UILabel alloc] initWithFrame:CGRectZero];
+    [headerLable setBackgroundColor:[UIColor clearColor]];
+    headerLable.contentMode=UIViewContentModeLeft;
+    headerLable.textAlignment=UITextAlignmentLeft;
+    headerLable.textColor=[UIColor grayColor];
+    [headerLable setFont:[UIFont fontWithName:@"Arial-BoldMT" size:19]];
+    [headerLable setText:@"Bình luận khác"];
+    headerLable.frame=CGRectMake(10,10, 150, 25);
+    headerLable.numberOfLines=0;
+    [headerLable sizeToFit];
+    [headerView addSubview:headerLable];
+    return headerView;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 35;
+}
+
+- (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section{
+    return [arrayRating count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
+    static NSString *CellIdentifier = @"Cell";
+    cell = (RatingItemCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell==nil){
+        NSArray *topLevelObject=[[NSBundle mainBundle] loadNibNamed:@"RatingItemCell" owner:self options:nil];
+        for (id currentObject in topLevelObject) {
+            if ([currentObject isKindOfClass:[UITableViewCell class]]) {
+                cell=(RatingItemCell*)currentObject;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                break;
+            }
+        }
+        
+        
+    }
+    RatingModel *cellObj = [arrayRating objectAtIndex:indexPath.row];
+    [cell.lblusername setText:cellObj.username];
+    [cell.lblcontent  setText:cellObj.content];
+    [cell.lbltime_ago setText:cellObj.timeAgo];
+    
+    DYRateView *cellRating=[[DYRateView alloc] initWithFrame:CGRectMake(430, 41, 96, 21)];
+    cellRating.rate=cellObj.numOfStarRating;
+    cellRating.alignment=RateViewAlignmentRight;
+    [cell addSubview:cellRating];
+    
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
+    
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 70;
+}
+#pragma mark===button handle========OK============
+- (IBAction)btnSentCommentClick:(id)sender {
+    if (self._comment.text.length<1) {
+        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"Gửi bình luận" message:@"Đăng nhập để gửi bình luận" delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
+        [alert show];
+        [alert release];
+    }else{
+        
+        NSNumber *number =  [[NSUserDefaults standardUserDefaults] objectForKey:@"EzineAccountID"];
+        int userID = [number intValue];
+        [_comment resignFirstResponder];
+        [XAppDelegate.serviceEngine SentCommentwithSiteident:self._laucherItemSelect.siteID userident:userID withComment:_comment.text onCompletion:^(NSDictionary *responseDict) {
+            [_getRatingSite listRaringSite:self._laucherItemSelect.siteID onCompletion:^(NSDictionary* images) {
+                _dataRatingSite=images;
+                [self loadData];
+                [UIView beginAnimations:nil context:nil];
+                [UIView setAnimationDuration:0.5];
+                [UIView setAnimationDelay:0.0];
+                [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                
+                [self.tableview setFrame:CGRectMake(0, 130, 550, 422)];
+                [self.btnSent setHidden:YES];
+                [self._comment setHidden:YES];
+                [UIView commitAnimations];
+                
+            } onError:^(NSError* error) {
+                
+            }];
+            
+            
+            
+        }onError:^(NSError *error) {
+            
+        }];
+        
+    }
+}
+
+- (IBAction)btnCommentButtonClick:(id)sender{
+    [self checkUserLogin];
+    if ([self checkUserLogin]) {
+        //        RateCommentController *ratecomment=[[RateCommentController alloc] initWithNibName:@"RateCommentController" bundle:nil];
+        //        ratecomment.delegate =self;
+        //        ratecomment.modalPresentationStyle = UIModalPresentationFormSheet;
+        //        ratecomment.siteID =_laucherItemSelect.siteID;
+        //        [self presentViewController:ratecomment animated:YES completion:nil];
+        //        [ratecomment release];
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.5];
+        [UIView setAnimationDelay:0.0];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        [self.tableview setFrame:CGRectMake(0, 317, 550, 235)];
+        [self._comment setHidden:NO];
+        [self.btnSent setHidden:NO];
+        [UIView commitAnimations];
+        
+    }else{
+        SignInViewcontroller *signIn=[[SignInViewcontroller alloc] initWithNibName:@"SignInViewcontroller" bundle:nil];
+        signIn.delegate=self;
+        signIn.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:signIn animated:YES completion:nil];
+        [signIn release];
+        
+    }
+    
+}
+-(IBAction)btnShowCommentDetail:(id)sender{
+    NSLog(@"btnShowCommentDetail");
+}
+
+#pragma mark=====OK==================
+-(void)commentdidFinished{
+    
+    NSLog(@"commentdidFinished RatingInformationController");
+    [_getRatingSite listRaringSite:self._laucherItemSelect.siteID onCompletion:^(NSDictionary* images) {
+        _dataRatingSite=images;
+        [self loadData];
+        
+    } onError:^(NSError* error) {
+        
+    }];
+    
+    
+}
+#pragma mark-- check user login
+-(BOOL)checkUserLogin{
+    //    NSString    *urlImage=[[NSUserDefaults standardUserDefaults]objectForKey:@"EzineAccountAvatar"];
+    //    NSString    *name=[[NSUserDefaults standardUserDefaults]objectForKey:@"EzineAccountName"];
+    int _userId=[[[NSUserDefaults standardUserDefaults]objectForKey:@"EzineAccountID"] integerValue];
+    if (_userId>0) {
+        return YES;
+    }else{
+        return NO;
+    }
+    
+}
+#pragma mark-- signin delegate
+-(void)Login{
+    NSLog(@"login success");
+    //    RateCommentController *ratecomment=[[RateCommentController alloc] initWithNibName:@"RateCommentController" bundle:nil];
+    //    ratecomment.delegate =self;
+    //    ratecomment.modalPresentationStyle = UIModalPresentationFormSheet;
+    //    ratecomment.siteID =_laucherItemSelect.siteID;
+    //    [self presentViewController:ratecomment animated:YES completion:nil];
+    //    [ratecomment release];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.5];
+    [UIView setAnimationDelay:0.0];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    
+    [self.tableview setFrame:CGRectMake(0, 317, 550, 235)];
+    [self._comment setHidden:NO];
+    [self.btnSent setHidden:NO];
+    [UIView commitAnimations];
+}
+@end

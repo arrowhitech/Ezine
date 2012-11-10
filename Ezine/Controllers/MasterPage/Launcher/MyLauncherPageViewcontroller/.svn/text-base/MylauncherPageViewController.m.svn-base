@@ -1,0 +1,481 @@
+//
+//  MylauncherPageViewController.m
+//  Ezine
+//
+//  Created by MAC on 9/28/12.
+//
+//
+
+#import "MylauncherPageViewController.h"
+#import "DownloadDataOfflineViewController.h"
+
+static const int spaceHeder = 75;
+static const int spaceBottom = 50;
+
+@interface MylauncherPageViewController ()
+
+@end
+
+@implementation MylauncherPageViewController
+@synthesize _tableviewSite,imageLoadingOperation,activityIndicator,_currentCell;
+@synthesize appSettingController,popovercontroller;
+@synthesize delegate;
+
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    arrForDownloadoff =[[NSMutableArray alloc]init];
+    _arraySiteUSer=[[NSMutableArray alloc] init];
+    screenBounds= [[UIScreen mainScreen] bounds];
+    _currentCell=[[LaucherViewPageCell alloc] init];
+    self._tableviewSite=[[UITableView alloc] init];
+    self._tableviewSite.delegate=self;
+    self._tableviewSite.dataSource=self;
+    self._tableviewSite.showsHorizontalScrollIndicator=NO;
+    self._tableviewSite.showsVerticalScrollIndicator=NO;
+    
+    [self.view addSubview:_tableviewSite];
+    [self._tableviewSite setFrame:CGRectMake(0, 80, self.view.frame.size.width, self.view.frame.size.height-140)];
+    int xPosition = (self.view.bounds.size.width / 2.0) ;
+    int yPosition = (self.view.bounds.size.height / 2.0)-100 ;
+    activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(xPosition, yPosition, 40, 40)];
+    activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    [self.view addSubview:activityIndicator];
+    _site=0;
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(handleLongPress:)];
+    lpgr.minimumPressDuration = 1.5; //seconds
+    lpgr.delegate = self;
+    [self._tableviewSite addGestureRecognizer:lpgr];
+    [lpgr release];
+    
+    [self showActivityIndicator];
+    [self SetFooterView];
+    [self setHeaderView];
+	// Do any additional setup after loading the view.
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark--- load data site
+-(void)fetchedData:(NSDictionary*)data{
+    //NSLog(@"site count===%d %d",_site,XAppDelegate.arrayIdSite.count);
+    _site++;
+    if (_site<[XAppDelegate.arrayIdSite count]) {
+        [self LoadDataSiteUser];
+    }else{
+        [self._tableviewSite reloadData];
+        [self hideActivityIndicator];
+    }
+}
+-(void) LoadDataSiteUser{
+    NSLog(@"site count===%d %d",_site,XAppDelegate.arrayIdSite.count);
+
+    [XAppDelegate.serviceEngine listRaringSite:[[XAppDelegate.arrayIdSite objectAtIndex:_site] integerValue] onCompletion:^(NSDictionary* data) {
+        [_arraySiteUSer addObject:data];
+        [self fetchedData:data];
+
+    } onError:^(NSError* error) {
+//        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"Error" message:@"Can not connect to service" delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
+//        [alert show];
+//        [alert release];
+    }];
+    
+}
+#pragma mark---ActivityIndicator
+
+/*
+ * This method shows the activity indicator and
+ * deactivates the table to avoid user input.
+ */
+- (void)showActivityIndicator {
+    if (![activityIndicator isAnimating]) {
+        [activityIndicator startAnimating];
+    }
+}
+
+/*
+ * This method hides the activity indicator
+ * and enables user interaction once more.
+ */
+- (void)hideActivityIndicator {
+    if ([activityIndicator isAnimating]) {
+        [activityIndicator stopAnimating];
+    }
+    
+}
+
+#pragma mark--- UITbaleView delegate
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return self._tableviewSite.editing ;
+}
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self._tableviewSite beginUpdates];
+        MyLauncherItem *item=[[MyLauncherItem alloc] init];
+        item._sourcemoder=[[SourceModel alloc] init];
+        item._sourcemoder.sourceId=[[XAppDelegate.arrayIdSite objectAtIndex:indexPath.row] intValue];
+        NSDictionary *info = [NSDictionary dictionaryWithObject:item forKey:@"item"];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:KDidDeleteSiteNotification object:self userInfo:info];
+        [_arraySiteUSer removeObjectAtIndex:indexPath.row];
+        [self._tableviewSite deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self._tableviewSite endUpdates];
+
+        //add code here for when you hit delete
+    }    
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [_arraySiteUSer count];
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *CellIdentifier = @"ExampleMenuCell";
+    
+    LaucherViewPageCell *cell = (LaucherViewPageCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        NSArray *topLevelObject=[[NSBundle mainBundle] loadNibNamed:@"LaucherViewPageCell" owner:self options:nil];
+		for (id currentObject in topLevelObject) {
+			
+			if ([currentObject isKindOfClass:[UITableViewCell class]]) {
+				
+                cell=(LaucherViewPageCell*)currentObject;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                cell._nameSite.font = [UIFont fontWithName:@"UVNHongHaHep" size:17];
+                cell._nameSite.contentMode=UIViewContentModeLeft;
+                cell._logoSite.contentMode = UIViewContentModeCenter;
+                cell._numberChoose.font = [UIFont boldSystemFontOfSize:[UIFont systemFontSize]];
+                cell._numberChoose.contentMode=UIViewContentModeLeft;
+                cell._logoSite.contentMode = UIViewContentModeScaleToFill;
+                [cell._logoSite setFrame:CGRectMake(20, 8, 35, 45)];
+                [cell._logoSite setAutoresizesSubviews:NO];
+                [cell._logoSite setClipsToBounds:YES];
+                break;
+            }
+        }
+    }
+    NSDictionary *data=[_arraySiteUSer objectAtIndex:indexPath.row];
+    cell._nameSite.text=[data objectForKey:@"Name"];
+    NSArray *comment=[data objectForKey:@"CommentList"];
+    cell._numberComment.text=[NSString stringWithFormat:@"%d Bình luận",comment.count];
+    int countChoose=[[data objectForKey:@"RateCount"] integerValue];
+    int countTotal=[[data objectForKey:@"RateSum"] integerValue];
+    cell._numberChoose.text=[NSString stringWithFormat:@"%d Lựa chọn",countChoose];
+    cell._rateView.rate=countTotal/countChoose;
+    [cell._info addTarget:self action:@selector(infoClick:) forControlEvents:UIControlEventTouchUpInside];
+    int siteid=[[data objectForKey:@"SiteID"] integerValue];
+    [cell._info setTag:siteid];
+    [cell setTag:siteid];
+    
+    if (indexPath.row%2==0) {
+        UIView* bgview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+        bgview.opaque = YES;
+        bgview.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:0.3f];
+        [cell setBackgroundView:bgview];
+    }else{
+        UIView* bgview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+        bgview.opaque = YES;
+        bgview.backgroundColor = [UIColor whiteColor];
+        [cell setBackgroundView:bgview];
+    }
+    
+    NSString *urlLogoSite=[data objectForKey:@"LogoUrl"];
+    if ((NSNull *)urlLogoSite==[NSNull null]) {
+        urlLogoSite =@"";
+    }
+    self.imageLoadingOperation = [XAppDelegate.serviceEngine imageAtURL:[NSURL URLWithString:urlLogoSite]
+                                                           onCompletion:^(UIImage *fetchedImage, NSURL *url, BOOL isInCache) {
+                                                               if([urlLogoSite isEqualToString:[url absoluteString]]) {
+                                                                   
+                                                                   if (isInCache) {
+                                                                       cell._logoSite.image = fetchedImage;
+                                                                       //     [self hideActivityIndicator];
+                                                                       
+                                                                   } else {
+                                                                       
+                                                                       
+                                                                       
+                                                                       cell._logoSite.image = fetchedImage;
+                                                                       cell._logoSite.alpha = 1;
+                                                                       // [self hideActivityIndicator];
+                                                                       
+                                                                   }
+                                                               }
+                                                           }];
+    
+
+    return  cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//    if ([self._tableviewSite isEditing]) {
+//        [self._tableviewSite setEditing:NO animated:YES];
+//        return;
+//    }
+    LaucherViewPageCell *Cell=(LaucherViewPageCell*)[tableView cellForRowAtIndexPath:indexPath];
+   // LaucherViewPageCell *cellLaucher=(LaucherViewPageCell*)cell;
+    [Cell._nameSite setTextColor:[UIColor whiteColor]];
+    [Cell._numberChoose setTextColor:[UIColor whiteColor]];
+    [Cell._numberComment setTextColor:[UIColor whiteColor]];
+    _currentCell=Cell;
+    
+    ListArticleViewController *vc=[[ListArticleViewController alloc] initWithNibName:@"ListArticleViewController" bundle:nil];
+    [vc setSiteId:Cell.tag];
+    [vc loaddataFromSite];
+    EzineAppDelegate *appDelegate=(EzineAppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate.navigationController pushViewController:vc animated:YES];
+    
+    [_currentCell._nameSite setTextColor:[UIColor grayColor]];
+    [_currentCell._numberChoose setTextColor:[UIColor grayColor]];
+    [_currentCell._numberComment setTextColor:[UIColor grayColor]];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    NSLog(@"site id== %d",Cell.tag);
+    
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 60;
+}
+#pragma mark--- info click
+-(void)infoClick:(id)sender{
+    UIButton *info=(UIButton*)sender;
+    NSLog(@"site id== %d",info.tag);
+    RatingInformationController *vc=[[RatingInformationController alloc] initWithNibName:@"RatingInformationController" bundle:nil];
+    vc._laucherItemSelect=[[MyLauncherItem alloc] init];
+    vc._laucherItemSelect.siteID=info.tag;
+    [self presentPopupViewController:vc animationType:MJPopupViewAnimationSlideBottomBottom];
+    
+
+
+}
+#pragma mark--- setfooterview
+-(void)SetFooterView{
+    footer = [[MyLauncherFooter alloc] initWithFrame:CGRectMake(0,screenBounds.size.height-20-spaceBottom,screenBounds.size.width, spaceBottom)];
+    footer.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    footer.delegate=self;
+    [footer setWallTitleText:@"My Tweet"];
+    [footer setBackgroundColor:[UIColor whiteColor]];
+    [self.view addSubview:footer];
+
+}
+#pragma mark--- set headerView
+-(void)setHeaderView{
+    MyLauncherHeader* headerView = [[MyLauncherHeader alloc] initWithFrame:CGRectMake(0,0,screenBounds.size.width, 75)];
+    headerView.delegate=self;
+    headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [headerView setWallTitleText:@"My Tweet"];
+    [headerView setBackgroundColor:[UIColor whiteColor]];
+    [self.view addSubview:headerView];
+
+}
+
+#pragma mark--- interface rotation
+- (void)rejustLayout:(UIInterfaceOrientation)interfaceOroemtation{
+    if (interfaceOroemtation==UIInterfaceOrientationLandscapeLeft||interfaceOroemtation==UIInterfaceOrientationLandscapeRight) {
+        [footer setFrame:CGRectMake(0,748-spaceBottom,1004, spaceBottom)];
+        [self._tableviewSite setFrame:CGRectMake(0, 80, self.view.frame.size.width, self.view.frame.size.height-140)];
+        //[self._tableviewSite reloadData];
+    }else if (interfaceOroemtation==UIInterfaceOrientationPortrait||interfaceOroemtation==UIInterfaceOrientationPortraitUpsideDown){
+        [footer setFrame:CGRectMake(0,1004-spaceBottom,768, spaceBottom)];
+        [self._tableviewSite setFrame:CGRectMake(0, 80, self.view.frame.size.width, self.view.frame.size.height-140)];
+       // [self._tableviewSite reloadData];
+    }
+}
+#pragma mark--- header delegate
+-(void)plusButtonClick{
+       
+    CategoriesController* category=[[CategoriesController alloc] initWithNibName:@"CategoriesController" bundle:nil];
+    category.delegate=self;
+    //[category orientationChanged];
+    [self presentPopupViewController:category animationType:MJPopupViewAnimationSlideRightLeft];
+    
+}
+#pragma mark - Footer delegate
+-(void)settingClick{
+        NSLog(@"HOOHOHOHOHOHO2");
+    appSettingController=[[IASKAppSettingsViewController alloc] init];
+    appSettingController.delegate = self;
+    _currentFontSize=[[[NSUserDefaults standardUserDefaults] objectForKey:@"AppfontSize"] integerValue];
+    BOOL enabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"AutoConnect"];
+    appSettingController.hiddenKeys = enabled ? nil : [NSSet setWithObjects:@"AutoConnectLogin", @"AutoConnectPassword", nil];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:appSettingController];
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navController animated:YES completion:nil];
+    [appSettingController release];
+    
+}
+
+-(void)downloadClick{
+    NSLog(@"downloadClickHieuPDG");
+    
+    if (arrForDownloadoff==nil||[arrForDownloadoff count]==0) {
+        UIAlertView* alert =[[UIAlertView alloc]initWithTitle:@"" message:@"Bạn cần chọn mục để tải offline" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
+        [alert release];
+    }else{
+        
+        DownloadDataOfflineViewController* downloadDataOfflineController =[[DownloadDataOfflineViewController alloc]initWithNibName:@"DownloadDataOfflineViewController" bundle:nil];
+        downloadDataOfflineController.arrayListIDforDownload = [[NSMutableArray alloc]initWithArray:arrForDownloadoff];       [downloadDataOfflineController.tableviewDownload reloadData];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:downloadDataOfflineController];
+        navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        navController.modalPresentationStyle = UIModalPresentationFormSheet;
+        
+        //[self presentPopupViewController:navController animationType:MJPopupViewAnimationSlideBottomBottom];
+        [self presentViewController:navController animated:YES completion:nil];
+    }
+    
+}
+
+-(void)searchSiteClick:(id)sender{
+    UIButton *searchbutton=(UIButton*)sender;
+    
+    SearchKeyWordViewController *SearchkeyWord=[[SearchKeyWordViewController alloc] init];
+    SearchkeyWord.delegate=self;
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:SearchkeyWord];
+    
+    UIPopoverController* listPopover = [[UIPopoverController alloc]
+                                        initWithContentViewController:navController];
+    listPopover.delegate =self;
+    [navController release];
+    self.popovercontroller =listPopover;
+    [listPopover release];
+    CGRect frame=searchbutton.frame;
+    frame.origin.y=self.view.frame.size.height-frame.origin.y-40;
+    [self.popovercontroller presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
+}
+#pragma mark-- catelory delegate
+-(void)dismissCategories{
+    
+}
+#pragma mark--- search keyword delegate
+-(void)searchKeywordClick:(NSString*)keyword{
+    [self.popovercontroller dismissPopoverAnimated:YES];
+    ListArticleViewController *vc=[[ListArticleViewController alloc] initWithNibName:@"ListArticleViewController" bundle:nil];
+    [vc setSiteId:0];
+    [vc loaddataFromSearchKeyWord:keyword];
+    EzineAppDelegate *appDelegate=(EzineAppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate.navigationController pushViewController:vc animated:YES];
+    
+}
+#pragma mark--- delete data viewcontroller
+-(void) showDeleteData:(id)sender{
+    SettingDeleteDataView *settingDownload=[[SettingDeleteDataView alloc] initWithNibName:@"SettingDeleteDataView" bundle:nil];
+    [self.appSettingController.navigationController pushViewController:settingDownload animated:YES];
+    
+}
+#pragma mark - IASettingDelegate
+-(IBAction) showSettingforDownload:(id)sender{
+    SettingforDownloadController *settingDownload=[[SettingforDownloadController alloc] initWithNibName:@"SettingforDownloadController" bundle:nil];
+    settingDownload.delegate =self;
+    [self.appSettingController.navigationController pushViewController:settingDownload animated:YES];
+    
+}
+
+- (void)settingsViewController:(IASKAppSettingsViewController*)sender buttonTappedForSpecifier:(IASKSpecifier*)specifier {
+    
+	if ([specifier.key isEqualToString:@"btnFacebook"]) {
+        
+		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Demo Action 1 called" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
+		[alert show];
+    }
+    if ([specifier.key isEqualToString:@"btnThietlaptainguontin"]){
+        [self showSettingforDownload:nil];
+        
+    }
+    if ([specifier.key isEqualToString:@"btnGioithieu"]) {
+        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Gioi thieu" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
+		[alert show];
+    }
+    if ([specifier.key isEqualToString:@"btnxoadulieutrave"]){
+        [self showDeleteData:nil];
+        
+    }
+    
+}
+
+- (void)settingsViewControllerDidEnd:(IASKAppSettingsViewController*)sender {
+    int fontsize=[[[NSUserDefaults standardUserDefaults] objectForKey:@"AppfontSize"] integerValue];
+    NSString *typeListSite=[[NSUserDefaults standardUserDefaults] objectForKey:@"typeListSite"];
+    NSLog(@"Hoan thanh  %d  %@",fontsize,typeListSite);
+    [self dismissModalViewControllerAnimated:YES];
+
+    if (self.delegate&&fontsize!=_currentFontSize&&[XAppDelegate._typeshowSite isEqualToString:typeListSite]) {
+        [self.delegate finishSettingClickInPageView:NO fontsize:YES];
+        
+        NSLog(@"aAAAAAAAAAAAA");
+    }else if (self.delegate&&fontsize==_currentFontSize&&![XAppDelegate._typeshowSite isEqualToString:typeListSite]){
+        XAppDelegate._typeshowSite=typeListSite;
+        [self.delegate finishSettingClickInPageView:YES fontsize:NO];
+        
+    }else if (self.delegate&&fontsize!=_currentFontSize&&![XAppDelegate._typeshowSite isEqualToString:typeListSite]){
+        XAppDelegate._typeshowSite=typeListSite;
+        [self.delegate finishSettingClickInPageView:YES fontsize:YES];
+    }
+    else{
+        NSLog(@"not exits");
+    }
+    
+    
+}
+
+
+#pragma mark--- longpress delegate ------ delete cell
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    CGPoint p = [gestureRecognizer locationInView:self._tableviewSite];
+    
+    NSIndexPath *indexPath = [self._tableviewSite indexPathForRowAtPoint:p];
+    if (indexPath == nil)
+        NSLog(@"long press on table view but not on a row");
+    else{
+        if (gestureRecognizer.state==UIGestureRecognizerStateBegan) {
+            NSLog(@"long press on table view at row %d", indexPath.row);
+            if ([self._tableviewSite isEditing]) {
+                [self._tableviewSite setEditing:NO animated:YES];
+
+            }else{
+                [self._tableviewSite setEditing:YES animated:YES];
+
+            }
+            //[self._tableviewSite setUserInteractionEnabled:NO];
+        }
+    }
+}
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    if (self._tableviewSite.isEditing) {
+        [self._tableviewSite setEditing:NO animated:YES];
+        [self._tableviewSite setUserInteractionEnabled:YES];
+
+    }
+}
+-(void)chooseDataforDownload:(SettingforDownloadController *)controller{
+    
+    arrForDownloadoff =controller.arrayIdSiteDownload;
+   // NSLog(@"Arrr======%@",arrForDownloadoff);
+}
+
+@end
