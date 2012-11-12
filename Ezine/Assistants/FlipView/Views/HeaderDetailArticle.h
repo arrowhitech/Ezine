@@ -20,7 +20,7 @@
 
 @interface HeaderDetailArticle : UIView{
     UIButton    *ezineBtn;
-    UIButton    *themBtn;
+    UIButton    *listBtn;
     UIImageView *_lineImage;
     UIImageView *_logoSite;
     

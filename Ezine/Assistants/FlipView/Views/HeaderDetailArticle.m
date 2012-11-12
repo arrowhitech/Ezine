@@ -41,12 +41,14 @@
     [ezineBtn addTarget:self action:@selector(ezineTouched:) forControlEvents:UIControlEventTouchUpInside];
 	[self addSubview:ezineBtn];
     
-    themBtn = [[UIButton alloc] init];
+    listBtn = [[UIButton alloc] init];
     UIImage *themIcon=[UIImage imageNamed:@"btn_listDetailArticle.png"];
-	[themBtn setImage:themIcon forState:UIControlStateNormal];
-	[themBtn setFrame:CGRectMake(ezineBtn.frame.origin.x+ezineBtn.frame.size.width+15,(56-36)/2,63,36)];
-    [themBtn addTarget:self action:@selector(themTouched:) forControlEvents:UIControlEventTouchUpInside];
-	[self addSubview:themBtn];
+	[listBtn setImage:themIcon forState:UIControlStateNormal];
+	[listBtn setFrame:CGRectMake(ezineBtn.frame.origin.x+ezineBtn.frame.size.width+15,(56-36)/2,63,36)];
+    [listBtn addTarget:self action:@selector(listbtnTouch:) forControlEvents:UIControlEventTouchUpInside];
+	[self addSubview:listBtn];
+    [listBtn setTag:idSite];
+    
     _lineImage=[[UIImageView alloc] initWithFrame:CGRectMake(10, 56, self.frame.size.width-20, 1)];
     [_lineImage setImage:[UIImage imageNamed:@"line-vertical.png"]];
     [self addSubview:_lineImage];
@@ -104,9 +106,9 @@
     }
 }
 
--(void)themTouched:(id) sender{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(themButtonClicked:)]) {
-        [self.delegate themButtonClicked:sender];
+-(void)listbtnTouch:(id) sender{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(listButtonClicked:)]) {
+        [self.delegate listButtonClicked:listBtn];
     }
     
 }

@@ -83,6 +83,9 @@
     [super viewDidLoad];
     _isgotoDetailArticle=NO;
     chanelId=0;
+    _arrayIDAllDetailArticle=[[NSMutableArray alloc] init];
+    _arrayDataAllDetailArticle=[[NSMutableArray alloc] init];
+    
     // add activityIndicator
     activityIndicator = [[UIActivityIndicatorView alloc] init];
     activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
@@ -385,10 +388,11 @@
         
         siteNameforArticle =[article objectForKey:@"SiteName"];
         urlLOGoforArticle = [article objectForKey:@"SiteLogoUrl"];
-        [XAppDelegate._arrayAlldetailArticleData addObject:obj];
+        [_arrayDataAllDetailArticle addObject:obj];
+       // [XAppDelegate._arrayAlldetailArticleData addObject:obj];
         int detailArticleId=[[article objectForKey:@"ArticleID"] integerValue];
-        [XAppDelegate._arrayAlldetailSiteID addObject:[NSNumber numberWithInt:detailArticleId]];
-
+       // [XAppDelegate._arrayAlldetailSiteID addObject:[NSNumber numberWithInt:detailArticleId]];
+        [_arrayIDAllDetailArticle addObject:[NSNumber numberWithInt:detailArticleId]];
         [arrReturn addObject:obj];
         [obj release];
     }
@@ -458,7 +462,7 @@
     }
     
     NSLog(@"page=== %d",[arrayPage count]);
-    NSLog(@"number article detail id: %d",XAppDelegate._arrayAlldetailSiteID.count);
+    //NSLog(@"number article detail id: %d",XAppDelegate._arrayAlldetailSiteID.count);
 }
 
 -(void)showViewInFullScreen:(UIView*)viewToShow withModel:(ArticleModel*)model{
@@ -480,10 +484,10 @@
 		}
 		
 		
-		fullScreenBGView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bounds.size.width, bounds.size.height)];
-		fullScreenBGView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		[fullScreenBGView setBackgroundColor:RGBACOLOR(0,0,0,0.6)];
-		fullScreenBGView.alpha = 0;
+		UIView *fullScreenBGViews = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bounds.size.width, bounds.size.height)];
+		fullScreenBGViews.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		[fullScreenBGViews setBackgroundColor:RGBACOLOR(0,0,0,0.6)];
+		fullScreenBGViews.alpha = 0;
 		[self.view addSubview:fullScreenBGView];
 		
 		
@@ -491,25 +495,28 @@
 		viewToShowInFullScreen.originalRect = viewToShowInFullScreen.frame;
 		viewToShowInFullScreen.isFullScreen = TRUE;
 		FullScreenView* fullView = [[FullScreenView alloc] initWithModel:model];
-		fullView.frame = fullScreenBGView.frame;
+		fullView.frame = fullScreenBGViews.frame;
         fullView.deletate =self;
         
         fullView.siteNameforFullScr =self.siteNameforArticle;
         fullView.urlLogoforFullSrc =self.urlLOGoforArticle;
-        NSLog(@"fullView.siteNameforFullScr%@",fullView.siteNameforFullScr);
+        fullView._arrayIdAllDetailArticle=[[NSMutableArray alloc ] initWithArray:_arrayIDAllDetailArticle];
+        fullView._arrayDataAllDetailArticle=[[NSMutableArray alloc ] initWithArray:_arrayDataAllDetailArticle];
+
+        NSLog(@"fullView.siteNameforFullScr%@  %d  %d ",fullView.siteNameforFullScr,fullView._arrayIdAllDetailArticle.count,fullView._arrayDataAllDetailArticle.count);
         
 		fullView.viewToOverLap = viewToShowInFullScreen;
-		fullView.fullScreenBG = fullScreenBGView;
+		fullView.fullScreenBG = fullScreenBGViews;
 		fullScreenView = fullView;
 		[self.view addSubview:fullView];
-		
-		[self.view bringSubviewToFront:fullScreenBGView];
+		[fullView startLoadArticle];
+		[self.view bringSubviewToFront:fullScreenBGViews];
 		[self.view bringSubviewToFront:fullView];
 		
 		[UIView beginAnimations:@"SHOWFULLSCREEN" context:NULL];
 		[UIView setAnimationDuration:0.40];
 		[UIView setAnimationTransition:UIViewAnimationTransitionNone forView:nil cache:NO];
-		fullScreenBGView.alpha = 1;
+		fullScreenBGViews.alpha = 1;
 		if (self.interfaceOrientation == UIInterfaceOrientationPortrait || self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
 			[fullView setFrame:CGRectMake(0, 0, 768, 1004)];
 		}else {
@@ -529,8 +536,8 @@
     NSLog(@"closeFullScreen");
     _isgotoDetailArticle=NO;
     
-    [self.flipViewController.left setEnabled:YES];
-    [self.flipViewController.right setEnabled:YES];
+    [flipViewController.left setEnabled:YES];
+    [flipViewController.right setEnabled:YES];
     
 	if (fullScreenView != nil) {
 		fullScreenBGView.alpha=0;
@@ -555,8 +562,8 @@
 
 -(void)ezineButtonClicked:(id)sender{
     NSLog(@"EzineClick");
-    [XAppDelegate._arrayAlldetailSiteID removeAllObjects];
-    [XAppDelegate._arrayAlldetailArticleData removeAllObjects];
+    //[XAppDelegate._arrayAlldetailSiteID removeAllObjects];
+    //[XAppDelegate._arrayAlldetailArticleData removeAllObjects];
     [self ToPreviousController];
 }
 

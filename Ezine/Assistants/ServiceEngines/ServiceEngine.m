@@ -731,5 +731,20 @@
     
 }
 
+#pragma mark--- remove bookmark
+- (void)GetListArticleRelative:(int) articleID  onCompletion:( ResponeBlock1) completionBlock onError:(MKNKErrorBlock) errorBlock{
+    
+    MKNetworkOperation *op = [self operationWithPath:[NSString stringWithFormat:@"Article/GetListArticleRelative/%d",articleID]];
+    
+    [op onCompletion:^(MKNetworkOperation *completedOperation) {
+        completionBlock([completedOperation responseJSON]);
+        
+    } onError:^(NSError *error) {
+        
+        errorBlock(error);
+    }];
+    
+    [self enqueueOperation:op];
 
+}
 @end

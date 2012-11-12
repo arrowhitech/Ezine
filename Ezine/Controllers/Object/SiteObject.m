@@ -13,7 +13,7 @@
 
 
 -(void)loadDataFrom:(NSDictionary*)data{
-    self._logoUrl=[data   objectForKey:@"ImageUrl"];
+    self._logoUrl=[data   objectForKey:@"LogoUrl"];
     self._siteID=[[data objectForKey:@"SiteID"] intValue];
     self._title=[data objectForKey:@"Title"];
     self._name=[data objectForKey:@"Info"];

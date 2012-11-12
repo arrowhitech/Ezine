@@ -14,7 +14,8 @@
 #import "CategoriesController.h"
 #import "FacebookListAccountViewController.h"
 
-#include <QuartzCore/QuartzCore.h>
+#import <QuartzCore/QuartzCore.h>
+#import "SectionHeaderView.h"
 
 #define kMenuWidth 345
 #define kCellText @"CellText"
@@ -152,7 +153,7 @@
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
-    UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)] autorelease];
+    SectionHeaderView *headerView = [[[SectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)] autorelease];
 
     UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 3, tableView.bounds.size.width - 10, 18)] autorelease];
     if (section==0) {
@@ -167,6 +168,20 @@
     label.textColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5];
     label.backgroundColor = [UIColor clearColor];
     [headerView addSubview:label];
+    static NSMutableArray *colors = nil;
+    if (colors == nil) {
+        colors = [[NSMutableArray alloc] initWithCapacity:3];
+        UIColor *color = nil;
+        color = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0];
+        [colors addObject:(id)[color CGColor]];
+        color = [UIColor colorWithRed:236.0/255.0 green:236.0/255.0 blue:236.0/255.0 alpha:1.0];
+        [colors addObject:(id)[color CGColor]];
+        color = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1.0];
+        [colors addObject:(id)[color CGColor]];
+    }
+    [(CAGradientLayer *)headerView.layer setColors:colors];
+    [(CAGradientLayer *)headerView.layer setLocations:[NSArray arrayWithObjects:[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:0.48], [NSNumber numberWithFloat:1.0], nil]];
+
     return headerView;
 }
 

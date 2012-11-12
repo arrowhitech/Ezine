@@ -475,7 +475,6 @@
 		528ADC1415B9637600E82A4C /* button_list.png in Resources */ = {isa = PBXBuildFile; fileRef = 528ADC1115B9637600E82A4C /* button_list.png */; };
 		528ADC1515B9637600E82A4C /* button_them.png in Resources */ = {isa = PBXBuildFile; fileRef = 528ADC1215B9637600E82A4C /* button_them.png */; };
 		5297D4B0165024DD00301FCF /* libGooglePlusUniversal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5297D4AF165024DD00301FCF /* libGooglePlusUniversal.a */; };
-		5297D4B3165025E800301FCF /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5297D4B2165025E800301FCF /* libTestFlight.a */; };
 		52A0113015A70AAD00DE64B4 /* btnModify_Categories.png in Resources */ = {isa = PBXBuildFile; fileRef = 52A0112B15A70AAD00DE64B4 /* btnModify_Categories.png */; };
 		52A0113115A70AAD00DE64B4 /* Logo_vnex.png in Resources */ = {isa = PBXBuildFile; fileRef = 52A0112C15A70AAD00DE64B4 /* Logo_vnex.png */; };
 		52A0113215A70AAD00DE64B4 /* TourostImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 52A0112D15A70AAD00DE64B4 /* TourostImage.png */; };
@@ -655,6 +654,8 @@
 		84E287BC15F8415B00A63820 /* Ezine_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 84E287B615F8415B00A63820 /* Ezine_icon.png */; };
 		84E287C015F8434D00A63820 /* btnCancelEzineACC.png in Resources */ = {isa = PBXBuildFile; fileRef = 84E287BF15F8434D00A63820 /* btnCancelEzineACC.png */; };
 		84E6923E15EF076E00A1EB93 /* NewListArticleItemView10.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E6923D15EF076E00A1EB93 /* NewListArticleItemView10.m */; };
+		CEF300C51650D550007B5BB6 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF300C41650D550007B5BB6 /* libTestFlight.a */; };
+		CEF300C91650F0F8007B5BB6 /* ListArticleRelative.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF300C81650F0F8007B5BB6 /* ListArticleRelative.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -1380,7 +1381,6 @@
 		528ADC1115B9637600E82A4C /* button_list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_list.png; sourceTree = "<group>"; };
 		528ADC1215B9637600E82A4C /* button_them.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_them.png; sourceTree = "<group>"; };
 		5297D4AF165024DD00301FCF /* libGooglePlusUniversal.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGooglePlusUniversal.a; sourceTree = "<group>"; };
-		5297D4B2165025E800301FCF /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = "../../../../Users/MacBookPro/NewEzine-git/Ezine/libTestFlight.a"; sourceTree = "<group>"; };
 		52A0112B15A70AAD00DE64B4 /* btnModify_Categories.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btnModify_Categories.png; sourceTree = "<group>"; };
 		52A0112C15A70AAD00DE64B4 /* Logo_vnex.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Logo_vnex.png; path = Ezine/Resources/Images/Categories/Logo_vnex.png; sourceTree = SOURCE_ROOT; };
 		52A0112D15A70AAD00DE64B4 /* TourostImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TourostImage.png; sourceTree = "<group>"; };
@@ -1690,6 +1690,9 @@
 		84E287BF15F8434D00A63820 /* btnCancelEzineACC.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btnCancelEzineACC.png; sourceTree = "<group>"; };
 		84E6923C15EF076E00A1EB93 /* NewListArticleItemView10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewListArticleItemView10.h; sourceTree = "<group>"; };
 		84E6923D15EF076E00A1EB93 /* NewListArticleItemView10.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NewListArticleItemView10.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CEF300C41650D550007B5BB6 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
+		CEF300C71650F0F8007B5BB6 /* ListArticleRelative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListArticleRelative.h; sourceTree = "<group>"; };
+		CEF300C81650F0F8007B5BB6 /* ListArticleRelative.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListArticleRelative.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1711,8 +1714,8 @@
 				52A26A3E15A2F22400E7B80F /* UIKit.framework in Frameworks */,
 				52A26A4015A2F22400E7B80F /* Foundation.framework in Frameworks */,
 				52A26A4215A2F22400E7B80F /* CoreGraphics.framework in Frameworks */,
-				5297D4B3165025E800301FCF /* libTestFlight.a in Frameworks */,
 				5297D4B0165024DD00301FCF /* libGooglePlusUniversal.a in Frameworks */,
+				CEF300C51650D550007B5BB6 /* libTestFlight.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1881,6 +1884,8 @@
 				0410D9F61606CF9D0055B86C /* DetailArticleView.m */,
 				0410D9F8160710830055B86C /* DetailArticleViewController.h */,
 				0410D9F9160710830055B86C /* DetailArticleViewController.m */,
+				CEF300C71650F0F8007B5BB6 /* ListArticleRelative.h */,
+				CEF300C81650F0F8007B5BB6 /* ListArticleRelative.m */,
 			);
 			path = LayoutDetailArticle;
 			sourceTree = "<group>";
@@ -3099,7 +3104,7 @@
 		52A26A2E15A2F22400E7B80F = {
 			isa = PBXGroup;
 			children = (
-				5297D4B2165025E800301FCF /* libTestFlight.a */,
+				CEF300C41650D550007B5BB6 /* libTestFlight.a */,
 				04FAB239162EB8DC002EAA52 /* ImageIO.framework */,
 				04FAB237162EB8D2002EAA52 /* libxml2.dylib */,
 				04F3D51415ECD8AE00DAE354 /* Icon-72.png */,
@@ -4596,6 +4601,7 @@
 				0433326D16476166007A31B5 /* FbHeaderView.m in Sources */,
 				0433327016476179007A31B5 /* FbFooterView.m in Sources */,
 				52D19373164CFE95003807C0 /* LaucherViewPageCellModel.m in Sources */,
+				CEF300C91650F0F8007B5BB6 /* ListArticleRelative.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

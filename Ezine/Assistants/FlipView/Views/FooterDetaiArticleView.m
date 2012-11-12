@@ -187,29 +187,50 @@
         [alert release];
     }else{
         if (isbookmark) {
-            UIImage *reloadIcon=[UIImage imageNamed:@"btn_bookmarkDetailArticle"];
-            [_reload setImage:reloadIcon forState:UIControlStateNormal];
-        }
-        [XAppDelegate.serviceEngine userAddBookMarkArticleID:self._articleID onCompletion:^(NSDictionary* data) {
-            NSLog(@"return==== %@",data);
-            if (data) {
-                BOOL isSuccess=[[data objectForKey:@"Success"] boolValue];
-                if (isSuccess) {
-                    UIImage *reloadIcon=[UIImage imageNamed:@"btn_bookmarkChoose"];
-                    [_reload setImage:reloadIcon forState:UIControlStateNormal];
-                    isbookmark=YES;
-                }else{
-                    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"Bookmark" message:@"khong the bookmark bai viet, " delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
-                    [alert show];
-                    [alert release];
+            [XAppDelegate.serviceEngine userRemoveBookmark:self._articleID onCompletion:^(NSDictionary* data) {
+                NSLog(@"return==== %@",data);
+                if (data) {
+                    BOOL isSuccess=[[data objectForKey:@"Success"] boolValue];
+                    if (isSuccess) {
+                        UIImage *reloadIcon=[UIImage imageNamed:@"btn_bookmarkDetailArticle"];
+                        [_reload setImage:reloadIcon forState:UIControlStateNormal];
+                        isbookmark=NO;
+                    }else{
+                        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"Bookmark" message:@"khong the remove bookmark bai viet, " delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
+                        [alert show];
+                        [alert release];
+                    }
+                    
                 }
                 
-            }
+                
+            } onError:^(NSError* error) {
+            }];
             
             
-        } onError:^(NSError* error) {
-        }];
+        }else{
+            [XAppDelegate.serviceEngine userAddBookMarkArticleID:self._articleID onCompletion:^(NSDictionary* data) {
+                NSLog(@"return==== %@",data);
+                if (data) {
+                    BOOL isSuccess=[[data objectForKey:@"Success"] boolValue];
+                    if (isSuccess) {
+                        UIImage *reloadIcon=[UIImage imageNamed:@"btn_bookmarkChoose"];
+                        [_reload setImage:reloadIcon forState:UIControlStateNormal];
+                        isbookmark=YES;
+                    }else{
+                        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"Bookmark" message:@"khong the bookmark bai viet, " delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
+                        [alert show];
+                        [alert release];
+                    }
+                    
+                }
+                
+                
+            } onError:^(NSError* error) {
+            }];
 
+        }
+        
     }
     
     

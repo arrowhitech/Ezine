@@ -40,7 +40,7 @@
 @optional
 - (void) ezineButtonClicked:(id)sender;
 - (void) themButtonClicked:(id)sender;
-- (void) listButtonClicked:(UIButton*)sender;
+- (void) listButtonClicked:(id)sender;
 - (void) showCategoryOfSource:(UIButton*)sender inRect:(CGRect)frame;
 @end
 
