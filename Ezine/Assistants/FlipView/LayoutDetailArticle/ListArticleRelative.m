@@ -32,7 +32,7 @@
     self.
     self.clearsSelectionOnViewWillAppear = NO;
     self.contentSizeForViewInPopover = CGSizeMake(300.0,550.0);
-    self.title=@"Tin mới nhất";
+    self.title=@"Tin bài liên quan";
     
     self.listLastest = [[NSMutableArray alloc] init];
     _arrayListArticle =[[NSMutableArray alloc] init];
@@ -170,8 +170,8 @@
 //    ArticleModel *model=[[ArticleModel alloc] init];
 //    model._ArticleID=cell.tag;
 //    model._idLayout=-10;
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(didSelectArticle:)]) {
-        [self.delegate didSelectArticle:cell.tag];
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(didSelectArticle: andArrayDataListArticle:)]) {
+        [self.delegate didSelectArticle:cell.tag andArrayDataListArticle:self.listLastest];
     }
   //  [[EzineAppDelegate instance] showViewInFullScreen:nil withModel:model];
     

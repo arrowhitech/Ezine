@@ -62,7 +62,7 @@
 
 @end
 
-@interface FullScreenView : UIViewExtention <HeaderDetailArticleDelegate,MPFlipViewControllerDataSource,MPFlipViewControllerDelegate,FooterDetaiArticleView,DTAttributedTextContentViewDelegate,DTLazyImageViewDelegate,UIPopoverControllerDelegate> {
+@interface FullScreenView : UIViewExtention <HeaderDetailArticleDelegate,MPFlipViewControllerDataSource,MPFlipViewControllerDelegate,FooterDetaiArticleView,DTAttributedTextContentViewDelegate,DTLazyImageViewDelegate,UIPopoverControllerDelegate,ListArticleRelativeDelegate> {
 	ArticleModel*   articleModel;
     NSMutableArray *_arrayViewDetailArticle;
     NSMutableArray *_arrayViewDetailArticleLandScape;

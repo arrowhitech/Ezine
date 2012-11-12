@@ -16,6 +16,9 @@
 #define KDidChangeOrderSiteNotification @"KDidChangeOrderSiteNotification"
 #define KDidAddSiteNotification @"KDidAddSiteNotification"
 #define KNeedNextPageNotification @"KNeedNextPageNotification"
+#define KDidMoveCell @"KDidMoveCell"
+#define KDidFifnishMovecell @"KDidFifnishMovecell"
+
 // reload 
 #define KDidReloadSiteNotification @"KDidReloadSiteNotification"
 

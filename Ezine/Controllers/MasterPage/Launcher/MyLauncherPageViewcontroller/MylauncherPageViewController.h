@@ -49,7 +49,6 @@
 @property (nonatomic,assign) id<MylauncherPageViewControllerDelegate>delegate;
 @property (nonatomic, retain)    LaucherViewPageCell *_currentCell;
 
-
 -(void) LoadDataSiteUser;
 - (void)showActivityIndicator;
 - (void)hideActivityIndicator;
