@@ -90,11 +90,15 @@
     /*
      Init FlipViewController
      */
-    
+    imgFakeGifAnimation=[[UIImageView alloc] initWithFrame:self.view.frame];
+    imgFakeGifAnimation.animationDuration = 1;
+    imgFakeGifAnimation.animationRepeatCount = 0;
+
     
     self.flipViewController = [[MPFlipViewController alloc] initWithOrientation:[self flipViewController:nil orientationForInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation]];
     self.flipViewController.delegate = self;
     self.flipViewController.dataSource = self;
+        [self.view addSubview:imgFakeGifAnimation];
     CGRect pageViewRect = self.view.bounds;
     NSLog(@"x=== %f  y===%f   w===%f  h===%f",pageViewRect.origin.x,pageViewRect.origin.y,pageViewRect.size.width,pageViewRect.size.height);
     self.flipViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
@@ -104,9 +108,22 @@
         self.flipViewController.view.frame=CGRectMake(0, 0, 768,1004);
         [activityIndicator setFrame:CGRectMake(768/2.0-40, 748/3, 100, 100)];
         
+        imgFakeGifAnimation.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-H1.png"],[UIImage imageNamed:@"Ezine-loading-H2.png"],[UIImage imageNamed:@"Ezine-loading-H3.png"],[UIImage imageNamed:@"Ezine-loading-H4.png"],[UIImage imageNamed:@"Ezine-loading-H5.png"],[UIImage imageNamed:@"Ezine-loading-H1.png"],nil];
+        [imgFakeGifAnimation setFrame:CGRectMake(0, 0, 768, 1004)];
+        [imgFakeGifAnimation startAnimating];
+
+        
+        
     }else if (self.interfaceOrientation==UIInterfaceOrientationLandscapeLeft||self.interfaceOrientation==UIInterfaceOrientationLandscapeRight){
         self.flipViewController.view.frame =CGRectMake(0,0, 1024,748);
         [activityIndicator setFrame:CGRectMake(1024/2.0-40, 1004/3, 100, 100)];
+        
+        imgFakeGifAnimation.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-V1.png"],[UIImage imageNamed:@"Ezine-loading-V2.png"],[UIImage imageNamed:@"Ezine-loading-V3.png"],[UIImage imageNamed:@"Ezine-loading-V4.png"],[UIImage imageNamed:@"Ezine-loading-V5.png"],[UIImage imageNamed:@"Ezine-loading-V6.png"],nil];
+        [imgFakeGifAnimation setFrame:CGRectMake(0, 0, 1024, 748)];
+        [imgFakeGifAnimation startAnimating];
+
+        
+        
         
     }
     activeIndex=0;
@@ -118,25 +135,8 @@
     [self.flipViewController didMoveToParentViewController:self];
     self.view.gestureRecognizers = self.flipViewController.gestureRecognizers;
     
-    imgFakeGifAnimation=[[UIImageView alloc] initWithFrame:self.view.frame];
-    [self.view addSubview:imgFakeGifAnimation];
-    imgFakeGifAnimation.animationDuration = 1;
-    imgFakeGifAnimation.animationRepeatCount = 0;
     
-    if ([[UIDevice currentDevice] orientation]==UIInterfaceOrientationLandscapeLeft||[[UIDevice currentDevice] orientation]==UIInterfaceOrientationLandscapeRight) {
-        imgFakeGifAnimation.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-V1.png"],[UIImage imageNamed:@"Ezine-loading-V2.png"],[UIImage imageNamed:@"Ezine-loading-V3.png"],[UIImage imageNamed:@"Ezine-loading-V4.png"],[UIImage imageNamed:@"Ezine-loading-V5.png"],[UIImage imageNamed:@"Ezine-loading-V6.png"],nil];
-        [imgFakeGifAnimation setFrame:CGRectMake(0, 0, 1024, 748)];
-        [imgFakeGifAnimation startAnimating];
-        
-    }else if ([[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortrait||[[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortraitUpsideDown){
-        
-        imgFakeGifAnimation.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-H1.png"],[UIImage imageNamed:@"Ezine-loading-H2.png"],[UIImage imageNamed:@"Ezine-loading-H3.png"],[UIImage imageNamed:@"Ezine-loading-H4.png"],[UIImage imageNamed:@"Ezine-loading-H5.png"],[UIImage imageNamed:@"Ezine-loading-H1.png"],nil];
-        [imgFakeGifAnimation setFrame:CGRectMake(0, 0, 768, 1004)];
-        [imgFakeGifAnimation startAnimating];
-        
-        
-    }
-}
+   }
 
 -(void)loaddataFromSite{
     [self showActivityIndicator];
