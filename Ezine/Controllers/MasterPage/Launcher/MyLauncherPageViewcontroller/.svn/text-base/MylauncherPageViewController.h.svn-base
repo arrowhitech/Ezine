@@ -39,6 +39,7 @@
     
     NSMutableArray*                              arrForDownloadoff;
 
+    NSIndexPath *indexPath2;
 }
 @property(nonatomic, retain) UITableView *_tableviewSite;
 @property (nonatomic, strong) MKNetworkOperation*   imageLoadingOperation;

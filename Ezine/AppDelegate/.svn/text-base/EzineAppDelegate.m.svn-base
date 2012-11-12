@@ -35,7 +35,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-            
+    
+     [TestFlight takeOff:@"56d7fec6ce5b27f335ffa7d32b03e6e0_MTUyNzk3MjAxMi0xMS0wOCAyMzozNzoxNy43Nzc1MzM"];
+    
     arrayIdSite=[[NSMutableArray alloc] init];
     _arrayAllSite=[[NSMutableArray alloc] init];
     _isgotoListArticle=NO;

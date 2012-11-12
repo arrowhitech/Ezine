@@ -25,4 +25,5 @@
 @property (nonatomic, retain)   NSString      *_title;
 @property (nonatomic, retain)   NSString      *_urlWeb;
 
+-(void)loadDataFrom:(NSDictionary*)data;
 @end

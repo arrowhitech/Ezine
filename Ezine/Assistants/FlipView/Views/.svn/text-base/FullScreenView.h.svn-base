@@ -94,6 +94,9 @@
     NSString* siteNameforFullScr;
     NSString* urlLogoforFullSrc;
     
+    // Hieu
+    UIImageView* imgFakeGifAnimation;
+    
 }
 
 -(id)initWithModel:(ArticleModel*)model;

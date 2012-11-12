@@ -2781,7 +2781,7 @@
 }
 
 -(void) fetchedData:(NSDictionary*)data{
-    NSLog(@"site detail=== %@",data);
+    //NSLog(@"site detail=== %@",data);
     NSString *urlLogoSite=[data objectForKey:@"LogoUrl"];
     NSString  *titleSite=[data objectForKey:@"Name"];
     

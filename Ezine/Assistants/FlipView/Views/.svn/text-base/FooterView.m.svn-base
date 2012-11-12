@@ -247,7 +247,6 @@
     [readAndCommentButton setFrame:CGRectMake(self.frame.size.width-35, self.frame.size.height-30, 20, 20)];
 #pragma mark========Button Binh luan
     [readAndCommentButton addTarget:self action:@selector(btnCommentandWriteClick:) forControlEvents:UIControlEventTouchUpInside];
-    
     [readAndCommentButton setImage:[UIImage imageNamed:@"iconWriteComment.png"] forState:UIControlStateNormal];
     
     [self addSubview:readAndCommentButton];
@@ -337,6 +336,10 @@
 }
 
 -(void)btnCommentandWriteClick:(id)sender{
+    if (self.deletegate) {
+        [self.deletegate btnCommentClick:sender];
+    }
+
     
     NSLog(@"btnCommentandWriteClick");
     

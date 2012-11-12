@@ -26,6 +26,11 @@
     UILabel*         numbercomment;
     UILabel*         numberLike;
     NSString*        urlImage;
+    NSString*        urlVideo;
+    BOOL            moviePlayer;
+    
+    UIWebView* videoView;
+    
 }
 
 @property (nonatomic, strong)   MKNetworkOperation* imageLoadingOperation;

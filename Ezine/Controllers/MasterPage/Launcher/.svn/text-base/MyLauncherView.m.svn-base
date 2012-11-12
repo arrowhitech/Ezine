@@ -159,6 +159,7 @@ static const int landscapeRowCount = 3;
 {
     if(UIGestureRecognizerStateBegan == recognizer.state)
     {
+        
         if(editing)
         {
             if(!draggingItem)
@@ -167,7 +168,7 @@ static const int landscapeRowCount = 3;
                 recognizer.enabled=NO;
                 recognizer.enabled=YES;
                // [draggingItem addGestureRecognizer:panGestureRecognizer];
-                [draggingItem setDragging:YES];
+                
                 [self addSubview:draggingItem];
                 dragging = YES;
             }
@@ -181,6 +182,7 @@ static const int landscapeRowCount = 3;
             draggingItem.selected = NO;
             draggingItem.highlighted = NO;
             [draggingItem setDragging:YES];
+            
             [self addSubview:draggingItem];
             dragging = YES;
             
@@ -269,6 +271,7 @@ static const int landscapeRowCount = 3;
                     [self addSubview:item];
                 }
                 item.closeButton.hidden = editing ? NO : YES;
+                
                 x += itemWidth + padding;
                 
                 if ( itemsCount % columnCount == 0)
@@ -320,6 +323,7 @@ static const int landscapeRowCount = 3;
                     [self addSubview:item];
                 }
                 item.closeButton.hidden = editing ? NO : YES;
+                
                 x += itemWidth + padding;
                 
                 if ( itemsCount % columnCount == 0)
@@ -361,12 +365,14 @@ static const int landscapeRowCount = 3;
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     [super touchesMoved:touches withEvent:event];
-	if(dragging)
+    
+    if(dragging)
 	{
 		for (UITouch* touch in touches)
 		{
 			CGPoint location = [touch locationInView:self];
 			draggingItem.center = CGPointMake(location.x, location.y);
+            
 			NItemLocation sItemLocation = [self itemLocation];
 			NSInteger page = sItemLocation.page;
 			NSInteger sindex = sItemLocation.sindex;
@@ -376,14 +382,18 @@ static const int landscapeRowCount = 3;
             if (_currentPage==1) {
                 dragItemColumn-=1;
             }
+            
             NSInteger dragItemRow = floor(dragItemY/itemHeight);
 			NSInteger dragIndex = (dragItemRow * columnCount) + dragItemColumn;
             NSLog(@"drag index===%d",dragIndex);
             if (_currentPage==1&&dragIndex==0) {
                 break;
             }
-        
-			if(sindex != dragIndex)
+            
+            if (draggingItem._isSiteTop) {
+                return;
+            }
+            if(sindex != dragIndex)
 			{
 				[[draggingItem retain] autorelease];
 				NSMutableArray *itemPage = [pages objectAtIndex:page];
@@ -603,6 +613,7 @@ static const int landscapeRowCount = 3;
 		return;
 	countSiteDelete=0;
 	editing = YES;
+    
 	[self animateItems];
 	[[NSNotificationCenter defaultCenter] postNotificationName:KDidBeginEdittingSiteNotification object:self userInfo:nil];
 }
@@ -647,6 +658,7 @@ static const int landscapeRowCount = 3;
 			{
 				if (!item.isAddButton) {
                     item.closeButton.hidden = !editing;
+                
                     if (item != draggingItem)
                     {
                         ++animatingItems;
@@ -771,6 +783,7 @@ static const int landscapeRowCount = 3;
                     [self addSubview:item];
                 }
                 item.closeButton.hidden = editing ? NO : YES;
+                
                 x += itemWidth + padding;
                 
                 if ( itemsCount % columnCount == 0)
@@ -837,6 +850,7 @@ static const int landscapeRowCount = 3;
                     [self addSubview:item];
                 }
                 item.closeButton.hidden = editing ? NO : YES;
+               
                 x += itemWidth + padding;
                 
                 if ( itemsCount % columnCount == 0)
@@ -930,4 +944,27 @@ static const int landscapeRowCount = 3;
          }
 }
 
+
+-(void)reloadAllsite{
+    for (NSArray* itemPage in pages)
+    {
+        for (MyLauncherItem* item in itemPage)
+        {
+            [item reloadImage];
+        
+        }
+    }
+}
+
+-(void)checkReloadAllsite{
+    for (NSArray* itemPage in pages)
+    {
+        for (MyLauncherItem* item in itemPage)
+        {
+            [item checkReload];
+            
+        }
+    }
+
+}
 @end

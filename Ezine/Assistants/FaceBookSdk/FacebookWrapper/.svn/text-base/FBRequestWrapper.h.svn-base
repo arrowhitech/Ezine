@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "Facebook.h"
 
-#define FB_APP_ID @"443118519053105"
-#define FB_API_KEY @"443118519053105"
-#define FB_APP_SECRET @"c5778d36e095c1710c3f0da092abac43"
+#define FB_APP_ID @"466571630062092"
+#define FB_API_KEY @"466571630062092"
+#define FB_APP_SECRET @"cb1df13ca7779f267af454912e49e2db"
 //#define FB_APP_SECRET @""
-@interface FBRequestWrapper : NSObject <FBRequestDelegate, FBSessionDelegate> 
+@interface FBRequestWrapper : NSObject <FBRequestDelegate, FBSessionDelegate>
 {
 	Facebook *facebook;
 	BOOL isLoggedIn;

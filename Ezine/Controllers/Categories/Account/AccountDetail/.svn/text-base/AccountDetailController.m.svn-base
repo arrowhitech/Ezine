@@ -170,7 +170,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"EzineAccountName"];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"EzineAccountAvatar"];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"EzineAccountID"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"EzineAccountSessionId"];
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"EzineAccountSessionId"];
     XAppDelegate.serviceEngine =Nil;
     XAppDelegate.serviceEngine = [[ServiceEngine alloc] initWithHostName:@"api.ezine.vn" customHeaderFields:nil];
     [XAppDelegate.serviceEngine useCache];

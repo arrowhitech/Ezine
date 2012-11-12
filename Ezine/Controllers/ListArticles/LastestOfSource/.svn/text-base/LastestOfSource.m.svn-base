@@ -12,6 +12,7 @@
 #import "EzineAppdelegate.h"
 #import "ArticleModel.h"
 #import "EzineAppdelegate.h"
+#import "Utils.h"
 
 @implementation LastestOfSource
 @synthesize listLastest=listLastest_;
@@ -105,9 +106,11 @@
     headerLable.contentMode=UIViewContentModeLeft;
     headerLable.textAlignment=UITextAlignmentLeft;
     headerLable.textColor=[UIColor whiteColor];
-    [headerLable setFont:[UIFont fontWithName:@"MyriadPro-Semibold" size:14+XAppDelegate.appFontSize]];
+   // [headerLable setFont:[UIFont fontWithName:@"MyriadPro-Semibold" size:14+XAppDelegate.appFontSize]];
+    [headerLable setFont:[UIFont fontWithName:@"MyriadPro-Semibold" size:14]];
+
     [headerLable setText:[dictionary objectForKey:@"Name"]];
-    headerLable.frame=CGRectMake(5,3, 150, 25);
+    headerLable.frame=CGRectMake(5,10, 150, 25);
     headerLable.numberOfLines=0;
     [headerLable sizeToFit];
     [headerView addSubview:headerLable];
@@ -117,8 +120,10 @@
     headerLableTime.contentMode=UIViewContentModeRight;
     headerLableTime.textAlignment=UITextAlignmentRight;
     headerLableTime.textColor=[UIColor whiteColor];
-    [headerLableTime setFont:[UIFont fontWithName:@"MyriadPro-Semibold" size:14+XAppDelegate.appFontSize]];
-    [headerLableTime setText:[dictionary objectForKey:@"PublishTime"]];
+    //[headerLableTime setFont:[UIFont fontWithName:@"MyriadPro-Semibold" size:14+XAppDelegate.appFontSize]];
+    [headerLableTime setFont:[UIFont fontWithName:@"MyriadPro-Semibold" size:14]];
+
+    [headerLableTime setText:[Utils dateStringFromTimestamp:[dictionary objectForKey:@"PublishTime"]]];
     headerLableTime.frame=CGRectMake(5,3, 300-10, 25);
     [headerView addSubview:headerLableTime];
 

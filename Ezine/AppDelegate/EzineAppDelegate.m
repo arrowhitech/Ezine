@@ -19,7 +19,7 @@
 @synthesize viewController ;
 @synthesize navigationController;
 @synthesize serviceEngine = serviceEngine;
-@synthesize arrayIdSite,_arrayAllSite;
+@synthesize arrayIdSite,_arrayAllSite,_arrayAlldetailSiteID,_arrayAlldetailArticleData;
 @synthesize database,isAddKeyword;
 @synthesize _typeshowSite,_isgotoListArticle;
 
@@ -40,6 +40,8 @@
     
     arrayIdSite=[[NSMutableArray alloc] init];
     _arrayAllSite=[[NSMutableArray alloc] init];
+    _arrayAlldetailSiteID=[[NSMutableArray alloc] init];
+    _arrayAlldetailArticleData=[[NSMutableArray alloc] init];
     _isgotoListArticle=NO;
     isAddKeyword=NO;
     [[NSUserDefaults standardUserDefaults]setObject:nil forKey:@"KEYWORDSEARCHALLSITE"];
@@ -137,7 +139,7 @@
         }
     }
 // show in coverView Controller
-    UIViewController *listview=nil;;
+    UIViewController *listview=nil;
     for (UIViewController *vc in self.navigationController.viewControllers) {
         if ([vc isMemberOfClass:[ListArticleViewController class]]){
             listview=vc;

@@ -76,5 +76,7 @@
 
 -(void) btnbockClick:(int) indext;
 -(void) searchKeywork:(id)sender;
+- (void) btnCommentClick:(id)sender;
+
 
 @end

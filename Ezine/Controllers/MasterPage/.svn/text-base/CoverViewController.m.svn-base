@@ -306,7 +306,7 @@ sourceArticle4,sourceArticle5,tilte,nameSourceArticle;
     [self.view addSubview:_nameSourceArticle];
     [self.view addSubview:_coverStatic];
     [_coverStatic setFont:[UIFont fontWithName:@"UVNHongHaHepBold" size:20+XAppDelegate.appFontSize]];
-    _coverStatic.text=@"Trang Bìa";
+    _coverStatic.text=@"TRANG TIN NỔI BẬT";
     [[UIDevice currentDevice] orientation] ;
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged) name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -485,7 +485,6 @@ sourceArticle4,sourceArticle5,tilte,nameSourceArticle;
     [_coverImageView setFrame:CGRectMake(0, 0, 1024, 768)];
     [activityIndicator setFrame:CGRectMake(462, 322, 100, 100)];
     [_loadingGif stopAnimating];
-    _loadingGif.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-H1.png"],[UIImage imageNamed:@"Ezine-loading-H2.png"],[UIImage imageNamed:@"Ezine-loading-H3.png"],[UIImage imageNamed:@"Ezine-loading-H4.png"],[UIImage imageNamed:@"Ezine-loading-H5.png"],[UIImage imageNamed:@"Ezine-loading-H1.png"],nil];
 
         _loadingGif.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-V1.png"],[UIImage imageNamed:@"Ezine-loading-V2.png"],[UIImage imageNamed:@"Ezine-loading-V3.png"],[UIImage imageNamed:@"Ezine-loading-V4.png"],[UIImage imageNamed:@"Ezine-loading-V5.png"],[UIImage imageNamed:@"Ezine-loading-V6.png"],nil];
         

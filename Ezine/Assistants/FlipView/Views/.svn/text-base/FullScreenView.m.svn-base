@@ -38,6 +38,27 @@ static const int bottomSpace = 5;
         _arrayViewDetailArticleLandScape=[[NSMutableArray alloc] init];
         _currentOrientation=[UIApplication sharedApplication].statusBarOrientation;
         cachedDataDetailArtcile=nil;
+        
+        imgFakeGifAnimation=[[UIImageView alloc] initWithFrame:self.frame];
+        imgFakeGifAnimation.animationDuration = 1;
+        imgFakeGifAnimation.animationRepeatCount = 0;
+        
+        if ([[UIApplication sharedApplication] statusBarOrientation]==UIInterfaceOrientationLandscapeLeft||[[UIApplication sharedApplication] statusBarOrientation]==UIInterfaceOrientationLandscapeRight) {
+            NSLog(@"HHHAHAHAHAHAHAHAHAHAHHA111");
+            imgFakeGifAnimation.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-V1.png"],[UIImage imageNamed:@"Ezine-loading-V2.png"],[UIImage imageNamed:@"Ezine-loading-V3.png"],[UIImage imageNamed:@"Ezine-loading-V4.png"],[UIImage imageNamed:@"Ezine-loading-V5.png"],[UIImage imageNamed:@"Ezine-loading-V6.png"],nil];
+            [imgFakeGifAnimation setFrame:CGRectMake(0, 0, 1024, 748)];
+            [imgFakeGifAnimation startAnimating];
+            
+        }else if ([[UIApplication sharedApplication] statusBarOrientation]==UIInterfaceOrientationPortrait||[[UIApplication sharedApplication] statusBarOrientation]==UIInterfaceOrientationPortraitUpsideDown){
+            NSLog(@"HHHAHAHAHAHAHAHAHAHAHHA222");
+            imgFakeGifAnimation.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-H1.png"],[UIImage imageNamed:@"Ezine-loading-H2.png"],[UIImage imageNamed:@"Ezine-loading-H3.png"],[UIImage imageNamed:@"Ezine-loading-H4.png"],[UIImage imageNamed:@"Ezine-loading-H5.png"],[UIImage imageNamed:@"Ezine-loading-H1.png"],nil];
+            [imgFakeGifAnimation setFrame:CGRectMake(0, 0, 768, 1004)];
+            [imgFakeGifAnimation startAnimating];
+            
+            
+        }
+        
+
         [[UIDevice currentDevice] orientation] ;
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged) name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -87,6 +108,9 @@ static const int bottomSpace = 5;
         [self addSubview:self.flipViewController.view];
         // [self.flipViewController didMoveToParentViewController:self];
         self.gestureRecognizers = self.flipViewController.gestureRecognizers;
+        
+        [self addSubview:imgFakeGifAnimation];
+        
         if(![self connected]){
             
             NSLog(@"Not connect to internet");
@@ -240,6 +264,10 @@ static const int bottomSpace = 5;
     //
     //    //===
     //    [self addSubview:header];
+    if (imgFakeGifAnimation) {
+        [imgFakeGifAnimation removeFromSuperview];
+    }
+
     
 }
 #pragma mark--
@@ -519,6 +547,17 @@ static const int bottomSpace = 5;
             
         }
         
+        if (!imgFakeGifAnimation) {
+            return;
+        }
+        [imgFakeGifAnimation stopAnimating];
+        imgFakeGifAnimation.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-V1.png"],[UIImage imageNamed:@"Ezine-loading-V2.png"],[UIImage imageNamed:@"Ezine-loading-V3.png"],[UIImage imageNamed:@"Ezine-loading-V4.png"],[UIImage imageNamed:@"Ezine-loading-V5.png"],[UIImage imageNamed:@"Ezine-loading-V6.png"],nil];
+        [imgFakeGifAnimation setFrame:CGRectMake(0, 0, 1024, 748)];
+        [imgFakeGifAnimation startAnimating];
+        
+        [UIView commitAnimations];
+
+        
     }else if([[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortrait||[[UIDevice currentDevice] orientation]==UIInterfaceOrientationPortraitUpsideDown){
         _currentOrientation=UIInterfaceOrientationPortrait;
         [self setFrame:CGRectMake(0, 0, 768, 1004)];
@@ -534,6 +573,18 @@ static const int bottomSpace = 5;
             [self.flipViewController setViewController:firstView direction:MPFlipViewControllerDirectionForward animated:NO completion:nil];
             
         }
+        
+        if (!imgFakeGifAnimation) {
+            return;
+        }
+        [imgFakeGifAnimation stopAnimating];
+        
+        imgFakeGifAnimation.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-H1.png"],[UIImage imageNamed:@"Ezine-loading-H2.png"],[UIImage imageNamed:@"Ezine-loading-H3.png"],[UIImage imageNamed:@"Ezine-loading-H4.png"],[UIImage imageNamed:@"Ezine-loading-H5.png"],[UIImage imageNamed:@"Ezine-loading-H1.png"],nil];
+        [imgFakeGifAnimation setFrame:CGRectMake(0, 0, 768, 1004)];
+        [imgFakeGifAnimation startAnimating];
+        
+        [UIView commitAnimations];
+
         
     }
 }

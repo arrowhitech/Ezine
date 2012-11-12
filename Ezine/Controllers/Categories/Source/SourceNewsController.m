@@ -307,19 +307,13 @@
     for (int i=0; i<arrayDataSiteTop3.count; i++) {
         NSDictionary    *dataSite=[arrayDataSiteTop3 objectAtIndex:i];
         SiteObject      *siteObject=[[SiteObject alloc] init];
-        siteObject._logoUrl=[dataSite   objectForKey:@"ImageUrl"];
-        siteObject._siteID=[[dataSite objectForKey:@"SiteID"] intValue];
-        siteObject._title=[dataSite objectForKey:@"Title"];
-        siteObject._name=[dataSite objectForKey:@"Info"];
+        [siteObject loadDataFrom:dataSite];
         [_arrayDataListSite addObject:siteObject];
     }
     for (int i=0; i<arraySiteListOthers.count; i++) {
         NSDictionary    *dataSite=[arraySiteListOthers objectAtIndex:i];
         SiteObject      *siteObject=[[SiteObject alloc] init];
-        siteObject._logoUrl=[dataSite   objectForKey:@"LogoUrl"];
-        siteObject._siteID=[[dataSite objectForKey:@"SiteID"] intValue];
-        siteObject._title=[dataSite objectForKey:@"Title"];
-        siteObject._name=[dataSite objectForKey:@"Info"];
+        [siteObject loadDataFrom:dataSite];
         [_arrayDataListSite addObject:siteObject];
     }
    

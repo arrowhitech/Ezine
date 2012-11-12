@@ -615,7 +615,7 @@
 }
 //==== add bookmark
 -(void) userAddBookMarkArticleID:(int)articleID onCompletion:( ResponeBlock) completionBlock onError:(MKNKErrorBlock) errorBlock{
-    MKNetworkOperation *op = [self operationWithPath:@"user/AdKeyword"
+    MKNetworkOperation *op = [self operationWithPath:@"user/AddKeyword"
                                               params:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",articleID],@"ArticleID",nil]
                                           httpMethod:@"POST"];
     

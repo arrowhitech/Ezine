@@ -265,7 +265,7 @@
         
         
     }
-    RatingModel *cellObj = [arrayRating objectAtIndex:arrayRating.count-indexPath.row-1];
+    RatingModel *cellObj = [arrayRating objectAtIndex:indexPath.row];
     [cell.lblusername setText:cellObj.username];
     [cell.lblcontent  setText:cellObj.content];
     [cell.lbltime_ago setText:cellObj.timeAgo];

@@ -69,5 +69,6 @@
 -(void)beginEditing;
 -(void)endEditing;
 -(void) reloadFontSize;
-
+-(void)reloadAllsite;
+- (void)checkReloadAllsite;
 @end

@@ -145,7 +145,7 @@
         numberArticle.textAlignment=UITextAlignmentLeft;
         [numberArticle setFrame:CGRectMake(searchKeyword.frame.origin.x+searchKeyword.frame.size.width+10, themBtn.frame.origin.y+10, 60, 20)];
         [numberArticle setTextColor:RGBCOLOR(175, 175, 175)];
-      
+        
         [numberArticle setText:[NSString stringWithFormat:@"Có %@ kết quả",wallTitle]];
         NSLog(@"keyword===%@   total===%@",keyword,numberArticle.text);
         [numberArticle sizeToFit];
@@ -168,8 +168,10 @@
     _namesite.userInteractionEnabled=YES;
     UITapGestureRecognizer *tapGesture1 = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelTap1:)] autorelease];
     [_namesite addGestureRecognizer:tapGesture1];
+        
+    
     [self addSubview:_namesite];
-
+    
     
     btnArticleType =[[UIButton alloc]init];
     [btnArticleType setImage:[UIImage imageNamed:@"btn_showListArticleInHeader.png"] forState:UIControlStateNormal];
@@ -217,9 +219,10 @@
             _namesite.numberOfLines=0;
             
             [self addSubview:btnArticleType];
+            
             [btnArticleType setFrame:CGRectMake(_namesite.frame.origin.x+_namesite.frame.size.width+10, imgViewWedIcon.frame.origin.y+20, 14, 7)];
             nameSite =nil;
-
+            
             
         }else{
             [XAppDelegate.serviceEngine getDetailAsite:self._idSite onCompletion:^(NSDictionary* data) {
@@ -230,10 +233,10 @@
                 //        [alert show];
                 //        [alert release];
             }];
-
+            
         }
         
-                
+        
     }
     
     
@@ -255,9 +258,9 @@
             
             
         } onError:^(NSError* error) {
-//            UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"add keyword" message:@"service loi hoac server loi" delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
-//            [alert show];
-//            [alert release];
+            //            UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"add keyword" message:@"service loi hoac server loi" delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
+            //            [alert show];
+            //            [alert release];
         }];
     }else{
         SourceModel *sourceToAdd = [[SourceModel alloc] initWithId:self._idSite image:@"addSite" title:_namesite.text isAddButton:NO isTop:NO articleList:nil];
@@ -270,7 +273,7 @@
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"KDidAddSiteNotification" object:self userInfo:nil];
         [themBtn setHidden:YES];
-
+        
     }
     
 }
@@ -329,6 +332,10 @@
     
     [_namesite setFrame:CGRectMake(imgViewWedIcon.frame.origin.x+imgViewWedIcon.frame.size.width+10,7,70,40)];
     [_namesite setText:nameSite];
+    if (self._idSite==-2) { 
+        [_namesite setText:@"Trang tin yêu thích"];
+        [btnArticleType setHidden:YES];
+    }
     [_namesite sizeToFit];
     _namesite.numberOfLines=0;
     
@@ -353,9 +360,9 @@
                     break;
                 }
             }
-
+            
         }
-            }
+    }
 }
 
 -(void)labelTap1:(id)sender{

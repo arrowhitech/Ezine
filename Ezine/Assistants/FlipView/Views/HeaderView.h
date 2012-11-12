@@ -40,6 +40,7 @@
 - (void) themButtonClicked:(id)sender;
 - (void) listButtonClicked:(UIButton*)sender;
 - (void) showCategoryOfSource:(UIButton*)sender inRect:(CGRect)frame;
+- (void) plusButtonClicked:(id)sender;
 @end
 
 @interface HeaderView : UIView {
@@ -47,14 +48,17 @@
     UIButton    *ezineBtn;
     UIButton    *themBtn;
     UIButton    *listBtn;
+    UIButton    *plusbutton;
+
     IBOutlet UIButton*    btnArticleType;
     
     IBOutlet UIImageView* imgViewWedIcon;     
     BOOL _islayout1;
     // check if list article is search buy keyword all site
     BOOL                        _isSearchAllSite;
-    UISearchBar                 *searchKeyword;
+    UILabel                 *searchKeyword;
     UIImageView* _lineImage;
+    UIImageView *logoSearch;
     BOOL        isaddSiteFromKeyWord;
     UILabel     *numberArticle;
     

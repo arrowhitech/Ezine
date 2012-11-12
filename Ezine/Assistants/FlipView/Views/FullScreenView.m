@@ -31,6 +31,21 @@ static const int bottomSpace = 5;
 
 @synthesize mediaPlayers;
 
+
+#pragma mark---  check derailArticleID to know load next article
+-(void)checkDetailArticleID{
+
+    for (int i=0; i<[XAppDelegate._arrayAlldetailSiteID count]; i++) {
+        NSNumber *idDetailArticle=[XAppDelegate._arrayAlldetailSiteID objectAtIndex:i];
+        if ([idDetailArticle integerValue]==articleModel._ArticleID) {
+            numberArticleInAll=i;
+            NSLog(@"numberArticleInAll===%d",numberArticleInAll);
+            break;
+        }
+    }
+}
+
+#pragma mark----
 -(id)initWithModel:(ArticleModel*)model {
 	if (self = [super init]) {
         NSLog(@"model===%d",model._ArticleID);
@@ -98,6 +113,8 @@ static const int bottomSpace = 5;
          Init FlipviewController
          */
         activeIndex=0;
+        numberPageInArticle=0;
+
         self.flipViewController = [[MPFlipViewController alloc] initWithOrientation:[self flipViewController:nil orientationForInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation]];
         self.flipViewController.delegate = self;
         self.flipViewController.dataSource = self;
@@ -116,9 +133,11 @@ static const int bottomSpace = 5;
             NSLog(@"Not connect to internet");
             [self fetchedData:model.DictForArticleDetail];
             
+            
         }else{
             
             NSLog(@"InternetConnected");
+            [self checkDetailArticleID];
             [XAppDelegate.serviceEngine GetArticleDetail:model._ArticleID onCompletion:^(NSDictionary* data) {
                 [self fetchedData:data];
                 
@@ -228,6 +247,8 @@ static const int bottomSpace = 5;
 
 #pragma mark--- fetched data
 -(void)fetchedData:(NSDictionary *)data{
+    NSLog(@"data article load==%@",data);
+
     if (data==NULL) {
         [self closeFullScreenView];
         return;
@@ -244,7 +265,9 @@ static const int bottomSpace = 5;
     }
     [cachedDataDetailArtcile release];
     cachedDataDetailArtcile=[[NSDictionary alloc] initWithDictionary:data copyItems:YES];
-    articledetailModel=[[ArticleDetailModel alloc] init];
+    if (!articledetailModel) {
+        articledetailModel=[[ArticleDetailModel alloc] init];
+    }
     articledetailModel._ArticleID=[[data objectForKey:@"ArticleID"] integerValue];
     articledetailModel._SiteID=[[data objectForKey:@"SiteID"] integerValue];
     articledetailModel._commnetCount=[[data objectForKey:@"CommentCount"] integerValue];
@@ -303,7 +326,7 @@ static const int bottomSpace = 5;
 			element.displayStyle = DTHTMLElementDisplayStyleBlock;
 		}
 	};
-	float sizeText=1.2+XAppDelegate.appFontSize/10.0;
+	float sizeText=1.3+XAppDelegate.appFontSize/10.0;
 	NSDictionary *options1 = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:sizeText], NSTextSizeMultiplierDocumentOption, [NSValue valueWithCGSize:maxImageSize], DTMaxImageSize,
                              @"Times New Roman", DTDefaultFontFamily,  @"purple", DTDefaultLinkColor, callBackBlock, DTWillFlushBlockCallBack, nil];
     
@@ -315,27 +338,8 @@ static const int bottomSpace = 5;
     [attString appendAttributedString:[[NSAttributedString alloc] initWithHTMLData:htmlData
                                                                             options:options1
                                                                  documentAttributes:NULL]];
-//    [DTAttributedTextContentView setLayerClass:[CATiledLayer class]];
-//    _textView = [[DTAttributedTextView alloc] initWithFrame:self.frame];
-//    _textView.textDelegate = self;
-//    _textView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//    //[self addSubview:_textView];
-//
-//    _textView.contentView.edgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
-//	_textView.contentView.shouldDrawLinks = YES; // we draw them in DTLinkButton
-//	_textView.attributedString = attString;
-//    
-//	[_textView setContentInset:UIEdgeInsetsMake(0, 0, 44, 0)];
-//	[_textView setScrollIndicatorInsets:UIEdgeInsetsMake(0, 0, 44, 0)];
-//	_textView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//    
-//    [_textView.contentView layoutSubviewsInRect:self.bounds];
-
-    //[self bringSubviewToFront:_textView];
-    // make array View controller article poitrait
-   // NSString *str = [attString1 string];
     
-    //NSAttributedString* attString = [p attrStringFromMarkup: str];
+    int currentPage=[_arrayViewDetailArticle count];
     
     while (_textLenght<[attString length]) {
         DetailArticleView *detailArticle=[[DetailArticleView alloc] init];
@@ -355,7 +359,7 @@ static const int bottomSpace = 5;
         [_arrayViewDetailArticle addObject:detailViecontroller];
         i++;
     }
-    for (int j=0; j<[_arrayViewDetailArticle count]; j++) {
+    for (int j=currentPage; j<[_arrayViewDetailArticle count]; j++) {
         DetailArticleViewController *detailViecontroller=[_arrayViewDetailArticle objectAtIndex:j];
         HeaderDetailArticle *header=[[HeaderDetailArticle alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 56)];
         [header setWallTitleText:articledetailModel._SiteID];
@@ -366,9 +370,9 @@ static const int bottomSpace = 5;
         FooterDetaiArticleView *footerview=[[FooterDetaiArticleView alloc] initWithFrame:CGRectMake(0, self.frame.size.height-100, self.frame.size.width, 100)];
         [footerview setBackgroundColor:[UIColor whiteColor]];
         footerview.delegate =self;
-        footerview._curentPage=j+1;
+        footerview._curentPage=j+1-currentPage;
         footerview._articleID=articleModel._ArticleID;
-        footerview._allpage=[_arrayViewDetailArticle count];
+        footerview._allpage=[_arrayViewDetailArticle count]-currentPage;
         [footerview setdataWithModel:articledetailModel];
         [footerview reAdjustLayout:UIInterfaceOrientationPortrait];
         [detailViecontroller.view addSubview:footerview];
@@ -378,6 +382,8 @@ static const int bottomSpace = 5;
     // make array View controller article landScape
     i=1;
     _textLenght=0;
+    int currentPageLandScape=[_arrayViewDetailArticleLandScape count];
+
     while (_textLenght<[attString length]) {
         DetailArticleView *detailArticle=[[DetailArticleView alloc] init];
         detailArticle.articleModel=articledetailModel;
@@ -397,7 +403,7 @@ static const int bottomSpace = 5;
     }
     NSLog(@"_ArrayDetailview count==%d",_arrayViewDetailArticleLandScape.count);
     
-    for (int j=0; j<[_arrayViewDetailArticleLandScape count]; j++) {
+    for (int j=currentPageLandScape; j<[_arrayViewDetailArticleLandScape count]; j++) {
         DetailArticleViewController *detailViecontroller=[_arrayViewDetailArticleLandScape objectAtIndex:j];
         HeaderDetailArticle *header=[[HeaderDetailArticle alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 56)];
          header.urlLogo =self.urlLogoforFullSrc;
@@ -411,13 +417,13 @@ static const int bottomSpace = 5;
         
         FooterDetaiArticleView *footerview=[[FooterDetaiArticleView alloc] initWithFrame:CGRectMake(0, self.frame.size.height-100, self.frame.size.width, 100)];
         [footerview setBackgroundColor:[UIColor whiteColor]];
-        footerview._curentPage=j+1;
+        footerview._curentPage=j+1-currentPageLandScape;
         footerview._articleID=articleModel._ArticleID;
         footerview.sitename =self.siteNameforFullScr;
         footerview.urlLogo =self.urlLogoforFullSrc;
         NSLog(@"  footerview.sitename%@",  footerview.sitename);
         
-        footerview._allpage=[_arrayViewDetailArticleLandScape count];
+        footerview._allpage=[_arrayViewDetailArticleLandScape count]-currentPageLandScape;
         [footerview setdataWithModel:articledetailModel];
         [footerview reAdjustLayout:UIInterfaceOrientationLandscapeLeft];
         [detailViecontroller.view addSubview:footerview];
@@ -425,6 +431,10 @@ static const int bottomSpace = 5;
     
     ///==================
        ///=========================
+    if (activeIndex>0||numberPageInArticle>0) {
+        return;
+    }
+    
     [self.flipViewController.view setFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
     if (_currentOrientation==UIInterfaceOrientationPortrait||_currentOrientation==UIInterfaceOrientationPortraitUpsideDown) {
         NSLog(@"_currentOrientation  ===  %d",_currentOrientation);
@@ -442,7 +452,11 @@ static const int bottomSpace = 5;
         [self.flipViewController.view setFrame:CGRectMake(0, 0, 1024, 748 )];
 
     }
-   // [self orientationChanged];
+    if (_arrayViewDetailArticle.count==1||_arrayViewDetailArticleLandScape.count==1) {
+        numberPageInArticle=10;
+        [self loadNewArticleDetail];
+    }
+       // [self orientationChanged];
     
 }
 
@@ -493,9 +507,15 @@ static const int bottomSpace = 5;
     if (_currentOrientation==UIInterfaceOrientationPortrait||_currentOrientation==UIInterfaceOrientationPortraitUpsideDown) {
         if ([_arrayViewDetailArticle count]>0) {
             activeIndex++;
+            
             if (activeIndex<=[_arrayViewDetailArticle count]-1) {
+                if (activeIndex==[_arrayViewDetailArticle count]-1) {
+                    [self loadNewArticleDetail];
+                }
                 return [_arrayViewDetailArticle objectAtIndex:activeIndex];
             }else{
+                [self loadNewArticleDetail];
+
                 activeIndex--;
                 return nil;
             }
@@ -506,8 +526,13 @@ static const int bottomSpace = 5;
         if ([_arrayViewDetailArticleLandScape count]>0) {
             activeIndex++;
             if (activeIndex<=[_arrayViewDetailArticleLandScape count]-1) {
+                if (activeIndex==[_arrayViewDetailArticleLandScape count]-1) {
+                    [self loadNewArticleDetail];
+                }
                 return [_arrayViewDetailArticleLandScape objectAtIndex:activeIndex];
             }else{
+                [self loadNewArticleDetail];
+
                 activeIndex--;
                 return nil;
             }
@@ -678,6 +703,28 @@ static const int bottomSpace = 5;
 
     return !(networkStatus == NotReachable);
    
+}
+#pragma mark--- update article detail
+-(void)loadNewArticleDetail{
+    
+    numberArticleInAll=numberArticleInAll+1;
+    if (numberArticleInAll>=[XAppDelegate._arrayAlldetailSiteID count]) {
+        return;
+    }
+    articleModel=nil;
+    articleModel=[XAppDelegate._arrayAlldetailArticleData objectAtIndex:numberArticleInAll];
+    NSLog(@"load new Article : id=== %d",articleModel._ArticleID);
+
+    [XAppDelegate.serviceEngine GetArticleDetail:articleModel._ArticleID onCompletion:^(NSDictionary* data) {
+        _iscache=NO;
+        [self fetchedData:data];
+        
+    } onError:^(NSError* error) {
+        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"Error" message:@"Can not connect to service" delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
+        [alert show];
+        [alert release];
+    }];
+
 }
 
 @end

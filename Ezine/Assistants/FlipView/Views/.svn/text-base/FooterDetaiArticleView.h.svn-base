@@ -43,6 +43,7 @@
     
     NSString* urlLogo;
     NSString* sitename;
+    BOOL    isbookmark;
 }
 @property   int   _curentPage;
 @property   int   _allpage;

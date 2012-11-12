@@ -7,6 +7,7 @@
 //
 
 #import "LastestCell.h"
+#import "Utils.h"
 
 @implementation LastestCell
 
@@ -57,7 +58,7 @@
 -(void)setData:(NSDictionary *)data {
     self.titleLabel.text = [data objectForKey:@"Title"];
     self.loadingImageURLString =[data objectForKey:@"HeadImageUrl"];
-    self.timeArticle.text=[data objectForKey:@"PublishTime"];
+    self.timeArticle.text=[Utils dateStringFromTimestamp:[data objectForKey:@"PublishTime"]];
     self.tag = [[data objectForKey:@"ArticleID"] integerValue];
     if ((NSNull *)self.loadingImageURLString==[NSNull null]) {
         self.loadingImageURLString=@"";

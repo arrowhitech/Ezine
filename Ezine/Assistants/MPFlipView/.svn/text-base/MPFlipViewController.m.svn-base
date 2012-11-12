@@ -270,6 +270,7 @@ NSString *MPFlipViewControllerDidFinishAnimatingNotification = @"com.markpospese
 		[self setPanning:YES];
 		[self setPanStart:currentPosition];
 		[self setLastPanPosition:currentPosition];
+       
 	}
 	
 	if ([self isPanning] && state == UIGestureRecognizerStateChanged)
@@ -336,6 +337,7 @@ NSString *MPFlipViewControllerDidFinishAnimatingNotification = @"com.markpospese
 			[self finishPan:shouldFallBack];
         }
 	}
+NSLog(@"flipViewController ending");
 }
 
 #pragma mark - UIGestureRecognizerDelegate

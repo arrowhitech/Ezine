@@ -334,7 +334,7 @@
 
 #pragma mark-----
 -(void)fetchedData:(NSMutableArray *)data{
-    NSLog(@"cached Article");
+    NSLog(@"data==%@",data);
     
     if ([data isEqualToArray:cachedDataAllArticle]) {
         NSLog(@"cached Article");
@@ -381,11 +381,14 @@
         obj.DictForArticleDetail =[article objectForKey:@"ArticleDetail"];
         obj.nameSite =[article objectForKey:@"SiteName"];
         obj.icon =[article objectForKey:@"SiteLogoUrl"];
+       // NSLog(@"aaaaa=== %@",dicdetatil);
         
         siteNameforArticle =[article objectForKey:@"SiteName"];
         urlLOGoforArticle = [article objectForKey:@"SiteLogoUrl"];
-        
-        
+        [XAppDelegate._arrayAlldetailArticleData addObject:obj];
+        int detailArticleId=[[article objectForKey:@"ArticleID"] integerValue];
+        [XAppDelegate._arrayAlldetailSiteID addObject:[NSNumber numberWithInt:detailArticleId]];
+
         [arrReturn addObject:obj];
         [obj release];
     }
@@ -455,6 +458,7 @@
     }
     
     NSLog(@"page=== %d",[arrayPage count]);
+    NSLog(@"number article detail id: %d",XAppDelegate._arrayAlldetailSiteID.count);
 }
 
 -(void)showViewInFullScreen:(UIView*)viewToShow withModel:(ArticleModel*)model{
@@ -551,6 +555,8 @@
 
 -(void)ezineButtonClicked:(id)sender{
     NSLog(@"EzineClick");
+    [XAppDelegate._arrayAlldetailSiteID removeAllObjects];
+    [XAppDelegate._arrayAlldetailArticleData removeAllObjects];
     [self ToPreviousController];
 }
 
@@ -596,7 +602,12 @@
     
 }
 
-
+-(void)plusButtonClicked:(id)sender{
+    CategoriesController *category=[[CategoriesController alloc] initWithNibName:@"CategoriesController" bundle:nil];
+    category.delegate=self;
+    //[category orientationChanged];
+    [self presentPopupViewController:category animationType:MJPopupViewAnimationSlideRightLeft];
+}
 #pragma mark - MPFlipViewControllerDelegate protocol
 
 - (void)flipViewController:(MPFlipViewController *)flipViewController didFinishAnimating:(BOOL)finished previousViewController:(UIViewController*)previousViewController transitionCompleted:(BOOL)completed{
@@ -957,6 +968,15 @@
     
 }
 
+-(void) btnCommentClick:(id)sender{
+    NSLog(@"site id==%d",self.siteId);
+    MyLauncherItem *item=[[MyLauncherItem alloc] init];
+    item.siteID=self.siteId;
+    RatingInformationController *vc=[[RatingInformationController alloc] initWithNibName:@"RatingInformationController" bundle:nil];
+    vc._laucherItemSelect=item;
+    [self presentPopupViewController:vc animationType:MJPopupViewAnimationSlideBottomBottom];
+    
+}
 #pragma mark--SearchKeyWordViewControllerdelegate
 -(void) loadDataFromSearchInSite:(NSString *)keyword{
     [self showActivityIndicator];
@@ -1118,5 +1138,9 @@
     NSLog(@"Status==%d",!(networkStatus == NotReachable));
 }
 
+#pragma mark--- categories delegate
+-(void) dismissCategories{
+    [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideLeftRight];
 
+}
 @end

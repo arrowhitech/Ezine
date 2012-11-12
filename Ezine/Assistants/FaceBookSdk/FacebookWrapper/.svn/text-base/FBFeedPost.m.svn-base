@@ -95,7 +95,7 @@
 		switch (postType) {
                 
             case kAPIUSerNewFeedStatus:{
-                NSString *queryStatus=[[NSString alloc] initWithFormat:@"SELECT actor_id, comments,likes,message, attachment, permalink, type ,created_time FROM stream WHERE filter_key in (SELECT filter_key FROM stream_filter WHERE uid=me() AND type='newsfeed') AND is_hidden = 0 AND type =46 AND created_time < %d LIMIT 100 ",lastTimeStatus];
+                NSString *queryStatus=[[NSString alloc] initWithFormat:@"SELECT actor_id, comments,likes,message, attachment, permalink, type ,created_time FROM stream WHERE filter_key in (SELECT filter_key FROM stream_filter WHERE uid=me() AND type='newsfeed') AND is_hidden = 0 AND type =46 AND created_time < %d LIMIT 50 ",lastTimeStatus];
                 NSMutableDictionary *paramsStatus = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                                 queryStatus, @"query",
                                                 nil];

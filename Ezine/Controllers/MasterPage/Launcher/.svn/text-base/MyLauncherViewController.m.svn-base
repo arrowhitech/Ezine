@@ -212,6 +212,7 @@ static const int spaceBottom = 50;
     [array release];
     
     [footer setPageNumber:_currentPage andTotalPage:[XAppDelegate._arrayAllSite count]/12+1];
+    [launcherView checkReloadAllsite];
 }
 
 
@@ -367,8 +368,15 @@ static const int spaceBottom = 50;
         NSLog(@"not exits");
     }
     
-    
 }
+
+//-(UITableViewCell *)tableView:(UITableView *)tableView cellForSpecifier:(IASKSpecifier *)specifier{
+//    
+//    
+//    [specifier.key isEqualToString:@"customViewCell"];
+//    
+//    
+//}
 
 -(IBAction) showSettingforDownload:(id)sender{
     SettingforDownloadController *settingDownload=[[SettingforDownloadController alloc] initWithNibName:@"SettingforDownloadController" bundle:nil];

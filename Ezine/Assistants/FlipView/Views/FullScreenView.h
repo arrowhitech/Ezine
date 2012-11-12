@@ -96,7 +96,8 @@
     
     // Hieu
     UIImageView* imgFakeGifAnimation;
-    
+    int         numberArticleInAll;;
+    int         numberPageInArticle;
 }
 
 -(id)initWithModel:(ArticleModel*)model;
@@ -125,5 +126,5 @@
 
 //@property(nonatomic,strong) NSDictionary* dicForArticleDetail;
 -(BOOL)connected;
-
+-(void)loadNewArticleDetail;
 @end

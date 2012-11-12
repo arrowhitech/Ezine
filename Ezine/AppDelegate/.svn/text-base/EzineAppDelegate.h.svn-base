@@ -11,6 +11,7 @@
 #import "ServiceEngine.h"
 #import "Database.h"
 #import "GooglePlusShare.h"
+#import "TestFlight.h"
 
 #define XAppDelegate ((EzineAppDelegate *)[[UIApplication sharedApplication] delegate])
 #define KDidLogoutEzineNotification @"KDidLogOutEzineNotification"

@@ -328,7 +328,7 @@ static const int bottomSpace = 10;
 }
 
 -(void)tapped:(UITapGestureRecognizer *)recognizer {
-    NSLog(@"Taped");
+    NSLog(@" Item thu:%d",self.Viewoder);
     //    NSLog(@" Item thu:%d",itemModel.oder);
     //    NSLog(@" Item ID:%d",itemModel.itemID);
 	[[EzineAppDelegate instance] showViewInFullScreen:self withModel:self.itemModel];

@@ -40,6 +40,7 @@
     UILabel         *_titleSiteTop3;
     BOOL            _isSiteTop;
     NSInteger       _ArticleIdLatest;
+
 }
 @property (nonatomic, assign) BOOL isAddButton;
 @property (nonatomic, assign) id delegate;
@@ -55,6 +56,8 @@
 @property (nonatomic, strong) UILabel *_titleSiteTop1;
 @property (nonatomic, strong) UILabel *_titleSiteTop2;
 @property (nonatomic, strong) UILabel *_titleSiteTop3;
+@property(nonatomic,assign)     BOOL   _isSiteTop;
+
 
 @property (nonatomic, strong) SourceModel *_sourcemoder;
 
@@ -71,5 +74,8 @@
 - (void)hideActivityIndicator;
 -(void) reloadFontSize;
 -(void)updateLatest;
+-(void)reloadImage;
+-(void)checkReload;
+
 
 @end

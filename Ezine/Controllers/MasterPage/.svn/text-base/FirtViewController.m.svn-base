@@ -121,6 +121,8 @@
 }
 
 -(void)dealloc{
+    
+    //[flipViewController release];
     [super dealloc];
 }
 
@@ -592,9 +594,16 @@
 }
 -(void)didReloadSite:(NSNotification*)notification{
     NSLog(@"reload site");
+    for (MyLauncherViewController *laucherViewcontroller in _arrayMyLauncherViewController) {
+        [laucherViewcontroller.launcherView reloadAllsite];
+    }
+    cachedDataListAllsite=nil;
+    finishedBuildPage=NO;
+
     [XAppDelegate.serviceEngine listSiteMasterPage:NO OnCompletion:^(NSDictionary* images) {
-        NSLog(@"image====%@",images);
+        //NSLog(@"image====%@",images);
         [self parseData:images];
+        //do something to get arrallsiteobj
         
     } onError:^(NSError* error) {
         [self loadDataWhenError];

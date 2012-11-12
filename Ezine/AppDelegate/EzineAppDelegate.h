@@ -39,6 +39,8 @@
 @property (strong, nonatomic) ServiceEngine *serviceEngine;
 @property (retain, nonatomic) NSMutableArray *arrayIdSite;
 @property (retain, nonatomic) NSMutableArray *_arrayAllSite;
+@property (retain, nonatomic) NSMutableArray *_arrayAlldetailSiteID;
+@property (retain, nonatomic) NSMutableArray *_arrayAlldetailArticleData;
 
 @property (retain, nonatomic) NSString      *_typeshowSite;
 @property(nonatomic,assign) int appFontSize;

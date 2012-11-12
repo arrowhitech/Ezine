@@ -54,6 +54,9 @@
     //Hieu Extra code ============
     NSString* siteNameforArticle;
     NSString* urlLOGoforArticle;
+    //=========================
+    UIImageView* imgFakeGifAnimation;
+    
 }
 
 @property (nonatomic, retain) NSMutableArray *cachedDataAllArticle;

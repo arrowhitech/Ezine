@@ -103,18 +103,6 @@
 			<string>Thiết lập tải nguồn tin</string>
 		</dict>
 		<dict>
-			<key>DefaultValue</key>
-			<string></string>
-			<key>Key</key>
-			<string>btnxoadulieutrave</string>
-			<key>IASKTextAlignment</key>
-			<string>IASKUITextAlignmentLeft</string>
-			<key>Type</key>
-			<string>IASKButtonSpecifier</string>
-			<key>Title</key>
-			<string>Xoá dữ liệu trả về</string>
-		</dict>
-		<dict>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
@@ -128,7 +116,31 @@
 			<key>Type</key>
 			<string>IASKButtonSpecifier</string>
 			<key>Title</key>
-			<string>Facebook(Hieulsw Trinh)</string>
+			<string>Facebook</string>
+		</dict>
+		<dict>
+			<key>Key</key>
+			<string>btnEzine</string>
+			<key>Title</key>
+			<string>Ezine</string>
+			<key>Type</key>
+			<string>IASKButtonSpecifier</string>
+			<key>IASKCellImage</key>
+			<string>prolifeImage_createEzineAccount.png</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Thông tin Ezine</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>IASKButtonSpecifier</string>
+			<key>Title</key>
+			<string></string>
+			<key>Key</key>
+			<string>customViewCell</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>

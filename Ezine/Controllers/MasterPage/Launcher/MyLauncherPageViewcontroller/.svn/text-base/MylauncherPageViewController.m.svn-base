@@ -87,6 +87,7 @@ static const int spaceBottom = 50;
     NSLog(@"site count===%d %d",_site,XAppDelegate.arrayIdSite.count);
 
     [XAppDelegate.serviceEngine listRaringSite:[[XAppDelegate.arrayIdSite objectAtIndex:_site] integerValue] onCompletion:^(NSDictionary* data) {
+        
         [_arraySiteUSer addObject:data];
         [self fetchedData:data];
 
@@ -125,6 +126,38 @@ static const int spaceBottom = 50;
 {
     return self._tableviewSite.editing ;
 }
+- (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return UITableViewCellEditingStyleNone||UITableViewCellEditingStyleDelete;
+}
+
+- (BOOL) tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void) tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    tableView =self._tableviewSite;
+    
+    NSInteger sourceRow = sourceIndexPath.row;
+    NSInteger destRow = destinationIndexPath.row;
+    NSLog(@"sourceRow  : %d,destRow=%d ",sourceRow,destRow);
+    id object = [_arraySiteUSer objectAtIndex:sourceRow];
+    
+    NSMutableArray *temb=[[NSMutableArray alloc] initWithArray:_arraySiteUSer];
+    
+    [temb removeObjectAtIndex:sourceRow];
+    [temb insertObject:object atIndex:destRow];
+    [_arraySiteUSer removeAllObjects];
+    _arraySiteUSer=[[NSMutableArray alloc] initWithArray:temb];
+    
+}
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
+    if (proposedDestinationIndexPath.row == 0) {
+        return sourceIndexPath;
+    }
+    else {
+        return proposedDestinationIndexPath;
+    }
+}
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -144,7 +177,9 @@ static const int spaceBottom = 50;
     }    
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    
     return 1;
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -171,9 +206,11 @@ static const int spaceBottom = 50;
                 [cell._logoSite setFrame:CGRectMake(20, 8, 35, 45)];
                 [cell._logoSite setAutoresizesSubviews:NO];
                 [cell._logoSite setClipsToBounds:YES];
+
                 break;
             }
         }
+          cell.showsReorderControl = YES;
     }
     NSDictionary *data=[_arraySiteUSer objectAtIndex:indexPath.row];
     cell._nameSite.text=[data objectForKey:@"Name"];
@@ -446,6 +483,8 @@ static const int spaceBottom = 50;
 #pragma mark--- longpress delegate ------ delete cell
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
 {
+    NSLog(@"MylauncherPageViewController");
+    
     CGPoint p = [gestureRecognizer locationInView:self._tableviewSite];
     
     NSIndexPath *indexPath = [self._tableviewSite indexPathForRowAtPoint:p];
@@ -459,6 +498,8 @@ static const int spaceBottom = 50;
 
             }else{
                 [self._tableviewSite setEditing:YES animated:YES];
+               // self._tableviewSite.
+               // [_tableviewSite moveRowAtIndexPath:indexPath toIndexPath:indexPath2];
 
             }
             //[self._tableviewSite setUserInteractionEnabled:NO];
@@ -472,6 +513,14 @@ static const int spaceBottom = 50;
 
     }
 }
+//-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+//    UITouch* touch =[touches anyObject];
+//    CGPoint p = [touch locationInView:self._tableviewSite];
+//    
+//    indexPath2 = [self._tableviewSite indexPathForRowAtPoint:p];
+//
+//    
+//}
 -(void)chooseDataforDownload:(SettingforDownloadController *)controller{
     
     arrForDownloadoff =controller.arrayIdSiteDownload;

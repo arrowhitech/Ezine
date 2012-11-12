@@ -446,6 +446,12 @@
 		522CC13D15B7C07C00DA6060 /* ListArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 522CC13C15B7C07C00DA6060 /* ListArticleViewController.m */; };
 		522CC15315B7F16000DA6060 /* MJPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 522CC15015B7F16000DA6060 /* MJPopupBackgroundView.m */; };
 		522CC15415B7F16000DA6060 /* UIViewController+MJPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 522CC15215B7F16000DA6060 /* UIViewController+MJPopupViewController.m */; };
+		5232421B16504A82004D04AE /* searchlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 5232421916504A82004D04AE /* searchlogo.png */; };
+		5232421C16504A82004D04AE /* searchlogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5232421A16504A82004D04AE /* searchlogo@2x.png */; };
+		5232422016504F12004D04AE /* btn_plusInListArticle.png in Resources */ = {isa = PBXBuildFile; fileRef = 5232421E16504F12004D04AE /* btn_plusInListArticle.png */; };
+		5232422116504F12004D04AE /* btn_plusInListArticle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5232421F16504F12004D04AE /* btn_plusInListArticle@2x.png */; };
+		5232422416505A76004D04AE /* btnPlusLayout1.png in Resources */ = {isa = PBXBuildFile; fileRef = 5232422216505A76004D04AE /* btnPlusLayout1.png */; };
+		5232422516505A76004D04AE /* btnPlusLayout1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5232422316505A76004D04AE /* btnPlusLayout1@2x.png */; };
 		523FC4E915A2F95C0007071B /* EzineAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 523FC4E815A2F95C0007071B /* EzineAppDelegate.m */; };
 		5240629715BE5F4E002DC8A6 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5240628515BE5F4E002DC8A6 /* NSData+Base64.m */; };
 		5240629815BE5F4E002DC8A6 /* NSDate+RFC1123.m in Sources */ = {isa = PBXBuildFile; fileRef = 5240628715BE5F4E002DC8A6 /* NSDate+RFC1123.m */; };
@@ -468,6 +474,8 @@
 		528ADC1315B9637600E82A4C /* button_ezine.png in Resources */ = {isa = PBXBuildFile; fileRef = 528ADC1015B9637600E82A4C /* button_ezine.png */; };
 		528ADC1415B9637600E82A4C /* button_list.png in Resources */ = {isa = PBXBuildFile; fileRef = 528ADC1115B9637600E82A4C /* button_list.png */; };
 		528ADC1515B9637600E82A4C /* button_them.png in Resources */ = {isa = PBXBuildFile; fileRef = 528ADC1215B9637600E82A4C /* button_them.png */; };
+		5297D4B0165024DD00301FCF /* libGooglePlusUniversal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5297D4AF165024DD00301FCF /* libGooglePlusUniversal.a */; };
+		5297D4B3165025E800301FCF /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5297D4B2165025E800301FCF /* libTestFlight.a */; };
 		52A0113015A70AAD00DE64B4 /* btnModify_Categories.png in Resources */ = {isa = PBXBuildFile; fileRef = 52A0112B15A70AAD00DE64B4 /* btnModify_Categories.png */; };
 		52A0113115A70AAD00DE64B4 /* Logo_vnex.png in Resources */ = {isa = PBXBuildFile; fileRef = 52A0112C15A70AAD00DE64B4 /* Logo_vnex.png */; };
 		52A0113215A70AAD00DE64B4 /* TourostImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 52A0112D15A70AAD00DE64B4 /* TourostImage.png */; };
@@ -480,10 +488,8 @@
 		52A887A615AEB9DC00F918B0 /* RatingItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52A8879F15AEB9DC00F918B0 /* RatingItemCell.xib */; };
 		52A887AD15AEBA5B00F918B0 /* CoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A887AA15AEBA5B00F918B0 /* CoverViewController.m */; };
 		52A887B415AEBB7D00F918B0 /* ListArticleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52A887B215AEBB7D00F918B0 /* ListArticleViewController.xib */; };
-		52D119B3164BA310001FFDBD /* libGooglePlusUniversal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D119B1164BA310001FFDBD /* libGooglePlusUniversal.a */; };
 		52D119B6164BB9C0001FFDBD /* btn_bookmarkChoose.png in Resources */ = {isa = PBXBuildFile; fileRef = 52D119B4164BB9C0001FFDBD /* btn_bookmarkChoose.png */; };
 		52D119B7164BB9C0001FFDBD /* btn_bookmarkChoose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52D119B5164BB9C0001FFDBD /* btn_bookmarkChoose@2x.png */; };
-		52D19362164CBE7B003807C0 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D19361164CBE7B003807C0 /* libTestFlight.a */; };
 		52D19373164CFE95003807C0 /* LaucherViewPageCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D19372164CFE95003807C0 /* LaucherViewPageCellModel.m */; };
 		52E396DD164E3E3500E15776 /* infocell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52E396DB164E3E3500E15776 /* infocell@2x.png */; };
 		52E396DE164E3E3500E15776 /* infocell.png in Resources */ = {isa = PBXBuildFile; fileRef = 52E396DC164E3E3500E15776 /* infocell.png */; };
@@ -1328,6 +1334,12 @@
 		522CC15015B7F16000DA6060 /* MJPopupBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPopupBackgroundView.m; sourceTree = "<group>"; };
 		522CC15115B7F16000DA6060 /* UIViewController+MJPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MJPopupViewController.h"; sourceTree = "<group>"; };
 		522CC15215B7F16000DA6060 /* UIViewController+MJPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MJPopupViewController.m"; sourceTree = "<group>"; };
+		5232421916504A82004D04AE /* searchlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchlogo.png; sourceTree = "<group>"; };
+		5232421A16504A82004D04AE /* searchlogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "searchlogo@2x.png"; sourceTree = "<group>"; };
+		5232421E16504F12004D04AE /* btn_plusInListArticle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_plusInListArticle.png; sourceTree = "<group>"; };
+		5232421F16504F12004D04AE /* btn_plusInListArticle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_plusInListArticle@2x.png"; sourceTree = "<group>"; };
+		5232422216505A76004D04AE /* btnPlusLayout1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btnPlusLayout1.png; sourceTree = "<group>"; };
+		5232422316505A76004D04AE /* btnPlusLayout1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnPlusLayout1@2x.png"; sourceTree = "<group>"; };
 		523FC4E715A2F95C0007071B /* EzineAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EzineAppDelegate.h; sourceTree = "<group>"; };
 		523FC4E815A2F95C0007071B /* EzineAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EzineAppDelegate.m; sourceTree = "<group>"; };
 		5240628415BE5F4E002DC8A6 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -1367,6 +1379,8 @@
 		528ADC1015B9637600E82A4C /* button_ezine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_ezine.png; sourceTree = "<group>"; };
 		528ADC1115B9637600E82A4C /* button_list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_list.png; sourceTree = "<group>"; };
 		528ADC1215B9637600E82A4C /* button_them.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_them.png; sourceTree = "<group>"; };
+		5297D4AF165024DD00301FCF /* libGooglePlusUniversal.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGooglePlusUniversal.a; sourceTree = "<group>"; };
+		5297D4B2165025E800301FCF /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = "../../../../Users/MacBookPro/NewEzine-git/Ezine/libTestFlight.a"; sourceTree = "<group>"; };
 		52A0112B15A70AAD00DE64B4 /* btnModify_Categories.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btnModify_Categories.png; sourceTree = "<group>"; };
 		52A0112C15A70AAD00DE64B4 /* Logo_vnex.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Logo_vnex.png; path = Ezine/Resources/Images/Categories/Logo_vnex.png; sourceTree = SOURCE_ROOT; };
 		52A0112D15A70AAD00DE64B4 /* TourostImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TourostImage.png; sourceTree = "<group>"; };
@@ -1384,8 +1398,6 @@
 		52A887A915AEBA5B00F918B0 /* CoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoverViewController.h; path = ../CoverViewController.h; sourceTree = "<group>"; };
 		52A887AA15AEBA5B00F918B0 /* CoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = CoverViewController.m; path = ../CoverViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		52A887B215AEBB7D00F918B0 /* ListArticleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListArticleViewController.xib; sourceTree = "<group>"; };
-		52D119B0164BA310001FFDBD /* libGooglePlus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGooglePlus.a; sourceTree = "<group>"; };
-		52D119B1164BA310001FFDBD /* libGooglePlusUniversal.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGooglePlusUniversal.a; sourceTree = "<group>"; };
 		52D119B4164BB9C0001FFDBD /* btn_bookmarkChoose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_bookmarkChoose.png; sourceTree = "<group>"; };
 		52D119B5164BB9C0001FFDBD /* btn_bookmarkChoose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_bookmarkChoose@2x.png"; sourceTree = "<group>"; };
 		52D19361164CBE7B003807C0 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
@@ -1699,8 +1711,8 @@
 				52A26A3E15A2F22400E7B80F /* UIKit.framework in Frameworks */,
 				52A26A4015A2F22400E7B80F /* Foundation.framework in Frameworks */,
 				52A26A4215A2F22400E7B80F /* CoreGraphics.framework in Frameworks */,
-				52D119B3164BA310001FFDBD /* libGooglePlusUniversal.a in Frameworks */,
-				52D19362164CBE7B003807C0 /* libTestFlight.a in Frameworks */,
+				5297D4B3165025E800301FCF /* libTestFlight.a in Frameworks */,
+				5297D4B0165024DD00301FCF /* libGooglePlusUniversal.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2406,8 +2418,7 @@
 			isa = PBXGroup;
 			children = (
 				04C8BB93161C59420097937D /* GooglePlusShare.h */,
-				52D119B0164BA310001FFDBD /* libGooglePlus.a */,
-				52D119B1164BA310001FFDBD /* libGooglePlusUniversal.a */,
+				5297D4AF165024DD00301FCF /* libGooglePlusUniversal.a */,
 				04C8BB94161C59420097937D /* GooglePlusSignIn.h */,
 				04C8BB95161C59420097937D /* GooglePlusSignInButton.h */,
 			);
@@ -3030,6 +3041,12 @@
 		528ADC0F15B9636000E82A4C /* ListArticles */ = {
 			isa = PBXGroup;
 			children = (
+				5232422216505A76004D04AE /* btnPlusLayout1.png */,
+				5232422316505A76004D04AE /* btnPlusLayout1@2x.png */,
+				5232421E16504F12004D04AE /* btn_plusInListArticle.png */,
+				5232421F16504F12004D04AE /* btn_plusInListArticle@2x.png */,
+				5232421916504A82004D04AE /* searchlogo.png */,
+				5232421A16504A82004D04AE /* searchlogo@2x.png */,
 				0420A255161BD6530077C83D /* btn_addSite.png */,
 				0420A256161BD6530077C83D /* btn_addSite@2x.png */,
 				046E5CF2161AE39500CBB7AC /* btn_comments.png */,
@@ -3082,6 +3099,7 @@
 		52A26A2E15A2F22400E7B80F = {
 			isa = PBXGroup;
 			children = (
+				5297D4B2165025E800301FCF /* libTestFlight.a */,
 				04FAB239162EB8DC002EAA52 /* ImageIO.framework */,
 				04FAB237162EB8D2002EAA52 /* libxml2.dylib */,
 				04F3D51415ECD8AE00DAE354 /* Icon-72.png */,
@@ -4226,6 +4244,12 @@
 				52E396DE164E3E3500E15776 /* infocell.png in Resources */,
 				52E396E2164E472000E15776 /* logoMore@2x.png in Resources */,
 				52E396E3164E472000E15776 /* logoMore.png in Resources */,
+				5232421B16504A82004D04AE /* searchlogo.png in Resources */,
+				5232421C16504A82004D04AE /* searchlogo@2x.png in Resources */,
+				5232422016504F12004D04AE /* btn_plusInListArticle.png in Resources */,
+				5232422116504F12004D04AE /* btn_plusInListArticle@2x.png in Resources */,
+				5232422416505A76004D04AE /* btnPlusLayout1.png in Resources */,
+				5232422516505A76004D04AE /* btnPlusLayout1@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4671,6 +4695,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Ezine/Assistants/Google plus/lib\"",
 					"\"$(SRCROOT)\"",
+					"\"/Users/MacBookPro/NewEzine-git/Ezine\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -4698,6 +4723,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Ezine/Assistants/Google plus/lib\"",
 					"\"$(SRCROOT)\"",
+					"\"/Users/MacBookPro/NewEzine-git/Ezine\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",

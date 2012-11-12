@@ -19,10 +19,12 @@
 #import "FooterView.h"
 #import "SearchKeyWordViewController.h"
 #import "Reachability.h"
+#import "CategoriesController.h"
+
 
 @class CTView;
 @class LastestOfSource;
-@interface ListArticleViewController : UIViewController<HeaderViewDelegate,CategorySelectionDelegate,UIPopoverControllerDelegate,MPFlipViewControllerDelegate, MPFlipViewControllerDataSource,LayoutViewExtentionDelegate,FullScreenViewDelegate,MFMailComposeViewControllerDelegate,FooterViewDelegate,SearchKeyWordViewControllerDelegate>{
+@interface ListArticleViewController : UIViewController<HeaderViewDelegate,CategorySelectionDelegate,UIPopoverControllerDelegate,MPFlipViewControllerDelegate, MPFlipViewControllerDataSource,LayoutViewExtentionDelegate,FullScreenViewDelegate,MFMailComposeViewControllerDelegate,FooterViewDelegate,SearchKeyWordViewControllerDelegate,CategoriesControllerDelegate>{
     
 	
     NSMutableArray              *arrayData;

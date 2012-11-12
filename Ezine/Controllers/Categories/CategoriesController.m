@@ -441,9 +441,9 @@
 - (void)fetchedData{
     //parse out the json data
     NSMutableArray *contents = [[NSMutableArray alloc] init];
-    [contents addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"EZ_categories.png"], kCellImage, NSLocalizedString(@"Ezine",@""), kCellText, nil]];
-    [contents addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage invertImageNamed:@"Account_Catogories"], kCellImage, NSLocalizedString(@"Tài Khoản",@""), kCellText, nil]];
-    [contents addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage invertImageNamed:@"NewsFloating_catogories"], kCellImage, NSLocalizedString(@"Tin Nổi Bật",@""), kCellText, nil]];
+    [contents addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"EZ_categories.png"], kCellImage, NSLocalizedString(@"Ezine",@""), kCellText,NSLocalizedString(@"0",@""), KCellTag, nil]];
+    [contents addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage invertImageNamed:@"Account_Catogories"], kCellImage, NSLocalizedString(@"Tài Khoản",@""), kCellText,NSLocalizedString(@"1",@""), KCellTag, nil]];
+    [contents addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage invertImageNamed:@"NewsFloating_catogories"], kCellImage, NSLocalizedString(@"Tin Nổi Bật",@""), kCellText,NSLocalizedString(@"2",@""), KCellTag, nil]];
     for (int i=0; i<CategoriesInform.count; i++) {
         NSDictionary *dataCateloges=[CategoriesInform objectAtIndex:i];
         NSString *name=[dataCateloges objectForKey:@"Name"];

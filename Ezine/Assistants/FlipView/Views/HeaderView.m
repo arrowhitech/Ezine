@@ -27,6 +27,10 @@
 -(void)changeStyleHeader:(int) layoutId{
     if (layoutId==1) {
         _islayout1=YES;
+        [logoSearch setHidden:YES];
+        [searchKeyword setHidden:YES];
+        [numberArticle setHidden:YES];
+        [plusbutton setImage:[UIImage imageNamed:@"btnPlusLayout1.png"] forState:UIControlStateNormal];
         [self setBackgroundColor:[UIColor clearColor]];
         [self.btnArticleType setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_namesite setTextColor:[UIColor whiteColor]];
@@ -51,6 +55,8 @@
         [self.btnArticleType setTitleColor:[UIColor colorWithRed:99/255.0 green:99/255.0 blue:99/255.0 alpha:0.3] forState:UIControlStateNormal];
         [_namesite setTextColor:[UIColor colorWithRed:99/255.0 green:99/255.0 blue:99/255.0 alpha:0.3]];
         [_lineImage setFrame:CGRectMake(10, 54, 1024-20, 1)];
+        [plusbutton setFrame:CGRectMake(self.frame.size.width-40,15,24,23)];
+
         [self setBackgroundColor:[UIColor whiteColor]];
         //  [imgViewWedIcon setFrame:CGRectMake(listBtn.frame.origin.x+listBtn.frame.size.width+120, listBtn.frame.origin.y,45, 45)] ;
         
@@ -62,6 +68,8 @@
         }
         //  [imgViewWedIcon setFrame:CGRectMake(listBtn.frame.origin.x+listBtn.frame.size.width+60, listBtn.frame.origin.y,45, 45)] ;
         [_lineImage setFrame:CGRectMake(10, 54, 768-20, 1)];
+        [plusbutton setFrame:CGRectMake(self.frame.size.width-40,15,24,23)];
+
         
     }
     
@@ -90,6 +98,15 @@
     [themBtn addTarget:self action:@selector(themTouched:) forControlEvents:UIControlEventTouchUpInside];
 	[self addSubview:themBtn];
     
+    plusbutton=[[UIButton alloc] init];
+    UIImage *plusIcon=[UIImage imageNamed:@"btn_plusInListArticle.png"];
+	[plusbutton setImage:plusIcon forState:UIControlStateNormal];
+	[plusbutton setFrame:CGRectMake(self.frame.size.width-40,15,24,23)];
+    [plusbutton addTarget:self action:@selector(plusClick:) forControlEvents:UIControlEventTouchUpInside];
+	[self addSubview:plusbutton];
+
+    
+    
     for (NSNumber * siteID in XAppDelegate.arrayIdSite){
         if (self._idSite==[siteID integerValue]) {
             [themBtn setHidden:YES];
@@ -101,55 +118,58 @@
         [themBtn setHidden:NO];
         isaddSiteFromKeyWord=YES;
         _isSearchAllSite=YES;
-        
-        searchKeyword=[[UISearchBar alloc] init];
-        [searchKeyword setFrame:CGRectMake(125,17, 347,40)];
-        [searchKeyword setTintColor:[UIColor whiteColor]];
-        UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0,searchKeyword.frame.size.height-1,searchKeyword.frame.size.width, 1)];
-        [bottomBorder setBackgroundColor:[UIColor whiteColor]];
-        [bottomBorder setOpaque:YES];
-        [bottomBorder setTag:SEARCHBAR_BORDER_TAG];
-        [searchKeyword addSubview:bottomBorder];
+        searchKeyword=[[UILabel alloc] init];
+        [searchKeyword setBackgroundColor:[UIColor clearColor]];
         //[searchInformation setContentInset:UIEdgeInsetsMake(5, 0, 5, 35)];
-        UITextField* searchField = nil;
-        
-        for (UIView *searchBarSubview in [searchKeyword subviews]) {
-            if ([searchBarSubview isKindOfClass:NSClassFromString(@"UISearchBarTextField")]) {
-                [(UITextField *)searchBarSubview setBackground:[UIImage imageNamed:@"img_searchSite.png"]];
-                [(UITextField *)searchBarSubview setBackgroundColor:[UIColor clearColor]];
-                searchField = (UITextField*)searchBarSubview;
-                [searchField setTextAlignment:UITextAlignmentLeft];
-                searchField.textColor = [UIColor colorWithRed:63.0/255 green:177.0/255 blue:227.0/255 alpha:1.0];
-                [searchField setFont:[UIFont fontWithName:@"ArialMT" size:14]];
-                
-            }
-            
-        }
-        [bottomBorder release];
-        
-        [self addSubview:searchKeyword];
-        [searchKeyword setFrame:CGRectMake(themBtn.frame.origin.x+themBtn.frame.size.width+5,themBtn.frame.origin.y-2,327,42)];
+        //        UITextField* searchField = nil;
+        //
+        //        for (UIView *searchBarSubview in [searchKeyword subviews]) {
+        //            if ([searchBarSubview isKindOfClass:NSClassFromString(@"UISearchBarTextField")]) {
+        //                [(UITextField *)searchBarSubview setBackground:[UIImage imageNamed:@"img_searchSite.png"]];
+        //                [(UITextField *)searchBarSubview setBackgroundColor:[UIColor clearColor]];
+        //                searchField = (UITextField*)searchBarSubview;
+        //                [searchField setTextAlignment:UITextAlignmentLeft];
+        //                searchField.textColor = [UIColor colorWithRed:63.0/255 green:177.0/255 blue:227.0/255 alpha:1.0];
+        //                [searchField setFont:[UIFont fontWithName:@"ArialMT" size:14]];
+        //
+        //            }
+        //
+        //        }
+        //        [bottomBorder release];
+        logoSearch=[[UIImageView alloc] initWithFrame:CGRectMake(themBtn.frame.origin.x+themBtn.frame.size.width+150,themBtn.frame.origin.y+5,35,25)];
+        [logoSearch setImage:[UIImage imageNamed:@"searchlogo.png"]];
+        [self addSubview:logoSearch];
+        [searchKeyword setFont:[UIFont fontWithName:@"UVNHongHaHep" size:23]];
+        searchKeyword.textAlignment=UITextAlignmentLeft;
+        [searchKeyword setFrame:CGRectMake(logoSearch.frame.origin.x+logoSearch.frame.size.width+5,logoSearch.frame.origin.y-3,300,25)];
         searchKeyword.userInteractionEnabled=NO;
         [searchKeyword setText:keyword];
-        for (UIView *subview in searchKeyword.subviews)
-        {
-            if ([subview conformsToProtocol:@protocol(UITextInputTraits)])
-            {
-                [(UITextField *)subview setClearButtonMode:UITextFieldViewModeWhileEditing];
-            }
-        }
+        searchKeyword.numberOfLines=0;
+        [searchKeyword sizeToFit];
+        
+        [self addSubview:searchKeyword];
+        
+        //        for (UIView *subview in searchKeyword.subviews)
+        //        {
+        //            if ([subview conformsToProtocol:@protocol(UITextInputTraits)])
+        //            {
+        //                [(UITextField *)subview setClearButtonMode:UITextFieldViewModeWhileEditing];
+        //            }
+        //        }
         numberArticle=[[UILabel alloc] init];
         [numberArticle setBackgroundColor:[UIColor clearColor]];
         [self addSubview:numberArticle];
         numberArticle.font=[UIFont fontWithName:@"UVNHongHaHepBold" size:14];
         numberArticle.textAlignment=UITextAlignmentLeft;
-        [numberArticle setFrame:CGRectMake(searchKeyword.frame.origin.x+searchKeyword.frame.size.width+10, themBtn.frame.origin.y+10, 60, 20)];
+        [numberArticle setFrame:CGRectMake(searchKeyword.frame.origin.x+searchKeyword.frame.size.width+15, searchKeyword.frame.origin.y+7, 60, 20)];
         [numberArticle setTextColor:RGBCOLOR(175, 175, 175)];
         
         [numberArticle setText:[NSString stringWithFormat:@"Có %@ kết quả",wallTitle]];
         NSLog(@"keyword===%@   total===%@",keyword,numberArticle.text);
         [numberArticle sizeToFit];
         numberArticle.numberOfLines=0;
+        
+        
         
     }else{
         listBtn = [[UIButton alloc] init];
@@ -168,7 +188,7 @@
     _namesite.userInteractionEnabled=YES;
     UITapGestureRecognizer *tapGesture1 = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelTap1:)] autorelease];
     [_namesite addGestureRecognizer:tapGesture1];
-        
+    
     
     [self addSubview:_namesite];
     
@@ -332,7 +352,7 @@
     
     [_namesite setFrame:CGRectMake(imgViewWedIcon.frame.origin.x+imgViewWedIcon.frame.size.width+10,7,70,40)];
     [_namesite setText:nameSite];
-    if (self._idSite==-2) { 
+    if (self._idSite==-2) {
         [_namesite setText:@"Trang tin yêu thích"];
         [btnArticleType setHidden:YES];
     }
@@ -382,6 +402,11 @@
     NSLog(@"Status==%d",!(networkStatus == NotReachable));
 }
 
-
+#pragma mark--- plus click
+-(void)plusClick:(id)sender{
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(plusButtonClicked:)]) {
+        [self.delegate plusButtonClicked:sender];
+    }
+}
 
 @end
