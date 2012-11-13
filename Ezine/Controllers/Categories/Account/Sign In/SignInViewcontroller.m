@@ -11,6 +11,7 @@
 #import "IASKSpecifier.h"
 #import "IASKSettingsReader.h"
 #import "MyLauncherView.h"
+#import "SettingAccountDetailController.h"
 
 @interface SignInViewcontroller ()
 
@@ -82,8 +83,9 @@
         } onError:^(NSError* error) {
             
         }];
+        
+           }
 
-    }
     
 }
 

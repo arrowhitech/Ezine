@@ -17,6 +17,7 @@
 #import "IASKSettingsReader.h"
 #import "SettingDeleteDataView.h"
 #import "DownloadDataOfflineViewController.h"
+#import "FacebookListViewController.h"
 
 static const float GAP = 10;
 static const int colsInPortrait = 3;
@@ -99,6 +100,8 @@ static const int spaceBottom = 50;
     [[UIDevice currentDevice] orientation] ;
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged) name:UIDeviceOrientationDidChangeNotification object:nil];
+    [self checkFBlogin];
+    [self checkUserEzineLogin];
     
 }
 #pragma mark - Orientation Changed
@@ -327,9 +330,10 @@ static const int spaceBottom = 50;
 - (void)settingsViewController:(IASKAppSettingsViewController*)sender buttonTappedForSpecifier:(IASKSpecifier*)specifier {
     
 	if ([specifier.key isEqualToString:@"btnFacebook"]) {
-        
-		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Demo Action 1 called" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
-		[alert show];
+              
+         [self dismissModalViewControllerAnimated:YES];
+        [self gotoFaceAcc];
+		
     }
     if ([specifier.key isEqualToString:@"btnThietlaptainguontin"]){
         [self showSettingforDownload:nil];
@@ -342,6 +346,11 @@ static const int spaceBottom = 50;
     if ([specifier.key isEqualToString:@"btnxoadulieutrave"]){
         [self showDeleteData:nil];
         
+    }
+    if ([specifier.key isEqualToString:@"btnEzine"]) {
+        
+        [self dismissModalViewControllerAnimated:YES];
+        [self gotoEzineAcc];
     }
 
 }
@@ -421,6 +430,114 @@ static const int spaceBottom = 50;
     arrForDownloadoff =controller.arrayIdSiteDownload;
     // NSLog(@"Arrr======%@",arrForDownloadoff);
 }
+#pragma mark========Facebook======Ezine Acc===============================
+-(void)gotoFaceAcc{
+    
+        FacebookListViewController   *fbListScreen=[[FacebookListViewController alloc]initWithNibName:@"FacebookListViewController" bundle:nil];
+        [fbListScreen.view setFrame:CGRectMake(0, 0, 768, 1004)];
+        [XAppDelegate.navigationController pushViewController:fbListScreen animated:YES];
+ 
+    
+}
+-(void)gotoEzineAcc{
+    if ([self checkUserEzineLogin]) {
+        AccountDetailController *accountdetai=[[AccountDetailController alloc] initWithNibName:@"AccountDetailController" bundle:nil];
+        accountdetai.delegate=self;
+        if([UIApplication sharedApplication].statusBarOrientation==UIInterfaceOrientationLandscapeLeft||[UIApplication sharedApplication].statusBarOrientation==UIInterfaceOrientationLandscapeRight) {
+            
+            NSLog(@"Landscape");
+            [accountdetai.view setFrame:CGRectMake(1024, 20, 550, 1004)];
+            [self.view.superview addSubview:accountdetai.view];
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationDuration:0.5];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [accountdetai.view setFrame:CGRectMake(0, 20, 550, 768)];
+            [UIView commitAnimations];
+            
+        }else {
+            
+            NSLog(@"portrait");
+            [accountdetai.view setFrame:CGRectMake(768, 20, 550, 1004)];
+            [self.view.superview addSubview:accountdetai.view];
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationDuration:0.5];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [accountdetai.view setFrame:CGRectMake(0, 20, 550, 1004)];
+            [UIView commitAnimations];
+            
+        }
+        //[self.navigationController pushViewController:accountdetai animated:YES];
+        
+    }else{
+        
+        if (ezineAccount) {
+            [ezineAccount release];
+        }
+        ezineAccount=[[EzineAccountViewController alloc] initWithNibName:@"EzineAccountViewController" bundle:nil];
+        ezineAccount.delegate=self;
+        if([UIApplication sharedApplication].statusBarOrientation==UIInterfaceOrientationLandscapeLeft||[UIApplication sharedApplication].statusBarOrientation==UIInterfaceOrientationLandscapeRight) {
+            
+            NSLog(@"Landscape");
+            [ezineAccount.view.superview setFrame:CGRectMake(1024, 20, 550, 1004)];
+            [self.view.superview addSubview:ezineAccount.view];
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationDuration:0.5];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [ezineAccount.view setFrame:CGRectMake(1024-550, 10, 550, 768)];
+            [UIView commitAnimations];
+            
+        }else {
+            
+            NSLog(@"portrait");
+            [ezineAccount.view setFrame:CGRectMake(768, 20, 550, 1004)];
+            [self.view.superview addSubview:ezineAccount.view];
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationDuration:0.5];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [ezineAccount.view setFrame:CGRectMake(218, 10, 550, 1004)];
+            [UIView commitAnimations];
+            
+        }
+        
+       // [self.navigationController pushViewController:ezineAccount animated:YES];
+        
+    }
+     
+    
 
+    
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+-(BOOL)checkUserEzineLogin{
+    NSString *name=[[NSUserDefaults standardUserDefaults] objectForKey:@"EzineAccountName"];
+    if ([name length]>1) {
+        return YES;
+    }else{
+        return NO;
+    }
+}
+-(BOOL)checkFBlogin{
+//    NSMutableArray *contents = [[NSMutableArray alloc] init];
+    
+    NSString *accesstoken=[[NSUserDefaults standardUserDefaults] objectForKey:@"access_token"];
+    if (accesstoken==nil||[accesstoken length]<2) {
+    
+        return NO;
+        
+    }else {
+        NSLog(@"login");
+        return YES;
+    }
+    
+       
+}
 
 @end
