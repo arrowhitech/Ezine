@@ -216,8 +216,7 @@
 
 -(void) getLastestSource{
     
-    ServiceEngine *serviceEngine=[[ServiceEngine alloc] initWithHostName:@"api.ezine.vn" customHeaderFields:nil];
-    [serviceEngine getLatestSourceNewSite:self._siteId onCompletion:^(NSDictionary* data) {
+    [XAppDelegate.serviceEngine getLatestSourceNewSite:self._siteId onCompletion:^(NSDictionary* data) {
         [self fetchedData:data];
         
     } onError:^(NSError* error) {

@@ -95,4 +95,10 @@ typedef void (^ResponeBlock1)(NSMutableArray* responseArr);
 //---------- download offline data
 
 -(void) downloadDataOfflineSite:(int)siteID reload:(BOOL)reload onCompletion:( ResponeBlock) completionBlock onError:(MKNKErrorBlock) errorBlock;
+
+//------- remove a bookmark
+
+- (void) userRemoveBookmark:(int)articleID onCompletion:( ResponeBlock) completionBlock onError:(MKNKErrorBlock) errorBlock;
+//--- GetListArticleRelative
+- (void)GetListArticleRelative:(int) articleID  onCompletion:( ResponeBlock1) completionBlock onError:(MKNKErrorBlock) errorBlock;
 @end

@@ -155,7 +155,8 @@
 }
 -(void)closeFullScreen {
     NSLog(@"Applidelegate closeFullScreen ");
-    for (UIViewController *vc in self.navigationController.viewControllers) {
+    for (int i=[self.navigationController.viewControllers count]-1;i>=0;i--) {
+        UIViewController *vc=[self.navigationController.viewControllers objectAtIndex:i];
         if ([vc isMemberOfClass:[ListArticleViewController class]]) {
             ListArticleViewController *la=(ListArticleViewController*)vc;
             [la closeFullScreen];

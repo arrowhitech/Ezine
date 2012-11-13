@@ -28,15 +28,17 @@ static const int bottomSpace = 5;
 @synthesize flipViewController;
 @synthesize deletate,cachedDataDetailArtcile;
 @synthesize siteNameforFullScr,urlLogoforFullSrc;
-
-@synthesize mediaPlayers;
+@synthesize _arrayDataAllDetailArticle,_arrayIdAllDetailArticle;
+@synthesize mediaPlayers,popovercontroller;
 
 
 #pragma mark---  check derailArticleID to know load next article
 -(void)checkDetailArticleID{
+    NSLog(@"numberArticleInAll===%d",[self._arrayDataAllDetailArticle count]);
+    for (int i=0; i<[self._arrayIdAllDetailArticle count]; i++) {
+        NSNumber *idDetailArticle=[self._arrayIdAllDetailArticle objectAtIndex:i];
+       
 
-    for (int i=0; i<[XAppDelegate._arrayAlldetailSiteID count]; i++) {
-        NSNumber *idDetailArticle=[XAppDelegate._arrayAlldetailSiteID objectAtIndex:i];
         if ([idDetailArticle integerValue]==articleModel._ArticleID) {
             numberArticleInAll=i;
             NSLog(@"numberArticleInAll===%d",numberArticleInAll);
@@ -53,6 +55,8 @@ static const int bottomSpace = 5;
         _arrayViewDetailArticleLandScape=[[NSMutableArray alloc] init];
         _currentOrientation=[UIApplication sharedApplication].statusBarOrientation;
         cachedDataDetailArtcile=nil;
+        _arrayIdAllDetailArticle=[[NSMutableArray alloc] init];
+        _arrayDataAllDetailArticle=[[NSMutableArray alloc] init];
         
         imgFakeGifAnimation=[[UIImageView alloc] initWithFrame:self.frame];
         imgFakeGifAnimation.animationDuration = 1;
@@ -69,7 +73,6 @@ static const int bottomSpace = 5;
             imgFakeGifAnimation.animationImages=[NSArray arrayWithObjects:[UIImage imageNamed:@"Ezine-loading-H1.png"],[UIImage imageNamed:@"Ezine-loading-H2.png"],[UIImage imageNamed:@"Ezine-loading-H3.png"],[UIImage imageNamed:@"Ezine-loading-H4.png"],[UIImage imageNamed:@"Ezine-loading-H5.png"],[UIImage imageNamed:@"Ezine-loading-H1.png"],nil];
             [imgFakeGifAnimation setFrame:CGRectMake(0, 0, 768, 1004)];
             [imgFakeGifAnimation startAnimating];
-            
             
         }
         
@@ -128,32 +131,38 @@ static const int bottomSpace = 5;
         
         [self addSubview:imgFakeGifAnimation];
         
-        if(![self connected]){
-            
-            NSLog(@"Not connect to internet");
-            [self fetchedData:model.DictForArticleDetail];
-            
-            
-        }else{
-            
-            NSLog(@"InternetConnected");
-            [self checkDetailArticleID];
-            [XAppDelegate.serviceEngine GetArticleDetail:model._ArticleID onCompletion:^(NSDictionary* data) {
-                [self fetchedData:data];
-                
-            } onError:^(NSError* error) {
-                UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"Error" message:@"Can not connect to service" delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
-                [alert show];
-                [alert release];
-                [self closeFullScreenView];
-            }];
-            
-        }
-
+       
 	}
 	return self;
 }
 
+#pragma mark--- start load Article
+- (void)startLoadArticle{
+    if(![self connected]){
+        
+        NSLog(@"Not connect to internet");
+        [self fetchedData:articleModel.DictForArticleDetail];
+        
+        
+    }else{
+        
+        NSLog(@"InternetConnected");
+        [self checkDetailArticleID];
+        [XAppDelegate.serviceEngine GetArticleDetail:articleModel._ArticleID onCompletion:^(NSDictionary* data) {
+            [self fetchedData:data];
+            
+        } onError:^(NSError* error) {
+            UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"Error" message:@"Can not connect to service" delegate:self cancelButtonTitle:@"done" otherButtonTitles: nil];
+            [alert show];
+            [alert release];
+            [self closeFullScreenView];
+        }];
+        
+    }
+
+}
+
+//============
 - (void)reAdjustLayout{
     [self buildLayoutDetailArticle];
     //
@@ -293,11 +302,27 @@ static const int bottomSpace = 5;
 
     
 }
-#pragma mark--
+#pragma mark-- footer delegate
 - (void) ezineButtonClicked:(id)sender{
     [self closeFullScreenView];
 }
 
+-(void) listButtonClicked:(UIButton *)sender{
+    ListArticleRelative *listArticle=[[ListArticleRelative alloc] init];
+    listArticle._siteId=sender.tag;
+    [listArticle getLastestSource];
+    
+    NSLog(@"list source: %d",[sender tag]);
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:listArticle];
+    
+    UIPopoverController* listPopover = [[UIPopoverController alloc]
+                                        initWithContentViewController:navController];
+    listPopover.delegate =self;
+    [navController release];
+    self.popovercontroller =listPopover;
+    [listPopover release];
+    [self.popovercontroller presentPopoverFromRect:sender.frame inView:self permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
 #pragma mark--- built layout for detail article
 -(void) buildLayoutDetailArticle{
     NSString* text = [articledetailModel._content stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -708,11 +733,11 @@ static const int bottomSpace = 5;
 -(void)loadNewArticleDetail{
     
     numberArticleInAll=numberArticleInAll+1;
-    if (numberArticleInAll>=[XAppDelegate._arrayAlldetailSiteID count]) {
+    if (numberArticleInAll>=[self._arrayDataAllDetailArticle count]) {
         return;
     }
     articleModel=nil;
-    articleModel=[XAppDelegate._arrayAlldetailArticleData objectAtIndex:numberArticleInAll];
+    articleModel=[self._arrayDataAllDetailArticle objectAtIndex:numberArticleInAll];
     NSLog(@"load new Article : id=== %d",articleModel._ArticleID);
 
     [XAppDelegate.serviceEngine GetArticleDetail:articleModel._ArticleID onCompletion:^(NSDictionary* data) {

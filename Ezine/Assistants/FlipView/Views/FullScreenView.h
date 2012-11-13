@@ -51,6 +51,7 @@
 #import "DTAttributedTextView.h"
 #import "Reachability.h"
 #import <SystemConfiguration/SystemConfiguration.h>
+#import "ListArticleRelative.h"
 
 @class CTView;
 
@@ -61,7 +62,7 @@
 
 @end
 
-@interface FullScreenView : UIViewExtention <HeaderDetailArticleDelegate,MPFlipViewControllerDataSource,MPFlipViewControllerDelegate,FooterDetaiArticleView,DTAttributedTextContentViewDelegate,DTLazyImageViewDelegate> {
+@interface FullScreenView : UIViewExtention <HeaderDetailArticleDelegate,MPFlipViewControllerDataSource,MPFlipViewControllerDelegate,FooterDetaiArticleView,DTAttributedTextContentViewDelegate,DTLazyImageViewDelegate,UIPopoverControllerDelegate> {
 	ArticleModel*   articleModel;
     NSMutableArray *_arrayViewDetailArticle;
     NSMutableArray *_arrayViewDetailArticleLandScape;
@@ -98,6 +99,8 @@
     UIImageView* imgFakeGifAnimation;
     int         numberArticleInAll;;
     int         numberPageInArticle;
+    NSMutableArray  *_arrayIdAllDetailArticle;
+    NSMutableArray  *_arrayDataAllDetailArticle;
 }
 
 -(id)initWithModel:(ArticleModel*)model;
@@ -122,9 +125,16 @@
 @property(nonatomic,retain)  NSString* siteNameforFullScr;
 @property(nonatomic,retain)  NSString* urlLogoforFullSrc;
 
+@property (nonatomic, retain)     NSMutableArray  *_arrayIdAllDetailArticle;
+@property (nonatomic, retain)     NSMutableArray  *_arrayDataAllDetailArticle;
+@property (nonatomic,retain)  UIPopoverController *popovercontroller;
+
+
 // Extra code ===========
 
 //@property(nonatomic,strong) NSDictionary* dicForArticleDetail;
 -(BOOL)connected;
 -(void)loadNewArticleDetail;
+-(void)checkDetailArticleID;
+- (void)startLoadArticle;
 @end

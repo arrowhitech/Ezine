@@ -58,6 +58,9 @@
     NSString* urlLOGoforArticle;
     //=========================
     UIImageView* imgFakeGifAnimation;
+    NSMutableArray  *_arrayIDAllDetailArticle;
+    NSMutableArray  *_arrayDataAllDetailArticle;
+
     
 }
 

@@ -9,9 +9,9 @@
 #import "MPFlipViewController.h"
 #import	"MPFlipTransition.h"
 
-#define MARGIN	44
+#define MARGIN	384
 #define SWIPE_THRESHOLD	125.0f
-#define SWIPE_ESCAPE_VELOCITY 650.0f
+#define SWIPE_ESCAPE_VELOCITY 1650.0f
 
 // Notifications
 NSString *MPFlipViewControllerDidFinishAnimatingNotification = @"com.markpospesel.MPFlipViewControllerDidFinishAnimatingNotification";
@@ -240,7 +240,6 @@ NSString *MPFlipViewControllerDidFinishAnimatingNotification = @"com.markpospese
 {
     UIGestureRecognizerState state = [gestureRecognizer state];
 	CGPoint currentPosition = [gestureRecognizer locationInView:self.view];
-    NSLog(@"point3=== %f  %f",currentPosition.x,currentPosition.y);
 
 	if (state == UIGestureRecognizerStateBegan)
 	{
@@ -251,13 +250,15 @@ NSString *MPFlipViewControllerDidFinishAnimatingNotification = @"com.markpospese
 		BOOL isHorizontal = [self orientation] == MPFlipViewControllerOrientationHorizontal;
 		CGFloat value = isHorizontal? currentPosition.x : currentPosition.y;
 		CGFloat dimension = isHorizontal? self.view.bounds.size.width : self.view.bounds.size.height;
-		if (value <= MARGIN)
+		if (value <= dimension/2-30)
 		{
+            NSLog(@"begin flip reverse");
 			if (![self startFlipWithDirection:MPFlipViewControllerDirectionReverse])
 				return;
 		}
-		else if (value >= dimension - MARGIN)
+		else if (value >= dimension - dimension/2-30)
 		{
+            NSLog(@"begin flip Forward");
 			if (![self startFlipWithDirection:MPFlipViewControllerDirectionForward])
 				return;
 		}
@@ -287,7 +288,7 @@ NSString *MPFlipViewControllerDidFinishAnimatingNotification = @"com.markpospese
 		if (![self isRubberbanding] && (velocityComponent < -SWIPE_ESCAPE_VELOCITY || velocityComponent > SWIPE_ESCAPE_VELOCITY))
 		{
 			// Detected a swipe to the left
-			NSLog(@"Escape velocity reached.");
+			NSLog(@"olala");
 			BOOL shouldFallBack = (velocityComponent < -SWIPE_ESCAPE_VELOCITY)? self.direction != MPFlipViewControllerDirectionForward : self.direction == MPFlipViewControllerDirectionForward;
 			[self setPanning:NO];
 			
@@ -296,6 +297,7 @@ NSString *MPFlipViewControllerDidFinishAnimatingNotification = @"com.markpospese
 		}
 		else
 		{
+            NSLog(@"olele");
 			if (progress < 1)
 				[self.flipTransition setStage:MPFlipAnimationStage1 progress:progress];
 			else
@@ -337,7 +339,6 @@ NSString *MPFlipViewControllerDidFinishAnimatingNotification = @"com.markpospese
 			[self finishPan:shouldFallBack];
         }
 	}
-NSLog(@"flipViewController ending");
 }
 
 #pragma mark - UIGestureRecognizerDelegate
