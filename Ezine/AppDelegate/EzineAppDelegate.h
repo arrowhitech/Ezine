@@ -30,6 +30,8 @@
     Database *db;
     ServiceEngine *serviceEngine;
     int appFontSize;
+    //Activity Indicator
+     UIActivityIndicatorView* _spinner;
 }
 
 @property (strong, nonatomic) UIWindow *window;
@@ -41,6 +43,10 @@
 @property (retain, nonatomic) NSMutableArray *_arrayAllSite;
 @property (retain, nonatomic) NSMutableArray *_arrayAlldetailSiteID;
 @property (retain, nonatomic) NSMutableArray *_arrayAlldetailArticleData;
+//Hieu extra==========Activity Indicator=========
+@property(nonatomic,retain)   UIActivityIndicatorView* _spinner;
+
+
 
 @property (retain, nonatomic) NSString      *_typeshowSite;
 @property(nonatomic,assign) int appFontSize;
@@ -52,6 +58,8 @@
 -(void)showViewInFullScreen:(UIView*)viewToShow withModel:(ArticleModel*)model;
 -(void)closeFullScreen;
 -(void)initServiceEngine;
-
+//Hieu
+- (void)showActivityIndicator;
+- (void)hideActivityIndicator;
 
 @end

@@ -21,6 +21,7 @@
     UILabel*         text_content;
     UILabel*         extraTitle;
     NSInteger        _idLayout;
+    
 }
 @property (nonatomic, strong) MKNetworkOperation* imageLoadingOperation;
 @property (nonatomic,retain) ArticleModel* itemModel;

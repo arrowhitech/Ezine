@@ -298,6 +298,9 @@ static const int bottomSpace = 10;
     //    [contentView addSubview:extraTitle];
     
 	imageView = [[UIImageView alloc] init];
+    imageView.layer.borderColor= [UIColor colorWithRed:196.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1].CGColor;
+    imageView.layer.borderWidth =2.0f;
+
     EzineAppDelegate *appdelegate=(EzineAppDelegate*)[[UIApplication sharedApplication]delegate];
     
 	

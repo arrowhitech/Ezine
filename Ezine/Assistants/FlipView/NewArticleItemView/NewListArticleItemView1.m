@@ -58,7 +58,7 @@ static const int bottomSpace = 10;
                                                                   
                                                                   if (isInCache) {
                                                                       imageView.image = fetchedImage;
-                                                                      //     [self hideActivityIndicator];
+                                                                          [XAppDelegate hideActivityIndicator];
                                                                       
                                                                   } else {
                                                                       UIImageView *loadedImageView = [[UIImageView alloc] initWithImage:fetchedImage];
@@ -68,7 +68,7 @@ static const int bottomSpace = 10;
                                                                       
                                                                       imageView.image = fetchedImage;
                                                                       imageView.alpha = 1;
-                                                                      // [self hideActivityIndicator];
+                                                                       [XAppDelegate hideActivityIndicator];
                                                                       
                                                                   }
                                                               }
@@ -119,6 +119,10 @@ static const int bottomSpace = 10;
              contentViewArea = CGSizeMake((contentView.frame.size.width - 10), (contentView.frame.size.height-10));
             
             [imageView setFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height+56)];
+            
+//           imageIconView.layer.borderColor= [UIColor colorWithRed:196.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1].CGColor;
+//            imageIconView.layer.borderWidth =2.0f;
+
             
             [title setFrame:CGRectMake(15,contentView.frame.size.height*5/7, contentViewArea.width-10, 40)];
             title.numberOfLines=0;
@@ -261,16 +265,13 @@ static const int bottomSpace = 10;
 	contentView = [[UIView alloc] init];
 	[contentView setBackgroundColor:[UIColor whiteColor]];
 	contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-//    extraTitle =[[UILabel alloc]init];
-//    [extraTitle setText:itemModel.extraTitle];
-//    extraTitle.font =[UIFont fontWithName:@"UVNHongHaHep" size:18];
-//    extraTitle.textAlignment = UITextAlignmentCenter;
-//    [extraTitle setTextColor:RGBCOLOR(111, 111, 111)];
-//    [extraTitle setBackgroundColor:[UIColor redColor]];
-//    [contentView addSubview:extraTitle];
+   
+    [XAppDelegate._spinner setCenter:CGPointMake(imageView.center.x-20, imageView.center.y-20)];
     
 	imageView = [[UIImageView alloc] init];
+    imageView.layer.borderColor= [UIColor colorWithRed:196.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1].CGColor;
+    imageView.layer.borderWidth =2.0f;
+
     EzineAppDelegate *appdelegate=(EzineAppDelegate*)[[UIApplication sharedApplication]delegate];
     
 	
@@ -282,31 +283,7 @@ static const int bottomSpace = 10;
     }else {
         imageUrl = [itemModel._ArticleLandscape objectForKey:@"HeadImageUrl"];
     }
-//    if ((NSNull *)imageUrl==[NSNull null]) {
-//        imageUrl=@"";
-//    }
-//    self.imageLoadingOperation = [appdelegate.serviceEngine imageAtURL:[NSURL URLWithString:imageUrl]
-//                                                                        onCompletion:^(UIImage *fetchedImage, NSURL *url, BOOL isInCache) {
-//                                                                            if([imageUrl isEqualToString:[url absoluteString]]) {
-//                                                                                
-//                                                                                if (isInCache) {
-//                                                                                    imageView.image = fetchedImage;
-//                                                                                    //     [self hideActivityIndicator];
-//                                                                                    
-//                                                                                } else {
-//                                                                                    UIImageView *loadedImageView = [[UIImageView alloc] initWithImage:fetchedImage];
-//                                                                                    loadedImageView.frame = imageView.frame;
-//                                                                                    loadedImageView.alpha = 0;
-//                                                                                    [loadedImageView removeFromSuperview];
-//                                                                                    
-//                                                                                    imageView.image = fetchedImage;
-//                                                                                    imageView.alpha = 1;
-//                                                                                    // [self hideActivityIndicator];
-//                                                                                    
-//                                                                                }
-//                                                                            }
-//                                                                        }];
-    
+
     NSString* urlicon = itemModel.icon;
     if ((NSNull *)urlicon==[NSNull null]) {
         urlicon =@"";
@@ -336,6 +313,10 @@ static const int bottomSpace = 10;
 
     
     [contentView addSubview:imageView];
+    
+    imageView.layer.borderColor= [UIColor colorWithRed:196.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1].CGColor;
+    imageView.layer.borderWidth =2.0f;
+    [imageView addSubview:XAppDelegate._spinner];
     
     imageIconView =[[UIImageView alloc]init];
    // [imageIconView setImage:[UIImage imageNamed:itemModel.icon]];
@@ -445,22 +426,33 @@ static const int bottomSpace = 10;
             [time_ago setFrame:CGRectMake(titleFeed.frame.origin.x,titleFeed.frame.origin.y+titleFeed.frame.size.height+2,titleFeed.frame.size.width , titleFeed.frame.size.height)];
             
             [imageView setFrame:CGRectMake(title.frame.origin.x, imageIconView.frame.origin.y+imageIconView.frame.size.height+bottomSpace+10, 650, 484)];
+            imageView.layer.borderColor= [UIColor colorWithRed:196.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1].CGColor;
+            imageView.layer.borderWidth =2.0f;
+
             
             break;
         case 6:
             
             [imageView setFrame:CGRectMake(15, 10, 351, 528)];
+            imageView.layer.borderColor= [UIColor colorWithRed:196.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1].CGColor;
+            imageView.layer.borderWidth =2.0f;
+
             [title setFrame:CGRectMake(imageView.frame.origin.x, imageView.frame.size.height+imageView.frame.origin.y, imageView.frame.size.width, 40)];
             title.numberOfLines =0; 
             [title sizeToFit];
             [title setFrame:CGRectMake(imageView.frame.origin.x,contentViewArea.height-title.frame.size.height-50, imageView.frame.size.width, title.frame.size.height)];
 
             [imageIconView setFrame:CGRectMake(imageView.frame.origin.x, title.frame.origin.y+title.frame.size.height+2, 30, 30)];
+        
             
             [titleFeed setFrame:CGRectMake(imageIconView.frame.origin.x+imageIconView.frame.size.width+5, imageIconView.frame.origin.y-5, contentView.frame.size.width-imageIconView.frame.size.width-5, 20)];
             
             [time_ago setFrame:CGRectMake(titleFeed.frame.origin.x, titleFeed.frame.origin.y+titleFeed.frame.size.height+2, titleFeed.frame.size.width, titleFeed.frame.size.height)];
+            
             [imageView setFrame:CGRectMake(15, 10, 351, contentViewArea.height-title.frame.size.height-70)];
+            imageView.layer.borderColor= [UIColor colorWithRed:196.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1].CGColor;
+            imageView.layer.borderWidth =2.0f;
+
 
             break;
             
@@ -477,6 +469,9 @@ static const int bottomSpace = 10;
             [time_ago sizeToFit];
             [time_ago setFrame:CGRectMake(titleFeed.frame.origin.x, titleFeed.frame.origin.y+titleFeed.frame.size.height+2, titleFeed.frame.size.width, titleFeed.frame.size.height)];
             [imageView setFrame:CGRectMake(180, time_ago.frame.origin.y+time_ago.frame.size.height+20, 1024-360,748/1.5)];
+            imageView.layer.borderColor= [UIColor colorWithRed:196.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1].CGColor;
+            imageView.layer.borderWidth =2.0f;
+
             
             break;
         case 15:
@@ -494,9 +489,15 @@ static const int bottomSpace = 10;
                 [time_ago setFrame:CGRectMake(titleFeed.frame.origin.x, titleFeed.frame.origin.y+titleFeed.frame.size.height+2, titleFeed.frame.size.width, titleFeed.frame.size.height)];
                 
                 [imageView setFrame:CGRectMake(title.frame.origin.x,imageIconView.frame.origin.y+imageIconView.frame.size.height+10, contentViewArea.width-10, 175)];
+                imageView.layer.borderColor= [UIColor colorWithRed:196.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1].CGColor;
+                imageView.layer.borderWidth =2.0f;
+
 
             }else {
                 [imageView setFrame:CGRectMake(10, 20, contentView.frame.size.width-20, contentView.frame.size.height-150)];
+                imageView.layer.borderColor= [UIColor colorWithRed:196.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1].CGColor;
+                imageView.layer.borderWidth =2.0f;
+
                 
                 [title setFrame:CGRectMake(10,contentView.frame.size.height-140, contentViewArea.width-10, 40)];
                 title.numberOfLines =0;

@@ -23,6 +23,9 @@
 @synthesize database,isAddKeyword;
 @synthesize _typeshowSite,_isgotoListArticle;
 
+//Hieu Extra ======
+@synthesize _spinner;
+
 @synthesize appFontSize;
 + (EzineAppDelegate *) instance {
 	return (EzineAppDelegate *) [[UIApplication sharedApplication] delegate];
@@ -70,7 +73,12 @@
         arrayIdSite= nil;
 
     }
+    // Activity Indicator==========OKey==================
+    _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _spinner.autoresizingMask =UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
+    | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 
+    
        // database
     db =[[Database alloc]init];
 	[db createEditableCopyOfDatabaseIfNeeded];
@@ -171,6 +179,24 @@
     [navigationController dealloc];
     [viewController release];
     [super dealloc];
+}
+
+#pragma mark============Hieu extra===========Okey===========
+- (void)showActivityIndicator {
+    if (![_spinner isAnimating]) {
+        [_spinner startAnimating];
+    }
+}
+
+/*
+ * This method hides the activity indicator
+ * and enables user interaction once more.
+ */
+- (void)hideActivityIndicator {
+    if ([_spinner isAnimating]) {
+        [_spinner stopAnimating];
+    }
+    
 }
 
 @end
