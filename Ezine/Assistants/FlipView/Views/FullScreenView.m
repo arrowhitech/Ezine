@@ -47,7 +47,7 @@ static const int bottomSpace = 5;
     }
 }
 
-#pragma mark----
+#pragma mark---- init with model
 -(id)initWithModel:(ArticleModel*)model {
 	if (self = [super init]) {
         NSLog(@"model===%d",model._ArticleID);
@@ -311,7 +311,7 @@ static const int bottomSpace = 5;
     ListArticleRelative *listArticle=[[ListArticleRelative alloc] init];
     listArticle._siteId=sender.tag;
     [listArticle getLastestSource];
-    
+    listArticle.delegate=self;
     NSLog(@"list source: %d",[sender tag]);
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:listArticle];
     
@@ -752,4 +752,41 @@ static const int bottomSpace = 5;
 
 }
 
+#pragma mark--- ListArticleRelativedelegate
+
+-(void)didSelectArticle:(int)arcticleId andArrayDataListArticle:(NSMutableArray *)arrayDataListArticle{
+    NSLog(@"arrayDataListArticle ==%@",arrayDataListArticle);
+    [self.flipViewController.left setEnabled:NO];
+    [self.flipViewController.right setEnabled:NO];
+    [self.popovercontroller dismissPopoverAnimated:YES];
+    if (!arrayDataListArticle||arrayDataListArticle.count<1) {
+        return;
+    }
+    if (self._arrayDataAllDetailArticle) {
+        [self._arrayDataAllDetailArticle removeAllObjects];
+        [self._arrayIdAllDetailArticle removeAllObjects];
+    }
+    numberArticleInAll=-1;
+    
+    for (int i=0; i<[arrayDataListArticle count]; i++) {
+        NSDictionary *dataArticle=[arrayDataListArticle objectAtIndex:i];
+        ArticleDetailModel *model=[[ArticleDetailModel alloc] init];
+        model._ArticleID=[[dataArticle objectForKey:@"ArticleID"] integerValue];
+        model._publishTime=[dataArticle objectForKey:@"PublishTime"];
+        model._SiteID=articledetailModel._SiteID;
+        [self._arrayDataAllDetailArticle addObject:model];
+        [self._arrayIdAllDetailArticle addObject:[NSNumber numberWithInteger:model._ArticleID]];
+        if (arcticleId== model._ArticleID) {
+            numberArticleInAll=i-1;
+        }
+
+    }
+    [_arrayViewDetailArticle removeAllObjects];
+    [_arrayViewDetailArticleLandScape removeAllObjects];
+    activeIndex=0;
+    [self loadNewArticleDetail];
+    [self.flipViewController.left setEnabled:YES];
+    [self.flipViewController.right setEnabled:YES];
+
+}
 @end

@@ -12,7 +12,7 @@
 
 @protocol ListArticleRelativeDelegate <NSObject>
 
--(void) didSelectArticle:(int)arcticleId;
+-(void) didSelectArticle:(int)arcticleId andArrayDataListArticle:(NSMutableArray*)arrayDataListArticle;
 
 @end
 

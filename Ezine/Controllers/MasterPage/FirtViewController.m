@@ -90,6 +90,8 @@
     [[UIDevice currentDevice] orientation] ;
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -99,7 +101,9 @@
     [center addObserver:self selector: @selector(didEndEdittingSite:) name:KDidEndEdittingSiteNotification object: nil];
     [center addObserver:self selector: @selector(didChangeOrderSite:) name:KDidChangeOrderSiteNotification object: nil];
     [center addObserver:self selector: @selector(nextPage:) name:KNeedNextPageNotification object: nil];
-    
+    [center addObserver:self selector: @selector(moveCell:) name:KDidMoveCell object: nil];
+    [center addObserver:self selector: @selector(finishMoveCell:) name:KDidFifnishMovecell object: nil];
+
     [super viewDidAppear:YES];
 }
 -(void)viewDidDisappear:(BOOL)animated{
@@ -684,6 +688,7 @@
             }
             pageViewController =[[MylauncherPageViewController alloc] init];
             [self.flipViewController setViewController:pageViewController direction:MPFlipViewControllerDirectionForward animated:NO completion:nil];
+
             pageViewController.delegate=self;
             [pageViewController.view setFrame:self.view.frame];
             [pageViewController.view setBackgroundColor:[UIColor whiteColor]];
@@ -694,6 +699,7 @@
     
     
 }
+
 
 #pragma mark---- coveviewcontrollerdelegate
 -(void)FlipbuttonClick{
@@ -773,6 +779,22 @@
             // MyLauncherItem *lauhcherItem=[launcherView.launcherView.pages objectAtIndex:j];
         }
     }
+}
+
+#pragma mark--- did move cell
+-(void)moveCell:(id)sender{
+    NSLog(@"move cell");
+    
+    [self.flipViewController.right setEnabled:NO];
+    [self.flipViewController.left setEnabled:NO];
+}
+
+///------- finish movecell
+-(void)finishMoveCell:(id)sender{
+    NSLog(@"finishMoveCell ");
+    [self.flipViewController.right setEnabled:YES];
+    [self.flipViewController.left setEnabled:YES];
+
 }
 @end
 

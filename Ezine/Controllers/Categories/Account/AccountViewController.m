@@ -13,6 +13,7 @@
 #import "SourceCell.h"
 #import "CategoriesController.h"
 #import "FacebookListAccountViewController.h"
+#import "SettingAccountDetailController.h"
 
 #import <QuartzCore/QuartzCore.h>
 #import "SectionHeaderView.h"
@@ -428,35 +429,23 @@
 #pragma ----mark--- button handle
 -(void)AccountEzineDetail{
     if (isloginEzine) {
-        AccountDetailController *accountdetai=[[AccountDetailController alloc] initWithNibName:@"AccountDetailController" bundle:nil];
-        accountdetai.delegate=self;
-        if([UIApplication sharedApplication].statusBarOrientation==UIInterfaceOrientationLandscapeLeft||[UIApplication sharedApplication].statusBarOrientation==UIInterfaceOrientationLandscapeRight) {
-            
-            NSLog(@"Landscape");
-            [accountdetai.view setFrame:CGRectMake(1024, 20, 550, 1004)];
-            [self.view.superview addSubview:accountdetai.view];
-            [UIView beginAnimations:nil context:nil];
-            [UIView setAnimationDuration:0.5];
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-            [accountdetai.view setFrame:CGRectMake(0, 20, 550, 768)];
-            [UIView commitAnimations];
-            
-        }else {
-            
-            NSLog(@"portrait");
-            [accountdetai.view setFrame:CGRectMake(768, 20, 550, 1004)];
-            [self.view.superview addSubview:accountdetai.view];
-            [UIView beginAnimations:nil context:nil];
-            [UIView setAnimationDuration:0.5];
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-            [accountdetai.view setFrame:CGRectMake(0, 20, 550, 1004)];
-            [UIView commitAnimations];
-            
-        }
+        SettingAccountDetailController *settingdetail=[[SettingAccountDetailController alloc] initWithNibName:@"SettingAccountDetailController" bundle:nil];
+        //  newAcount.delegate=self;
+        //    settingdetail.modalPresentationStyle = UIModalPresentationFormSheet;
+        //    [self presentViewController:newAcount animated:YES completion:nil];
+        //    [newAcount release];
+        
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:settingdetail];
+        navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        navController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:navController animated:YES completion:nil];
+        [settingdetail release];
 
     }else{
         if (ezineAccount) {
             [ezineAccount release];
+            ezineAccount=[[EzineAccountViewController alloc] initWithNibName:@"EzineAccountViewController" bundle:nil];
+            ezineAccount.delegate=self;
         }
         ezineAccount=[[EzineAccountViewController alloc] initWithNibName:@"EzineAccountViewController" bundle:nil];
         ezineAccount.delegate=self;
@@ -529,6 +518,7 @@
 
 #pragma mark---
 -(void)LoginSuccess{
+    NSLog(@"log in Ezine");
     isloginEzine=YES;
     [self.menuTable reloadData];
     [self AccountEzineDetail];

@@ -131,7 +131,8 @@ static const int spaceBottom = 50;
 }
 
 - (BOOL) tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
+    NSLog(@"canMoveRowAtIndexPath");
+    return self._tableviewSite.editing;
 }
 
 - (void) tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
@@ -168,7 +169,7 @@ static const int spaceBottom = 50;
         item._sourcemoder.sourceId=[[XAppDelegate.arrayIdSite objectAtIndex:indexPath.row] intValue];
         NSDictionary *info = [NSDictionary dictionaryWithObject:item forKey:@"item"];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:KDidDeleteSiteNotification object:self userInfo:info];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"KDidDeleteSiteNotification" object:self userInfo:info];
         [_arraySiteUSer removeObjectAtIndex:indexPath.row];
         [self._tableviewSite deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         [self._tableviewSite endUpdates];
@@ -498,6 +499,7 @@ static const int spaceBottom = 50;
 
             }else{
                 [self._tableviewSite setEditing:YES animated:YES];
+
                // self._tableviewSite.
                // [_tableviewSite moveRowAtIndexPath:indexPath toIndexPath:indexPath2];
 
@@ -510,6 +512,7 @@ static const int spaceBottom = 50;
     if (self._tableviewSite.isEditing) {
         [self._tableviewSite setEditing:NO animated:YES];
         [self._tableviewSite setUserInteractionEnabled:YES];
+
 
     }
 }

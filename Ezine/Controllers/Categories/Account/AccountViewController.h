@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EzineAccountViewController.h"
 #import "FBFeedPost.h"
 #import "HJObjManager.h"
 #import "HJManagedImageV.h"
 #import "AccountDetailController.h"
 #import "FacebookListViewController.h"
+#import "EzineAccountViewController.h"
 
 @protocol AccountViewControllerDelegate <NSObject>
 
@@ -20,9 +20,8 @@
 
 @end
 
-@class EzineAccountViewController;
  
-@interface AccountViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,FBRequestDelegate, FBSessionDelegate,FBFeedPostDelegate,AccountDetailControllerDelegate>{
+@interface AccountViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,FBRequestDelegate, FBSessionDelegate,FBFeedPostDelegate,AccountDetailControllerDelegate,EzineAccountViewControllerDelegate>{
      EzineAccountViewController *ezineAccount;
     BOOL    islogin;
     BOOL    isloginEzine;
