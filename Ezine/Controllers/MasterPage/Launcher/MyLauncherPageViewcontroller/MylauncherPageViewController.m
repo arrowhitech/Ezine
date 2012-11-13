@@ -169,7 +169,7 @@ static const int spaceBottom = 50;
         item._sourcemoder.sourceId=[[XAppDelegate.arrayIdSite objectAtIndex:indexPath.row] intValue];
         NSDictionary *info = [NSDictionary dictionaryWithObject:item forKey:@"item"];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:KDidDeleteSiteNotification object:self userInfo:info];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"KDidDeleteSiteNotification" object:self userInfo:info];
         [_arraySiteUSer removeObjectAtIndex:indexPath.row];
         [self._tableviewSite deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         [self._tableviewSite endUpdates];
@@ -496,11 +496,9 @@ static const int spaceBottom = 50;
             NSLog(@"long press on table view at row %d", indexPath.row);
             if ([self._tableviewSite isEditing]) {
                 [self._tableviewSite setEditing:NO animated:YES];
-                [[NSNotificationCenter defaultCenter] postNotificationName:KDidFifnishMovecell object:self userInfo:nil];
 
             }else{
                 [self._tableviewSite setEditing:YES animated:YES];
-                [[NSNotificationCenter defaultCenter] postNotificationName:KDidMoveCell object:self userInfo:nil];
 
                // self._tableviewSite.
                // [_tableviewSite moveRowAtIndexPath:indexPath toIndexPath:indexPath2];
@@ -514,7 +512,6 @@ static const int spaceBottom = 50;
     if (self._tableviewSite.isEditing) {
         [self._tableviewSite setEditing:NO animated:YES];
         [self._tableviewSite setUserInteractionEnabled:YES];
-        [[NSNotificationCenter defaultCenter] postNotificationName:KDidFifnishMovecell object:self userInfo:nil];
 
 
     }

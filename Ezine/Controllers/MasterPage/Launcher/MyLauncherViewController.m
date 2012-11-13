@@ -18,6 +18,7 @@
 #import "SettingDeleteDataView.h"
 #import "DownloadDataOfflineViewController.h"
 #import "FacebookListViewController.h"
+#import "SettingAccountDetailController.h"
 
 static const float GAP = 10;
 static const int colsInPortrait = 3;
@@ -430,6 +431,23 @@ static const int spaceBottom = 50;
     arrForDownloadoff =controller.arrayIdSiteDownload;
     // NSLog(@"Arrr======%@",arrForDownloadoff);
 }
+#pragma mark--- get top viewcontroller
+- (UIViewController *)topViewController:(UIViewController *)rootViewController
+{
+    if (rootViewController.presentedViewController == nil) {
+        return rootViewController;
+    }
+    
+    if ([rootViewController.presentedViewController isMemberOfClass:[UINavigationController class]]) {
+        UINavigationController *navigationController = (UINavigationController *)rootViewController.presentedViewController;
+        UIViewController *lastViewController = [[navigationController viewControllers] lastObject];
+        return [self topViewController:lastViewController];
+    }
+    
+    UIViewController *presentedViewController = (UIViewController *)rootViewController.presentedViewController;
+    return [self topViewController:presentedViewController];
+}
+
 #pragma mark========Facebook======Ezine Acc===============================
 -(void)gotoFaceAcc{
     
@@ -441,32 +459,20 @@ static const int spaceBottom = 50;
 }
 -(void)gotoEzineAcc{
     if ([self checkUserEzineLogin]) {
-        AccountDetailController *accountdetai=[[AccountDetailController alloc] initWithNibName:@"AccountDetailController" bundle:nil];
-        accountdetai.delegate=self;
-        if([UIApplication sharedApplication].statusBarOrientation==UIInterfaceOrientationLandscapeLeft||[UIApplication sharedApplication].statusBarOrientation==UIInterfaceOrientationLandscapeRight) {
-            
-            NSLog(@"Landscape");
-            [accountdetai.view setFrame:CGRectMake(1024, 20, 550, 1004)];
-            [self.view.superview addSubview:accountdetai.view];
-            [UIView beginAnimations:nil context:nil];
-            [UIView setAnimationDuration:0.5];
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-            [accountdetai.view setFrame:CGRectMake(0, 20, 550, 768)];
-            [UIView commitAnimations];
-            
-        }else {
-            
-            NSLog(@"portrait");
-            [accountdetai.view setFrame:CGRectMake(768, 20, 550, 1004)];
-            [self.view.superview addSubview:accountdetai.view];
-            [UIView beginAnimations:nil context:nil];
-            [UIView setAnimationDuration:0.5];
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-            [accountdetai.view setFrame:CGRectMake(0, 20, 550, 1004)];
-            [UIView commitAnimations];
-            
-        }
+        SettingAccountDetailController *settingdetail=[[SettingAccountDetailController alloc] initWithNibName:@"SettingAccountDetailController" bundle:nil];
+        //  newAcount.delegate=self;
+        //    settingdetail.modalPresentationStyle = UIModalPresentationFormSheet;
+        //    [self presentViewController:newAcount animated:YES completion:nil];
+        //    [newAcount release];
+        
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:settingdetail];
+        navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        navController.modalPresentationStyle = UIModalPresentationFormSheet;
+        UIViewController *topview=[self topViewController:self];
+        [topview presentViewController:navController animated:YES completion:nil];
+        [settingdetail release];
         //[self.navigationController pushViewController:accountdetai animated:YES];
+        
         
     }else{
         

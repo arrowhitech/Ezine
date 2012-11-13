@@ -158,7 +158,7 @@
 
 #pragma mark-- signin
 -(void)Login{
-    if ([self respondsToSelector:@selector(LoginSuccess)]) {
+    if (self.delegate) {
         [[self delegate] LoginSuccess];
         
     }
@@ -167,7 +167,7 @@
 }
 #pragma mark-- register success
 -(void)registerSuccess{
-    if ([self respondsToSelector:@selector(LoginSuccess)]) {
+    if (self.delegate) {
         [[self delegate] LoginSuccess];
 
     }

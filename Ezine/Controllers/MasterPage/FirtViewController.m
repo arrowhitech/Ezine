@@ -700,6 +700,7 @@
     
 }
 
+
 #pragma mark---- coveviewcontrollerdelegate
 -(void)FlipbuttonClick{
     if (_isTypeList) {

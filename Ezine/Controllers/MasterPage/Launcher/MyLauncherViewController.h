@@ -20,7 +20,6 @@
 @protocol MyLauncherViewControllersDelegate <NSObject>
 @optional
 - (void) finishSettingClick:(BOOL)ischangetypeShow fontsize:(BOOL) ischangeFontSize;
-
 @end
 
 

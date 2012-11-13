@@ -8,11 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import "MyLauncherHeader.h"
-#import "MyLauncherView.h"
 #import "AFKPageFlipper.h"
 #import "SignInViewcontroller.h"
-#import "CategoriesController.h"
 #import "NewEzineAccountViewController.h"
 #import "UIViewController+MJPopupViewController.h"
 
