@@ -22,7 +22,7 @@
 
 @class EzineAccountViewController;
  
-@interface AccountViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,FBRequestDelegate, FBSessionDelegate,AccountDetailControllerDelegate>{
+@interface AccountViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,FBRequestDelegate, FBSessionDelegate,FBFeedPostDelegate,AccountDetailControllerDelegate>{
      EzineAccountViewController *ezineAccount;
     BOOL    islogin;
     BOOL    isloginEzine;

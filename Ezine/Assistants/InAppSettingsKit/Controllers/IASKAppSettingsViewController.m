@@ -662,12 +662,6 @@ CGRect IASKCGRectSwap(CGRect rect);
         
          if( [specifier.key isEqualToString:@"customViewCell"]){
             NSLog(@"Hahahah");
-             
-//             cell.textLabel.text =@"Ezine phiên bản 1.0  2012\n";
-//             cell.textLabel.font=[UIFont fontWithName:@"arial" size:13];
-//            cell.detailTextLabel.text=@"Sản phẩm được phát triển bởi";
-//             cell.detailTextLabel.font=[UIFont fontWithName:@"arial" size:11];
-//             [cell.detailTextLabel setHidden:NO];
              UILabel *label1=[[UILabel alloc] initWithFrame:CGRectMake(50, 3, 300, 20)];
             label1.text =@"Ezine phiên bản 1.0  2012";
             label1.font=[UIFont fontWithName:@"Arial-Bold" size:15];
@@ -687,6 +681,38 @@ CGRect IASKCGRectSwap(CGRect rect);
              [moorelogo setImage:[UIImage imageNamed:@"logoMore.png"]];
              [cell addSubview:moorelogo];
              return cell;
+        }else
+        if ([specifier.key isEqualToString:@"btnFacebook"]) {
+            
+        NSString* name=[[NSUserDefaults standardUserDefaults]objectForKey:@"nameProfile"];
+            UILabel *label3=[[UILabel alloc] initWithFrame:CGRectMake(80, 10, 300, 20)];
+          
+            if (name==nil) {
+                
+                  label3.text =@"Facebook";
+            }else{
+                label3.text =[@"Facebook" stringByAppendingFormat:@"(%@)",name];
+            }
+            label3.font=[UIFont boldSystemFontOfSize:15];
+            [label3 setBackgroundColor:[UIColor clearColor]];
+            [cell addSubview:label3];
+            
+        }else if([specifier.key isEqualToString:@"btnEzine"]){
+            
+            NSString *name=[[NSUserDefaults standardUserDefaults] objectForKey:@"EzineAccountName"];
+            UILabel *label4=[[UILabel alloc] initWithFrame:CGRectMake(80, 10, 300, 20)];
+            
+            if (name ==nil) {
+                NSLog(@"NULLLlLLLLLLLLLLLLLLLLLLL");
+                label4.text =@"Ezine";
+            }else{
+                label4.text =[@"Ezine" stringByAppendingFormat:@"(%@)",name];
+            }
+            label4.font=[UIFont boldSystemFontOfSize:15];
+            [label4 setBackgroundColor:[UIColor clearColor]];
+            [cell addSubview:label4];
+
+            
         }
 
        // [cell.accessoryView removeFromSuperview];

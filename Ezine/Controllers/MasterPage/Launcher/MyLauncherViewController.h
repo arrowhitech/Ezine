@@ -15,6 +15,7 @@
 #import "CategoriesController.h"
 #import "SearchKeyWordViewController.h"
 #import "SettingforDownloadController.h"
+#import "EzineAccountViewController.h"
 
 @protocol MyLauncherViewControllersDelegate <NSObject>
 @optional
@@ -30,6 +31,8 @@
     CategoriesController                        *category;
     MyLauncherFooter                            *footer;
     
+    EzineAccountViewController                  *ezineAccount;
+
     
     CGRect                                      screenBounds;
     int                                         _currentPage;
@@ -52,5 +55,14 @@
 -(void) reLoad;
 -(void) rotate;
 -(void) reloadFontSize;
+
+///===================
+-(void)gotoFaceAcc;
+-(void)gotoEzineAcc;
+
+///=================
+-(BOOL)checkUserEzineLogin;
+-(BOOL)checkFBlogin;
+
 @end
 

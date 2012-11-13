@@ -358,6 +358,7 @@
 //        FBFeedPost *post = [[FBFeedPost alloc] init];
 //        post.postType=kAPIGraphUserPermissions;
 //        [post publishPostWithDelegate:self];
+         NSLog(@"AAAAABBBBBB");
         for (UIView* next = [self.view superview]; next; next = next.superview)
         {
             UIResponder* nextResponder = [next nextResponder];
@@ -385,6 +386,7 @@
 //                         }];
 
     }else if ([indexPath section]==2) {
+         NSLog(@"AAAAABBBBBB222222");
         if (!islogin) {
             if (indexPath.row==0) {
                 FacebookListAccountViewController   *fbListScreen=[[FacebookListAccountViewController alloc]initWithNibName:@"FacebookListAccountViewController" bundle:nil];
@@ -516,4 +518,11 @@
     [self.menuTable reloadData];
     [self AccountEzineDetail];
 }
+
+//-(void)cancelFacebook{
+//    NSLog(@"Cacel");
+//    [self.navigationController popViewControllerAnimated:YES];
+//    
+//}
+
 @end

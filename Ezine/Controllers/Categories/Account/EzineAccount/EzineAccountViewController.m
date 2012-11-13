@@ -158,14 +158,20 @@
 
 #pragma mark-- signin
 -(void)Login{
-    [[self delegate] LoginSuccess];
+    if ([self respondsToSelector:@selector(LoginSuccess)]) {
+        [[self delegate] LoginSuccess];
+        
+    }
     [self.view removeFromSuperview];
 
 }
 #pragma mark-- register success
 -(void)registerSuccess{
-    [[self delegate] LoginSuccess];
-    [self.view removeFromSuperview];
+    if ([self respondsToSelector:@selector(LoginSuccess)]) {
+        [[self delegate] LoginSuccess];
+
+    }
+       [self.view removeFromSuperview];
 
 }
 @end

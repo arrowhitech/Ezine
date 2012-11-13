@@ -169,7 +169,9 @@
     
 }
 -(void)cancelFacebook{
+    NSLog(@"Hieu ");
     
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark---- FBRequestDelegate

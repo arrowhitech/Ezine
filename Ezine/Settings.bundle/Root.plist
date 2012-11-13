@@ -116,13 +116,13 @@
 			<key>Type</key>
 			<string>IASKButtonSpecifier</string>
 			<key>Title</key>
-			<string>Facebook</string>
+			<string></string>
 		</dict>
 		<dict>
 			<key>Key</key>
 			<string>btnEzine</string>
 			<key>Title</key>
-			<string>Ezine</string>
+			<string></string>
 			<key>Type</key>
 			<string>IASKButtonSpecifier</string>
 			<key>IASKCellImage</key>

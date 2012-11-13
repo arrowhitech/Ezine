@@ -399,7 +399,11 @@ static FacebookListAccountViewController* serviceLib;
 
 #pragma mark--- 
 -(void)cancelFacebook{
+    NSLog(@"Cacel Button");
+    //[XAppDelegate.navigationController popViewControllerAnimated:YES];
     [self.view removeFromSuperview];
+    
+    
 }
 #pragma mark---
 -(void)backToMainView{
